@@ -63,8 +63,7 @@ component_config! {
 
 component_config! {
     LogProgressConfig {
-        height: f32 = 48.0,
-        track_ratio: f32 = 0.10,
+        track_height: f32 = 6.0,
         gap: f32 = 4.0,
         padding: f32 = 8.0,
     },

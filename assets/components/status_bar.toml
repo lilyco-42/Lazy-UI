@@ -1,5 +1,5 @@
 # Status bar — convention over configuration.
+# Height comes from app_layout.toml.
 
-height = 32
 gap = 8
 padding = 12

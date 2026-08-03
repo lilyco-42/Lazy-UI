@@ -1,7 +1,7 @@
 # Log progress bar — convention over configuration.
 # nvim-dialog style: a slim progress track pinned to the bottom.
+# The bar's height/size comes from the layout (app_layout.toml: height_percent).
 
-height = 48        # total bar height in px
-track_ratio = 0.10 # progress track thickness as a fraction of height
+track_height = 6  # progress track thickness in px
 gap = 4
 padding = 8

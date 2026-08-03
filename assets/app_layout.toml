@@ -1,0 +1,33 @@
+# Declarative app skeleton — layout relationships are AUTO-INFERRED, not hard-coded.
+#
+# Inference rules:
+# - Un-anchored regions (sidebar, panel) are grouped into one flex row.
+# - Regions anchored "bottom" (status_bar, log_progress) are stacked full-width
+#   at the bottom of the window, in declaration order.
+# - Region height comes from `height` (px) or `height_percent` (fraction of window).
+#
+# log_progress below → auto-pinned to bottom, occupying 10% of the window height.
+
+gap = 8
+
+[[regions]]
+name = "sidebar"
+role = "sidebar"
+width = 240
+
+[[regions]]
+name = "panel"
+role = "content"
+grow = true
+
+[[regions]]
+name = "status_bar"
+role = "status"
+anchor = "bottom"
+height = 32
+
+[[regions]]
+name = "log_progress"
+role = "progress"
+anchor = "bottom"
+height_percent = 0.10
