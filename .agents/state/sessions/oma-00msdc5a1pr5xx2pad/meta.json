@@ -1,0 +1,10 @@
+{
+  "sid": "oma-00msdc5a1pr5xx2pad",
+  "schemaVersion": 1,
+  "category": "main",
+  "status": "active",
+  "gatesPassedBy": [],
+  "pendingPeerReviews": [],
+  "createdAt": "2026-08-03T14:39:37.517Z",
+  "workflow": "design"
+}
