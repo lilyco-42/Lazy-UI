@@ -1,2 +1,5 @@
 /target
 /build
+/backup
+.agents/
+.claude/
