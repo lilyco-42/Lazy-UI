@@ -1,17 +1,13 @@
-mod components;
-mod fonts;
-mod theme;
-
 // Compile-time locale catalogs from `assets/i18n/{en,zh-CN}.toml`.
 // Missing keys fall back to English (`fallback`), then to the key itself.
 rust_i18n::i18n!("assets/i18n", fallback = "en");
 
+use demo::components::*;
+use demo::{fonts, theme};
 use ply_engine::prelude::*;
 use rust_i18n::t;
 use std::cell::Cell;
 use std::rc::Rc;
-
-use components::*;
 
 /// Locale identifiers backed by `assets/i18n/*.toml`.
 mod locale {
@@ -368,7 +364,10 @@ mod tests {
         rust_i18n::set_locale(locale::EN);
         assert_eq!(t!("sidebar").as_ref(), "Sidebar");
         assert_eq!(t!("greeting", name = "World").as_ref(), "Hi, World!");
-        assert_eq!(t!("slider_value", value = format!("{:.2}", 0.5)).as_ref(), "Current: 0.50");
+        assert_eq!(
+            t!("slider_value", value = format!("{:.2}", 0.5)).as_ref(),
+            "Current: 0.50"
+        );
         assert_eq!(t!("list_item", letter = "A").as_ref(), "Item A");
 
         rust_i18n::set_locale(locale::ZH);

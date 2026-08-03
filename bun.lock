@@ -1,0 +1,14 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "dependencies": {
+        "claude-code": "^1.0.0",
+      },
+    },
+  },
+  "packages": {
+    "claude-code": ["claude-code@1.0.0", "https://registry.npmmirror.com/claude-code/-/claude-code-1.0.0.tgz", { "bin": { "claude-code": "index.js" } }, "sha512-x5z3ZlQBRcd3fX5MtiC19kzVxonaY6/Ligbjedp21TlQ/m7FuiQHNsegiZVmOoY6a5BmqdMYTUI3dRj3RtnlGQ=="],
+  }
+}
