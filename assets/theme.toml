@@ -1,0 +1,55 @@
+# Material 3 baseline color scheme (light) — https://m3.material.io/styles/color/static/baseline
+# Convention over configuration: every field has a sensible M3 default baked into
+# src/theme.rs. Override any value here; hex integers use 0xRRGGBB.
+
+[colors]
+primary = 0x6750A4
+on_primary = 0xFFFFFF
+primary_container = 0xEADDFF
+on_primary_container = 0x21005D
+secondary = 0x625B71
+on_secondary = 0xFFFFFF
+secondary_container = 0xE8DEF8
+on_secondary_container = 0x1D192B
+tertiary = 0x7D5260
+on_tertiary = 0xFFFFFF
+tertiary_container = 0xFFD8E4
+on_tertiary_container = 0x31111D
+error = 0xB3261E
+on_error = 0xFFFFFF
+error_container = 0xF9DEDC
+on_error_container = 0x410E0B
+surface = 0xFEF7FF
+on_surface = 0x1D1B20
+surface_variant = 0xE7E0EC
+on_surface_variant = 0x49454F
+outline = 0x79747E
+outline_variant = 0xCAC4D0
+surface_container_lowest = 0xFFFFFF
+surface_container_low = 0xF7F2FA
+surface_container = 0xF3EDF7
+surface_container_high = 0xECE6F0
+surface_container_highest = 0xE6E0E9
+inverse_surface = 0x322F35
+inverse_on_surface = 0xF5EFF7
+inverse_primary = 0xD0BCFF
+scrim = 0x000000
+
+[shapes]
+touch_target = 48
+button_height = 40
+field_height = 56
+tab_height = 48
+item_height = 48
+track_height = 4
+handle_size = 20
+radius_xs = 4
+radius_sm = 8
+radius_md = 12
+radius_lg = 16
+
+[text]
+label_size = 14
+body_size = 16
+title_size = 22
+headline_size = 28

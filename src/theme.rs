@@ -1,0 +1,174 @@
+//! Material 3 theme.
+//!
+//! Convention over configuration: sensible M3 baseline defaults are baked into
+//! `Theme::default()`; `assets/theme.toml` can override any of them.
+
+use serde::Deserialize;
+
+/// State overlay colors (M3 tonal approximations) used for hover/pressed feedback.
+pub const HOVER_PRIMARY: u32 = 0x7E6ABE; // tone 50
+pub const PRESSED_PRIMARY: u32 = 0x4F378B; // tone 30
+pub const HOVER_TONAL: u32 = 0xD6CCE8;
+pub const PRESSED_TONAL: u32 = 0xC6B9D9;
+pub const HOVER_PRIMARY_CONTAINER: u32 = 0xD6C6F5;
+pub const PRESSED_PRIMARY_CONTAINER: u32 = 0xC8B4F0;
+pub const HOVER_OUTLINED: (u8, u8, u8, u8) = (103, 80, 164, 20);
+pub const PRESSED_OUTLINED: (u8, u8, u8, u8) = (103, 80, 164, 31);
+pub const HOVER_TEXT: (u8, u8, u8, u8) = (103, 80, 164, 12);
+pub const PRESSED_TEXT: (u8, u8, u8, u8) = (103, 80, 164, 20);
+
+pub const TRANSPARENT: (u8, u8, u8, u8) = (0, 0, 0, 0);
+
+#[derive(Debug, Clone, Copy, Deserialize)]
+#[serde(default)]
+pub struct Theme {
+    pub colors: Colors,
+    pub shapes: Shapes,
+    pub text: TextTheme,
+}
+
+impl Default for Theme {
+    fn default() -> Self {
+        Self {
+            colors: Colors::default(),
+            shapes: Shapes::default(),
+            text: TextTheme::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, Deserialize)]
+#[serde(default)]
+pub struct Colors {
+    pub primary: u32,
+    pub on_primary: u32,
+    pub primary_container: u32,
+    pub on_primary_container: u32,
+    pub secondary: u32,
+    pub on_secondary: u32,
+    pub secondary_container: u32,
+    pub on_secondary_container: u32,
+    pub tertiary: u32,
+    pub on_tertiary: u32,
+    pub tertiary_container: u32,
+    pub on_tertiary_container: u32,
+    pub error: u32,
+    pub on_error: u32,
+    pub error_container: u32,
+    pub on_error_container: u32,
+    pub surface: u32,
+    pub on_surface: u32,
+    pub surface_variant: u32,
+    pub on_surface_variant: u32,
+    pub outline: u32,
+    pub outline_variant: u32,
+    pub surface_container_lowest: u32,
+    pub surface_container_low: u32,
+    pub surface_container: u32,
+    pub surface_container_high: u32,
+    pub surface_container_highest: u32,
+    pub inverse_surface: u32,
+    pub inverse_on_surface: u32,
+    pub inverse_primary: u32,
+    pub scrim: u32,
+}
+
+#[derive(Debug, Clone, Copy, Deserialize)]
+#[serde(default)]
+pub struct Shapes {
+    pub touch_target: f32,
+    pub button_height: f32,
+    pub field_height: f32,
+    pub tab_height: f32,
+    pub item_height: f32,
+    pub track_height: f32,
+    pub handle_size: f32,
+    pub radius_xs: f32,
+    pub radius_sm: f32,
+    pub radius_md: f32,
+    pub radius_lg: f32,
+}
+
+#[derive(Debug, Clone, Copy, Deserialize)]
+#[serde(default)]
+pub struct TextTheme {
+    pub label_size: u16,
+    pub body_size: u16,
+    pub title_size: u16,
+    pub headline_size: u16,
+}
+
+impl Default for Colors {
+    fn default() -> Self {
+        Self {
+            primary: 0x6750A4,
+            on_primary: 0xFFFFFF,
+            primary_container: 0xEADDFF,
+            on_primary_container: 0x21005D,
+            secondary: 0x625B71,
+            on_secondary: 0xFFFFFF,
+            secondary_container: 0xE8DEF8,
+            on_secondary_container: 0x1D192B,
+            tertiary: 0x7D5260,
+            on_tertiary: 0xFFFFFF,
+            tertiary_container: 0xFFD8E4,
+            on_tertiary_container: 0x31111D,
+            error: 0xB3261E,
+            on_error: 0xFFFFFF,
+            error_container: 0xF9DEDC,
+            on_error_container: 0x410E0B,
+            surface: 0xFEF7FF,
+            on_surface: 0x1D1B20,
+            surface_variant: 0xE7E0EC,
+            on_surface_variant: 0x49454F,
+            outline: 0x79747E,
+            outline_variant: 0xCAC4D0,
+            surface_container_lowest: 0xFFFFFF,
+            surface_container_low: 0xF7F2FA,
+            surface_container: 0xF3EDF7,
+            surface_container_high: 0xECE6F0,
+            surface_container_highest: 0xE6E0E9,
+            inverse_surface: 0x322F35,
+            inverse_on_surface: 0xF5EFF7,
+            inverse_primary: 0xD0BCFF,
+            scrim: 0x000000,
+        }
+    }
+}
+
+impl Default for Shapes {
+    fn default() -> Self {
+        Self {
+            touch_target: 48.0,
+            button_height: 40.0,
+            field_height: 56.0,
+            tab_height: 48.0,
+            item_height: 48.0,
+            track_height: 4.0,
+            handle_size: 20.0,
+            radius_xs: 4.0,
+            radius_sm: 8.0,
+            radius_md: 12.0,
+            radius_lg: 16.0,
+        }
+    }
+}
+
+impl Default for TextTheme {
+    fn default() -> Self {
+        Self {
+            label_size: 14,
+            body_size: 16,
+            title_size: 22,
+            headline_size: 28,
+        }
+    }
+}
+
+/// Global theme, loaded once from `assets/theme.toml` (falls back to M3 defaults).
+pub fn theme() -> &'static Theme {
+    static THEME: std::sync::OnceLock<Theme> = std::sync::OnceLock::new();
+    THEME.get_or_init(|| {
+        toml::from_str(include_str!("../assets/theme.toml")).unwrap_or_default()
+    })
+}
