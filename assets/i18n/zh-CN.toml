@@ -1,0 +1,62 @@
+# 中文（目标语言）翻译表 — rust-i18n v1 split 格式。
+# 键为纯 ASCII 且与源语言一致；%{name}、%{value}、%{letter} 为运行时替换的命名占位符。
+
+_version = 1
+
+sidebar = "侧边栏"
+launch = "启动"
+settings = "设置"
+about = "关于"
+components = "组件库"
+
+cat_buttons = "按钮"
+cat_forms = "表单"
+cat_data = "数据"
+cat_misc = "杂项"
+
+app_title = "Material 3 · Ply 组件"
+app_subtitle = "按 F12 打开调试视图 · 风格遵循 m3.material.io"
+
+btn_filled = "实心"
+btn_tonal = "色调"
+btn_outlined = "描边"
+btn_text = "文字"
+
+sec_buttons = "按钮"
+sec_counter = "计数器 (Compose 风格)"
+sec_text_fields = "文本输入"
+sec_checkbox = "复选框"
+sec_switch = "开关"
+sec_radio = "单选"
+sec_slider = "滑块"
+sec_progress = "进度"
+sec_tabs = "标签页"
+sec_combobox = "下拉框"
+sec_listbox = "列表"
+sec_selectable = "可选项"
+sec_tooltip = "提示"
+
+ph_name = "请输入名称"
+ph_email = "请输入邮箱"
+greeting = "你好, %{name}!"
+
+remember_me = "记住我"
+enable_notifications = "开启通知"
+gender_male = "男"
+gender_female = "女"
+gender_other = "其他"
+volume = "音量"
+slider_value = "当前值: %{value}"
+tab_home = "首页"
+tab_discover = "发现"
+tab_mine = "我的"
+theme_light = "浅色"
+theme_dark = "深色"
+theme_system = "跟随系统"
+list_item = "项目 %{letter}"
+save_locally = "保存到本地"
+tooltip_text = "这是一段提示文本"
+hover_me = "悬停我"
+
+status_ready = "状态: 就绪"
+lang_toggle = "English"

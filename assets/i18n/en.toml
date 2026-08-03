@@ -1,0 +1,63 @@
+# English (source) catalog — rust-i18n v1 split format.
+# Keys are pure-ASCII and equal the English text; values are the display text.
+# `%{name}`, `%{value}`, `%{letter}` are named placeholders substituted at runtime.
+
+_version = 1
+
+sidebar = "Sidebar"
+launch = "Launch"
+settings = "Settings"
+about = "About"
+components = "Components"
+
+cat_buttons = "Buttons"
+cat_forms = "Forms"
+cat_data = "Data"
+cat_misc = "Misc"
+
+app_title = "Material 3 · Ply Components"
+app_subtitle = "Press F12 for debug view · styled after m3.material.io"
+
+btn_filled = "Filled"
+btn_tonal = "Tonal"
+btn_outlined = "Outlined"
+btn_text = "Text"
+
+sec_buttons = "Buttons"
+sec_counter = "Counter (Compose style)"
+sec_text_fields = "Text Fields"
+sec_checkbox = "Checkbox"
+sec_switch = "Switch"
+sec_radio = "Radio"
+sec_slider = "Slider"
+sec_progress = "Progress"
+sec_tabs = "Tabs"
+sec_combobox = "ComboBox"
+sec_listbox = "ListBox"
+sec_selectable = "Selectable"
+sec_tooltip = "Tooltip"
+
+ph_name = "Enter name"
+ph_email = "Enter email"
+greeting = "Hi, %{name}!"
+
+remember_me = "Remember me"
+enable_notifications = "Enable notifications"
+gender_male = "Male"
+gender_female = "Female"
+gender_other = "Other"
+volume = "Volume"
+slider_value = "Current: %{value}"
+tab_home = "Home"
+tab_discover = "Discover"
+tab_mine = "Mine"
+theme_light = "Light"
+theme_dark = "Dark"
+theme_system = "Follow system"
+list_item = "Item %{letter}"
+save_locally = "Save locally"
+tooltip_text = "This is a hint text."
+hover_me = "Hover me"
+
+status_ready = "Status: Ready"
+lang_toggle = "Chinese"

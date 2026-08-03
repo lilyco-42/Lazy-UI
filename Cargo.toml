@@ -6,6 +6,9 @@ edition = "2021"
 [dependencies]
 serde = { version = "1", features = ["derive"] }
 toml = "0.8"
+fontdb = "0.16"
+log = "0.4"
+rust-i18n = { version = "4.2", features = ["log-miss-tr"] }
 ply-engine = {
   version = "1.1",
   features = [
