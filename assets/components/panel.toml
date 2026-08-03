@@ -1,0 +1,5 @@
+# Panel (content card) — convention over configuration.
+
+gap = 8
+padding = 16
+scroll = true

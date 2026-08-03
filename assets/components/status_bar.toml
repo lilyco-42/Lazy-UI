@@ -1,0 +1,5 @@
+# Status bar — convention over configuration.
+
+height = 32
+gap = 8
+padding = 12

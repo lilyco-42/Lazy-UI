@@ -55,90 +55,124 @@ async fn main() {
             .width(grow!())
             .height(grow!())
             .background_color(theme::theme().colors.surface)
-            .layout(|l| l.padding(24).direction(TopToBottom).gap(12))
-            .overflow(|o| o.scroll_y())
+            .layout(|l| l.direction(TopToBottom))
             .children(|ui| {
-                headline(ui, "Material 3 · Ply Components");
-                body(ui, "按 F12 打开调试视图 · 风格遵循 m3.material.io");
-                divider(ui);
-
-                section(ui, "Buttons", |ui| {
-                    ui.element()
-                        .width(grow!())
-                        .height(fit!())
-                        .layout(|l| l.direction(LeftToRight).gap(8).align(Left, Top))
-                        .children(|ui| {
-                            button(ui, "Filled", || {});
-                            button_tonal(ui, "Tonal", || {});
-                            button_outlined(ui, "Outlined", || {});
-                            button_text(ui, "Text", || {});
+                // App skeleton from the spec:
+                // sidebar({ 启动(), 设置(), 关于() }) + content panel + status bar + log progress.
+                ui.element()
+                    .width(grow!())
+                    .height(grow!())
+                    .layout(|l| l.direction(LeftToRight))
+                    .children(|ui| {
+                        sidebar(ui, |ui| {
+                            body(ui, "侧边栏");
+                            button_id(ui, "启动");
+                            button_id(ui, "设置");
+                            button_id(ui, "关于");
+                            divider(ui);
+                            title(ui, "组件库");
+                            for name in ["按钮", "表单", "数据", "杂项"] {
+                                button_id(ui, name);
+                            }
                         });
-                });
 
-                section(ui, "Counter (Compose style)", |ui| {
-                    counter(ui, count.clone());
-                });
+                        ui.element()
+                            .width(grow!())
+                            .height(grow!())
+                            .layout(|l| l.direction(TopToBottom).padding(16).gap(12))
+                            .overflow(|o| o.scroll_y())
+                            .children(|ui| {
+                                panel(ui, |ui| {
+                                    headline(ui, "Material 3 · Ply Components");
+                                    body(ui, "按 F12 打开调试视图 · 风格遵循 m3.material.io");
+                                    divider(ui);
 
-                section(ui, "Text Fields", |ui| {
-                    text_field(ui, "name", "请输入名称");
-                    text_field_outlined(ui, "email", "请输入邮箱");
-                    let name = ui.get_text_value("name").to_string();
-                    if !name.is_empty() {
-                        body(ui, &format!("你好, {}!", name));
-                    }
-                });
+                                    section(ui, "Buttons", |ui| {
+                                        ui.element()
+                                            .width(grow!())
+                                            .height(fit!())
+                                            .layout(|l| l.direction(LeftToRight).gap(8).align(Left, Top))
+                                            .children(|ui| {
+                                                button(ui, "Filled", || {});
+                                                button_tonal(ui, "Tonal", || {});
+                                                button_outlined(ui, "Outlined", || {});
+                                                button_text(ui, "Text", || {});
+                                            });
+                                    });
 
-                section(ui, "Checkbox", |ui| {
-                    let c = checkbox(ui, "remember", remember.get(), "记住我");
-                    remember.set(c);
-                });
+                                    section(ui, "Counter (Compose style)", |ui| {
+                                        counter(ui, count.clone());
+                                    });
 
-                section(ui, "Switch", |ui| {
-                    let s = switch(ui, "notify", notify.get(), "开启通知");
-                    notify.set(s);
-                });
+                                    section(ui, "Text Fields", |ui| {
+                                        text_field(ui, "name", "请输入名称");
+                                        text_field_outlined(ui, "email", "请输入邮箱");
+                                        let name = ui.get_text_value("name").to_string();
+                                        if !name.is_empty() {
+                                            body(ui, &format!("你好, {}!", name));
+                                        }
+                                    });
 
-                section(ui, "Radio", |ui| {
-                    let r = radio_group(ui, "gender", &["男", "女", "其他"], radio_sel.get());
-                    radio_sel.set(r);
-                });
+                                    section(ui, "Checkbox", |ui| {
+                                        let c = checkbox(ui, "remember", remember.get(), "记住我");
+                                        remember.set(c);
+                                    });
 
-                section(ui, "Slider", |ui| {
-                    let v = slider(ui, "volume", "音量", slider_val.get(), 0.0, 1.0);
-                    slider_val.set(v);
-                    label(ui, &format!("当前值: {:.2}", v));
-                });
+                                    section(ui, "Switch", |ui| {
+                                        let s = switch(ui, "notify", notify.get(), "开启通知");
+                                        notify.set(s);
+                                    });
 
-                section(ui, "Progress", |ui| {
-                    progress(ui, progress_val.get());
-                });
+                                    section(ui, "Radio", |ui| {
+                                        let r = radio_group(ui, "gender", &["男", "女", "其他"], radio_sel.get());
+                                        radio_sel.set(r);
+                                    });
 
-                section(ui, "Tabs", |ui| {
-                    let t = tabs(ui, "tab", &["首页", "发现", "我的"], tab_sel.get());
-                    tab_sel.set(t);
-                });
+                                    section(ui, "Slider", |ui| {
+                                        let v = slider(ui, "volume", "音量", slider_val.get(), 0.0, 1.0);
+                                        slider_val.set(v);
+                                        label(ui, &format!("当前值: {:.2}", v));
+                                    });
 
-                section(ui, "ComboBox", |ui| {
-                    let c = combo(ui, "theme", &["浅色", "深色", "跟随系统"], combo_sel.get());
-                    combo_sel.set(c);
-                });
+                                    section(ui, "Progress", |ui| {
+                                        progress(ui, progress_val.get());
+                                    });
 
-                section(ui, "ListBox", |ui| {
-                    let items = ["项目 A", "项目 B", "项目 C", "项目 D", "项目 E", "项目 F"];
-                    let l = listbox(ui, "files", &items, list_sel.get(), 4);
-                    list_sel.set(l);
-                });
+                                    section(ui, "Tabs", |ui| {
+                                        let t = tabs(ui, "tab", &["首页", "发现", "我的"], tab_sel.get());
+                                        tab_sel.set(t);
+                                    });
 
-                section(ui, "Selectable", |ui| {
-                    let s = selectable(ui, "save_local", sel_save.get(), "保存到本地");
-                    sel_save.set(s);
-                });
+                                    section(ui, "ComboBox", |ui| {
+                                        let c = combo(ui, "theme", &["浅色", "深色", "跟随系统"], combo_sel.get());
+                                        combo_sel.set(c);
+                                    });
 
-                section(ui, "Tooltip", |ui| {
-                    tooltip(ui, "tt_hint", "这是一段提示文本", |ui| {
-                        button_outlined(ui, "Hover me", || {});
+                                    section(ui, "ListBox", |ui| {
+                                        let items = ["项目 A", "项目 B", "项目 C", "项目 D", "项目 E", "项目 F"];
+                                        let l = listbox(ui, "files", &items, list_sel.get(), 4);
+                                        list_sel.set(l);
+                                    });
+
+                                    section(ui, "Selectable", |ui| {
+                                        let s = selectable(ui, "save_local", sel_save.get(), "保存到本地");
+                                        sel_save.set(s);
+                                    });
+
+                                    section(ui, "Tooltip", |ui| {
+                                        tooltip(ui, "tt_hint", "这是一段提示文本", |ui| {
+                                            button_outlined(ui, "Hover me", || {});
+                                        });
+                                    });
+                                });
+                            });
                     });
+
+                status_bar(ui, |ui| {
+                    label(ui, "状态: 就绪");
                 });
+
+                log_progress(ui, "log_progress", progress_val.get());
             });
 
         ui.show(|_| {}).await;

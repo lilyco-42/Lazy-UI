@@ -6,6 +6,7 @@ use crate::theme::{self, TRANSPARENT};
 
 fn rounded_btn(
     ui: &mut Ui<'_, ()>,
+    id: Option<Id>,
     label: &str,
     mut on_click: impl FnMut() + 'static,
     bg: impl Into<Color>,
@@ -17,8 +18,11 @@ fn rounded_btn(
     let theme = theme::theme();
     let radius = theme.shapes.button_height * 0.5;
 
-    ui.element()
-        .width(fit!())
+    let mut el = ui.element();
+    if let Some(id) = id {
+        el = el.id(id);
+    }
+    el.width(fit!())
         .height(fixed!(theme.shapes.button_height))
         .corner_radius(radius)
         .on_press(move |_, _| on_click())
@@ -52,6 +56,7 @@ pub fn button(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + 'static
     let theme = theme::theme();
     rounded_btn(
         ui,
+        None,
         label,
         on_click,
         theme.colors.primary,
@@ -67,6 +72,7 @@ pub fn button_tonal(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + '
     let theme = theme::theme();
     rounded_btn(
         ui,
+        None,
         label,
         on_click,
         theme.colors.secondary_container,
@@ -82,6 +88,7 @@ pub fn button_outlined(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() 
     let theme = theme::theme();
     rounded_btn(
         ui,
+        None,
         label,
         on_click,
         TRANSPARENT,
@@ -97,6 +104,7 @@ pub fn button_text(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + 's
     let theme = theme::theme();
     rounded_btn(
         ui,
+        None,
         label,
         on_click,
         TRANSPARENT,
@@ -105,4 +113,26 @@ pub fn button_text(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + 's
         theme.colors.primary,
         None,
     );
+}
+
+/// Label-only button — convention over configuration: no callback, auto-generated
+/// id derived from the label. Returns the `Id`; poll it with `ui.is_just_pressed(id)`
+/// or `ui.is_just_pressed("label")` to detect activation.
+///
+/// `button_id(ui, "hello")` ≈ Compose `Button(onClick = null)`.
+pub fn button_id(ui: &mut Ui<'_, ()>, label: &str) -> Id {
+    let theme = theme::theme();
+    let id: Id = Id::from((label, 0u32));
+    rounded_btn(
+        ui,
+        Some(id.clone()),
+        label,
+        || {},
+        TRANSPARENT,
+        theme::HOVER_TEXT,
+        theme::PRESSED_TEXT,
+        theme.colors.primary,
+        None,
+    );
+    id
 }

@@ -6,6 +6,8 @@
 mod button;
 mod checkbox;
 mod combo;
+pub mod config;
+mod container;
 mod divider;
 mod listbox;
 mod progress;
@@ -21,6 +23,7 @@ mod tooltip;
 pub use button::*;
 pub use checkbox::*;
 pub use combo::*;
+pub use container::*;
 pub use divider::*;
 pub use listbox::*;
 pub use progress::*;

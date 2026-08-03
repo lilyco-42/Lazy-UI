@@ -1,0 +1,8 @@
+# Sidebar layout — convention over configuration.
+# Only override what you need; every field already has an optimal M3 default
+# baked into src/components/config.rs.
+
+width = 240        # fixed sidebar width in px
+gap = 4            # spacing between nav items
+padding = 12       # inner padding in px
+scroll = true      # scroll when content overflows
