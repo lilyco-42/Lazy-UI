@@ -1,4 +1,4 @@
-# 如你所见 这是一个基于(plyx)[https://github.com/TheRedDeveloper/ply-engine/]的简单上层封装
+# 如你所见 这是一个基于[plyx](https://github.com/TheRedDeveloper/ply-engine/)的简单上层封装
 我们的目的是实现这样的ui书写
 
 ```
