@@ -50,7 +50,7 @@ fn window_conf() -> macroquad::conf::Conf {
             window_width: 800,
             window_height: 600,
             high_dpi: true,
-            sample_count: 4,
+            sample_count: 1,
             platform: miniquad::conf::Platform {
                 webgl_version: miniquad::conf::WebGLVersion::WebGL2,
                 ..Default::default()
@@ -81,7 +81,34 @@ async fn main() {
     let sel_save = Rc::new(Cell::new(false));
     let count = Rc::new(Cell::new(0i32));
 
+    // Idle frame pacing: this is a mostly-static UI, so when the user is not
+    // interacting we drop from the vsync-synced 60fps to a low idle rate. This
+    // cuts the SurfaceView `dequeueBuffer` wait (the main bottleneck found in
+    // the perf trace) and CPU/GPU work on battery. Touch/key activity bumps the
+    // frame budget back up for the next few frames.
+    let mut idle_grace_frames: u32 = 0;
+    let mut last_frame_time = std::time::Instant::now();
+
     loop {
+        let has_input = !touches().is_empty()
+            || is_mouse_button_pressed(MouseButton::Left)
+            || is_key_pressed(KeyCode::F12);
+        if has_input {
+            idle_grace_frames = 5;
+        }
+
+        // Slow to ~15fps when idle, keep full speed near interaction.
+        if idle_grace_frames == 0 {
+            let target = std::time::Duration::from_secs_f64(1.0 / 15.0);
+            let elapsed = last_frame_time.elapsed();
+            if elapsed < target {
+                std::thread::sleep(target - elapsed);
+            }
+        } else {
+            idle_grace_frames -= 1;
+        }
+        last_frame_time = std::time::Instant::now();
+
         // Process a pending language switch: swap the active locale and the
         // global default font (the CJK font is a glyph superset for Chinese).
         if let Some(locale) = PENDING_LOCALE.with(|c| c.replace(None)) {

@@ -9,18 +9,7 @@ toml = "0.8"
 fontdb = "0.16"
 log = "0.4"
 rust-i18n = { version = "4.2", features = ["log-miss-tr"] }
-ply-engine = {
-  version = "1.1",
-  features = [
-    "audio",
-    "built-in-shaders",
-    "net",
-    "net-json",
-    "storage",
-    "text-styling",
-    "tinyvg"
-  ]
-}
+ply-engine = { version = "1.1", default-features = false, features = ["a11y", "built-in-shaders", "text-styling"] }
 
 [build-dependencies]
 ply-engine = {
