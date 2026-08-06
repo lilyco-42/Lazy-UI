@@ -1,0 +1,15 @@
+# slider.toml — Slider stylesheet (like CSS).
+# Unset fields fall back to the M3 theme in slider.rs.
+
+height = 48.0          # full control (touch target) px
+track_height = 4.0     # track thickness px
+handle_size = 20.0     # thumb diameter px
+radius = 4.0           # track corner radius
+gap = 8.0              # gap between label and track
+pad_x = 16.0           # horizontal padding
+font_size = 14         # label font size
+track_color = 0xE6E0E9 # unfilled track
+fill_color = 0x6750A4  # filled track + thumb
+handle_color = 0x6750A4
+handle_border = 0xFFFFFF
+label_color = 0x49454F

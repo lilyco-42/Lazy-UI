@@ -1,0 +1,9 @@
+# selectable.toml — Selectable list row stylesheet (like CSS).
+# Unset fields fall back to the M3 theme in selectable.rs.
+
+height = 48.0          # row height px
+pad_x = 16.0           # horizontal padding
+font_size = 16         # label size
+selected_bg = 0xE8DEF8 # highlighted row fill
+selected_fg = 0x1D192B # highlighted row text
+text_color = 0x1C1B1F  # normal row text

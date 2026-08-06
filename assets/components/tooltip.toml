@@ -1,0 +1,9 @@
+# tooltip.toml — Tooltip stylesheet (like CSS).
+# Unset fields fall back to the M3 theme in tooltip.rs.
+
+font_size = 16         # tip text size
+background = 0x322F35  # tip fill (inverse surface)
+text_color = 0xF5EFF7  # tip text (inverse on-surface)
+radius = 4.0           # corner radius
+pad_x = 8.0            # horizontal padding
+offset = 4.0           # gap between anchor and tip px

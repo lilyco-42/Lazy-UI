@@ -166,6 +166,28 @@ async fn main() {
                                 button_outlined(ui, t!("btn_outlined").as_ref(), || {});
                                 button_text(ui, t!("btn_text").as_ref(), || {});
                             });
+                        // Compose-style UI attributes: per-call overrides merge
+                        // over button.toml, CSS-cascade fashion. This button is
+                        // taller, fully pill-shaped, with a red filled variant.
+                        let _g = config::Style::with(
+                            config::Attrs {
+                                button: Some(config::ButtonConfig {
+                                    height: Some(48.0),
+                                    radius: Some(24.0),
+                                    font_size: Some(15),
+                                    filled: Some(config::ButtonStateConfig {
+                                        background: Some(0xB3261E),
+                                        foreground: Some(0xFFFFFF),
+                                        ..Default::default()
+                                    }),
+                                    ..Default::default()
+                                }),
+                                ..Default::default()
+                            },
+                            || {
+                                button(ui, t!("btn_styled").as_ref(), || {});
+                            },
+                        );
                     });
 
                     section(ui, t!("sec_counter").as_ref(), |ui| {

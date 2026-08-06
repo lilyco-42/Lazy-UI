@@ -1439,6 +1439,9 @@ fn main() {
         .filter_map(|e| e.ok().map(|e| e.path()))
         .filter(|p| p.extension().map_or(false, |e| e == "rs"))
         .filter(|p| p.file_name().and_then(|n| n.to_str()) != Some("mod.rs"))
+        // config.rs is the component config/stylesheet infrastructure, not a
+        // UI component itself — its helpers (e.g. `effective`) are not docs.
+        .filter(|p| p.file_name().and_then(|n| n.to_str()) != Some("config.rs"))
         .collect();
     entries.sort();
     for e in entries {

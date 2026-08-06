@@ -1,0 +1,5 @@
+# divider.toml — Divider stylesheet (like CSS).
+# Unset fields fall back to the M3 theme in divider.rs.
+
+thickness = 1.0        # line thickness px
+color = 0xCAC4D0       # line color

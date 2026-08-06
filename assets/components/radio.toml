@@ -1,0 +1,10 @@
+# radio.toml — Radio button stylesheet (like CSS).
+# Unset fields fall back to the M3 theme in radio.rs.
+
+size = 20.0            # outer ring diameter px
+dot_size = 10.0        # selected inner dot diameter px
+gap = 8.0              # gap between ring and label
+pad_x = 16.0           # horizontal padding
+font_size = 16         # label font size
+selected_color = 0x6750A4  # ring + dot when selected
+border_color = 0x49454F    # ring outline when unselected

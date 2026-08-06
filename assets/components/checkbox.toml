@@ -1,0 +1,11 @@
+# checkbox.toml — Checkbox stylesheet (like CSS).
+# Unset fields fall back to the M3 theme in checkbox.rs.
+
+box_size = 18.0        # check box edge px
+radius = 2.0           # box corner radius
+gap = 8.0              # gap between box and label
+pad_x = 16.0           # horizontal padding
+font_size = 16         # label font size
+checked_color = 0x6750A4   # filled box when checked
+check_color = 0xFFFFFF     # check mark
+border_color = 0x49454F    # box outline when unchecked

@@ -21,6 +21,7 @@ btn_filled = "实心"
 btn_tonal = "色调"
 btn_outlined = "描边"
 btn_text = "文字"
+btn_styled = "属性"
 
 sec_buttons = "按钮"
 sec_counter = "计数器 (Compose 风格)"

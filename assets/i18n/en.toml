@@ -22,6 +22,7 @@ btn_filled = "Filled"
 btn_tonal = "Tonal"
 btn_outlined = "Outlined"
 btn_text = "Text"
+btn_styled = "Attrs"
 
 sec_buttons = "Buttons"
 sec_counter = "Counter (Compose style)"

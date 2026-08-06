@@ -1,0 +1,24 @@
+# button.toml — Button stylesheet (like CSS, per component).
+# Unset fields fall back to the M3 theme inside button.rs.
+# Colors are opaque 0xRRGGBB hex. Translucent hover/pressed state overlays
+# are left to the theme; set them here only if you want opaque states.
+
+height = 40.0          # button height px
+font_size = 14         # label font size
+pad_x = 24.0           # horizontal label padding
+radius = 20.0          # corner radius (20 = full pill for a 40px button)
+
+[filled]               # high-emphasis filled button (default `button()`)
+background = 0x6750A4
+foreground = 0xFFFFFF
+
+[tonal]                # medium-emphasis tonal button
+background = 0xE8DEF8
+foreground = 0x1D192B
+
+[outlined]             # outlined button (hover/pressed stay translucent from theme)
+foreground = 0x6750A4
+border = 0x79747E
+
+[text]                 # low-emphasis text button (background stays transparent)
+foreground = 0x6750A4

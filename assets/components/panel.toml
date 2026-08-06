@@ -1,5 +1,8 @@
-# Panel (content card) — convention over configuration.
+# panel.toml — Panel (content card) stylesheet (like CSS).
+# Unset fields fall back to the M3 theme in container.rs.
 
 gap = 8
 padding = 16
 scroll = true
+background = 0xFEF7FF  # surface_container_lowest
+radius = 12.0          # corner radius

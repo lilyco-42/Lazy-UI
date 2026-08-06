@@ -1,0 +1,14 @@
+# switch.toml — Switch stylesheet (like CSS).
+# Unset fields fall back to the M3 theme in switch.rs.
+
+width = 52.0           # track width px
+height = 32.0          # track height px
+handle_size = 24.0     # thumb diameter px
+gap = 8.0              # gap between track and label
+pad_x = 16.0           # horizontal padding
+font_size = 16         # label font size
+on_color = 0x6750A4    # track when on
+on_handle = 0xFFFFFF   # thumb when on
+off_track = 0xE6E0E9   # track when off
+off_border = 0x79747E  # track outline when off
+off_handle = 0x79747E  # thumb when off

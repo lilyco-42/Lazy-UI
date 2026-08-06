@@ -1,0 +1,12 @@
+# text_field.toml — Text field stylesheet (like CSS).
+# Unset fields fall back to the M3 theme in text_field.rs.
+
+height = 56.0          # field height px
+radius = 4.0           # corner radius
+font_size = 16         # input text size
+background = 0xE7E0EC  # filled variant fill
+text_color = 0x1C1B1F
+placeholder_color = 0x49454F
+cursor_color = 0x6750A4
+selection_color = 0xEADDFF
+border = 0x79747E      # outlined variant border

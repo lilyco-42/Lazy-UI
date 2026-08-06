@@ -1,5 +1,8 @@
-# Status bar — convention over configuration.
+# status_bar.toml — Status bar stylesheet (like CSS).
+# Unset fields fall back to the M3 theme in container.rs.
 # Height comes from app_layout.toml.
 
 gap = 8
 padding = 12
+background = 0xF3EDF7  # surface_container
+border = 0xCAC4D0     # top edge outline

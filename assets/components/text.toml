@@ -1,0 +1,12 @@
+# text.toml — Typography stylesheet (like CSS).
+# headline/title/body/label font sizes and colors.
+# Unset fields fall back to the M3 theme in text.rs.
+
+headline_size = 28     # page titles
+title_size = 22        # section titles
+body_size = 16         # default content
+label_size = 14        # captions / annotations
+headline_color = 0x1C1B1F
+title_color = 0x1C1B1F
+body_color = 0x1C1B1F
+label_color = 0x49454F

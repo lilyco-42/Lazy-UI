@@ -1,7 +1,9 @@
-# Sidebar layout — convention over configuration.
-# Only override what you need; every field already has an optimal M3 default
-# baked into src/components/config.rs. Width/size comes from app_layout.toml.
+# sidebar.toml — Sidebar stylesheet (like CSS).
+# Unset fields fall back to the M3 theme in container.rs.
+# Width/size comes from app_layout.toml.
 
-gap = 4            # spacing between nav items
-padding = 12       # inner padding in px
-scroll = true      # scroll when content overflows
+gap = 4              # spacing between nav items
+padding = 12         # inner padding px
+scroll = true        # scroll when content overflows
+background = 0xF7F2FA # surface_container_low
+border = 0xCAC4D0    # right edge outline

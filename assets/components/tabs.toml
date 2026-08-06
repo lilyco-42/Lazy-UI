@@ -1,0 +1,10 @@
+# tabs.toml — Tabs stylesheet (like CSS).
+# Unset fields fall back to the M3 theme in tabs.rs.
+
+height = 48.0          # tab bar height px
+font_size = 14         # tab label size
+pad_x = 16.0           # per-tab horizontal padding
+active_color = 0x6750A4
+inactive_color = 0x49454F
+indicator_color = 0x6750A4
+indicator_height = 3.0 # active underline thickness px
