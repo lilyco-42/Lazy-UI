@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ply M3 Component Reference</title>
+<style>
+@font-face {
+  font-family:'Geist';
+  src:url('https://plyx.iz.rs/fonts/Geist-Variable.woff2') format('woff2');
+  font-weight:100 900;
+}
+@font-face {
+  font-family:'Geist Mono';
+  src:url('https://plyx.iz.rs/fonts/GeistMono-Variable.woff2') format('woff2');
+  font-weight:100 900;
+}
+:root {
+  --bg:#16171E; --bg-2:#101218; --surface:#1E1E2E; --surface-2:#313244; --border:#2A2B3C;
+  --text:#CDD6F4; --subtext:#A6ADC8; --muted:#7F849C;
+  --primary:#89B4FA; --teal:#94E2D5;
+  --c-kw:#CBA6F7; --c-fn:#89B4FA; --c-type:#F9E2AF; --c-str:#A6E3A1; --c-num:#FAB387;
+  --c-const:#FAB387; --c-cmt:#9399B2; --c-punc:#94E2D5; --c-life:#89DCEB; --c-bool:#F38BA8; --c-var:#CDD6F4;
+  --code-bg:#1E1E2E; --code-fg:#CDD6F4;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Geist','Segoe UI',system-ui,-apple-system,sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.6;
+}
+code, pre { font-family:'Geist Mono','JetBrains Mono','Cascadia Code',Consolas,monospace; }
+.app { display:grid; grid-template-columns:300px 1fr; min-height:100vh; }
+/* Sidebar */
+.sidebar {
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+  background:var(--bg-2); border-right:1px solid var(--border);
+  padding:24px 20px 48px;
+}
+.logo { display:flex; align-items:center; gap:10px; margin-bottom:2px; }
+.logo-badge {
+  width:26px; height:26px; border-radius:8px; flex:none;
+  background:linear-gradient(135deg,#89B4FA,#CBA6F7);
+  color:#0E1016; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center;
+}
+.sidebar h1 { font-size:18px; color:var(--text); letter-spacing:-.01em; }
+.sidebar .sub { font-size:12px; color:var(--muted); margin-bottom:18px; }
+.search {
+  width:100%; padding:9px 12px; border:1px solid var(--surface-2);
+  border-radius:8px; font-size:13px; margin-bottom:18px;
+  background:var(--surface); color:var(--text); font-family:inherit;
+}
+.search::placeholder { color:var(--muted); }
+.search:focus { outline:2px solid var(--primary); outline-offset:-1px; }
+.catnav { margin-bottom:18px; }
+.catnav h3 { font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin:16px 0 6px; }
+.catnav a { display:block; padding:4px 10px; border-radius:6px; color:var(--subtext); text-decoration:none; font-size:13px; }
+.catnav a:hover { background:var(--surface); color:var(--text); }
+.catnav a.active { background:var(--primary); color:#0E1016; font-weight:600; }
+/* Main */
+.main { padding:32px 44px 96px; max-width:1000px; }
+.statbar { display:flex; gap:8px; margin-bottom:24px; }
+.badge { background:var(--surface); color:var(--subtext); font-size:12px; padding:4px 12px; border-radius:999px; border:1px solid var(--border); }
+.group { margin-bottom:56px; }
+.cat { font-size:24px; font-weight:700; color:var(--text); letter-spacing:-.01em; margin-bottom:14px; border-bottom:1px solid var(--border); padding-bottom:10px; }
+.subnav { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0; }
+.subnav a { font-size:12px; padding:3px 10px; border:1px solid var(--border); border-radius:999px; color:var(--muted); text-decoration:none; }
+.subnav a:hover { border-color:var(--primary); color:var(--primary); }
+/* Cards */
+.card {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:22px 26px; margin:18px 0;
+}
+.card .fnline { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+.fname { font-size:19px; font-weight:600; color:var(--primary); }
+.module { font-size:11px; color:var(--muted); background:var(--bg-2); padding:2px 8px; border-radius:999px; border:1px solid var(--border); }
+.loc { font-size:11px; color:var(--muted); margin-left:auto; }
+.summary { font-size:15px; margin-bottom:8px; }
+.doc { font-size:13px; color:var(--subtext); margin-bottom:12px; font-style:italic; }
+/* Preview */
+.pv-preview { background:var(--code-bg); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:16px; }
+.pv { background:#FEF7FF; border-radius:10px; padding:20px; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; color:#1D1B20; font-family:'Geist','Segoe UI',system-ui,sans-serif; }
+.pv-row { display:flex; align-items:center; gap:8px; cursor:pointer; }
+.pv-col { display:flex; flex-direction:column; gap:8px; align-items:flex-start; }
+.pv-rowradio { display:flex; align-items:center; gap:8px; cursor:pointer; }
+.pv-radio-group { display:flex; flex-direction:column; gap:8px; align-items:flex-start; }
+.pv-btn { display:inline-flex; align-items:center; justify-content:center; padding:8px 18px; border-radius:999px; font-size:13px; font-weight:500; background:#6750A4; color:#fff; border:1px solid transparent; white-space:nowrap; line-height:1.2; cursor:pointer; font-family:inherit; transition:filter .1s, transform .1s; }
+.pv-btn.tonal { background:#EADDFF; color:#21005D; }
+.pv-btn.outlined { background:transparent; color:#6750A4; border-color:#79747E; }
+.pv-btn.text { background:transparent; color:#6750A4; }
+.pv-btn:active, .pv-btn.pressed { filter:brightness(.88); transform:translateY(1px); }
+.pv-check { width:18px; height:18px; border-radius:4px; border:2px solid #79747E; background:#fff; position:relative; flex:none; cursor:pointer; }
+.pv-check.on { background:#6750A4; border-color:#6750A4; }
+.pv-check.on::after { content:'✓'; position:absolute; inset:0; color:#fff; font-size:12px; line-height:15px; text-align:center; }
+.pv-switch { width:44px; height:24px; border-radius:999px; background:#CAC4D0; position:relative; flex:none; cursor:pointer; }
+.pv-switch.on { background:#6750A4; }
+.pv-switch::after { content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.3); transition:left .15s; }
+.pv-switch.on::after { left:23px; }
+.pv-radio { width:18px; height:18px; border-radius:50%; border:2px solid #79747E; flex:none; position:relative; cursor:pointer; }
+.pv-radio.on { border-color:#6750A4; }
+.pv-radio.on::after { content:''; position:absolute; inset:3px; border-radius:50%; background:#6750A4; }
+.pv-itemlabel { font-size:13px; color:#1D1B20; }
+.pv-selectable { border-radius:8px; padding:8px 12px; min-width:130px; cursor:pointer; }
+.pv-selectable.on { background:#EADDFF; }
+.pv-selectable.on .pv-itemlabel { color:#21005D; }
+.pv-tabs { display:flex; gap:2px; }
+.pv-tab { padding:8px 14px; font-size:13px; color:#49454F; border-bottom:2px solid transparent; cursor:pointer; }
+.pv-tab.active { color:#6750A4; border-bottom-color:#6750A4; font-weight:500; }
+.pv-combo { position:relative; display:flex; align-items:center; justify-content:space-between; gap:18px; padding:8px 12px; border:1px solid #79747E; border-radius:8px; font-size:13px; color:#1D1B20; background:#fff; min-width:150px; cursor:pointer; }
+.pv-combo .arr { color:#49454F; font-size:10px; }
+.pv-menu { display:none; position:absolute; top:calc(100% + 4px); left:0; right:0; background:#fff; border:1px solid #CAC4D0; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.18); z-index:5; overflow:hidden; }
+.pv-combo.open .pv-menu { display:block; }
+.pv-opt { padding:8px 12px; font-size:13px; color:#1D1B20; cursor:pointer; }
+.pv-opt:hover { background:#EADDFF; color:#21005D; }
+.pv-list { border:1px solid #79747E; border-radius:10px; overflow:hidden; min-width:140px; background:#fff; }
+.pv-item { padding:8px 12px; font-size:13px; color:#1D1B20; cursor:pointer; }
+.pv-item:hover { background:#F3EDF7; }
+.pv-item.sel { background:#EADDFF; color:#21005D; }
+.pv-slider { display:flex; align-items:center; gap:10px; }
+.pv-range { -webkit-appearance:none; appearance:none; width:160px; height:4px; border-radius:999px; background:linear-gradient(to right,#6750A4 0%,#6750A4 var(--v,60%),#CAC4D0 var(--v,60%),#CAC4D0 100%); outline:none; }
+.pv-range::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%; background:#6750A4; border:2px solid #fff; box-shadow:0 1px 2px rgba(0,0,0,.3); cursor:pointer; }
+.pv-range::-moz-range-thumb { width:16px; height:16px; border-radius:50%; background:#6750A4; border:2px solid #fff; box-shadow:0 1px 2px rgba(0,0,0,.3); cursor:pointer; }
+.pv-val { min-width:22px; text-align:center; }
+.pv-field { padding:10px 12px; background:#E6E0E9; border:0; border-radius:8px 8px 0 0; border-bottom:2px solid #6750A4; font-size:13px; color:#1D1B20; min-width:180px; font-family:inherit; outline:none; }
+.pv-field.out { background:transparent; border:1px solid #79747E; border-radius:8px; }
+.pv-field::placeholder { color:#49454F; }
+.pv-progress { width:160px; height:6px; border-radius:999px; background:#CAC4D0; position:relative; overflow:hidden; }
+.pv-fill { position:absolute; left:0; top:0; bottom:0; border-radius:999px; background:#6750A4; }
+.pv-tipwrap { position:relative; display:inline-flex; }
+.pv-tip { display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:#313033; color:#fff; font-size:11px; padding:4px 8px; border-radius:6px; white-space:nowrap; }
+.pv-tipwrap:hover .pv-tip { display:block; }
+.pv-tip::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:5px solid transparent; border-top-color:#313033; }
+.pv-h1 { font-size:26px; font-weight:600; color:#1D1B20; }
+.pv-h2 { font-size:18px; font-weight:600; color:#1D1B20; }
+.pv-body { font-size:14px; color:#1D1B20; }
+.pv-label { font-size:12px; color:#49454F; }
+.pv-div { width:100%; border-top:1px solid #CAC4D0; }
+.pv-sidebar { display:flex; flex-direction:column; gap:4px; padding:10px; background:#F3EDF7; border-radius:10px 0 0 10px; width:120px; }
+.pv-panel { background:#fff; border:1px solid #CAC4D0; border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:6px; }
+.pv-status { display:flex; justify-content:space-between; padding:6px 12px; background:#E6E0E9; border-radius:0 0 10px 10px; }
+.pv-app { display:flex; border:1px solid #CAC4D0; border-radius:10px; overflow:hidden; background:#FEF7FF; min-width:280px; }
+.pv-app-main { flex:1; display:flex; flex-direction:column; gap:8px; padding:10px; }
+.pv-progressbar { height:8px; background:#E6E0E9; position:relative; }
+/* Code */
+pre {
+  background:var(--code-bg); color:var(--code-fg); border-radius:8px;
+  padding:14px 16px; overflow-x:auto; font-size:13px; margin:12px 0; line-height:1.55;
+}
+pre code { font-family:inherit; }
+.c-kw { color:var(--c-kw); }
+.c-fn { color:var(--c-fn); font-style:italic; }
+.c-type { color:var(--c-type); font-style:italic; }
+.c-str { color:var(--c-str); }
+.c-num { color:var(--c-num); }
+.c-const { color:var(--c-const); }
+.c-cmt { color:var(--c-cmt); font-style:italic; }
+.c-punc { color:var(--c-punc); }
+.c-life { color:var(--c-life); }
+.c-bool { color:var(--c-bool); }
+.c-var { color:var(--c-var); }
+.params { width:100%; border-collapse:collapse; font-size:13px; margin:12px 0; }
+.params th { text-align:left; font-size:11px; text-transform:uppercase; color:var(--muted); padding:6px 10px; border-bottom:1px solid var(--surface-2); }
+.params td { padding:8px 10px; border-bottom:1px solid var(--border); vertical-align:top; color:var(--subtext); }
+.params .pname { white-space:nowrap; }
+.params .ptype { white-space:nowrap; color:var(--teal); }
+.ret { font-size:13px; margin:10px 0; }
+.pill { display:inline-block; background:var(--surface-2); color:var(--primary); border-radius:999px; padding:1px 8px; margin-right:4px; font-size:12px; }
+.retdoc { color:var(--muted); font-size:12px; }
+.example { margin-top:14px; }
+.exhead { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.exhead span { font-size:11px; text-transform:uppercase; color:var(--muted); }
+.copy {
+  font-size:11px; padding:4px 12px; border:1px solid var(--surface-2); border-radius:999px;
+  background:var(--bg-2); color:var(--primary); cursor:pointer; font-family:inherit;
+}
+.copy:hover { background:var(--surface-2); }
+.muted { color:var(--muted); font-size:13px; }
+.empty { text-align:center; color:var(--muted); padding:40px; display:none; }
+/* Live demo */
+.liveframe { background:var(--code-bg); border:1px solid var(--border); border-radius:12px; overflow:hidden; height:520px; margin-bottom:8px; }
+.liveframe iframe { width:100%; height:100%; border:0; display:block; }
+/* responsive */
+@media (max-width:900px) {
+  .app { grid-template-columns:1fr; }
+  .sidebar { position:static; height:auto; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo"><span class="logo-badge">P</span><h1>Ply Components</h1></div>
+    <p class="sub">28 functions · 6 groups</p>
+    <input class="search" id="search" type="search" placeholder="Filter components…">
+    <nav class="catnav" id="catnav"></nav>
+  </aside>
+  <main class="main">
+    <div class="statbar">
+      <span class="badge">28 component functions</span>
+      <span class="badge">6 categories</span>
+    </div>
+    <section class="group" id="live">
+  <h2 class="cat">Live Demo</h2>
+  <p class="summary">The real app compiled to WASM. Click around — every component is interactive.</p>
+  <div class="liveframe"><iframe src="live/index.html" loading="lazy" allow="autoplay" tabindex="0"></iframe></div>
+</section>
+    <div class="empty" id="empty">No components match.</div>
+    <div id="sections"><section class="group" data-cat="Layout">
+  <h2 class="cat">Layout</h2>
+  <nav class="subnav"><a class="navlink" href="#fn-divider" data-name="divider">divider</a><a class="navlink" href="#fn-log_progress" data-name="log_progress">log_progress</a><a class="navlink" href="#fn-panel" data-name="panel">panel</a><a class="navlink" href="#fn-render" data-name="render">render</a><a class="navlink" href="#fn-sidebar" data-name="sidebar">sidebar</a><a class="navlink" href="#fn-status_bar" data-name="status_bar">status_bar</a></nav>
+  <div class="cards"><article class="card" data-name="divider" data-module="divider" id="fn-divider">
+  <header>
+    <div class="fnline">
+      <code class="fname">divider</code>
+      <span class="module">divider</span>
+      <span class="loc">divider.rs:7</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-col" style="width:180px"><span class="pv-label">Section A</span><div class="pv-div"></div><span class="pv-label">Section B</span></div></div></div>
+  <p class="summary">Thin horizontal divider line (M3 outline_variant).</p>
+  
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">divider</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">divider</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="log_progress" data-module="container" id="fn-log_progress">
+  <header>
+    <div class="fnline">
+      <code class="fname">log_progress</code>
+      <span class="module">container</span>
+      <span class="loc">container.rs:65</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-col" style="min-width:240px"><span class="pv-label">Installing packages… 42%</span><div class="pv-progress" style="width:100%"><div class="pv-fill" style="width:42%"></div></div></div></div></div>
+  <p class="summary">nvim-dialog style bottom progress bar pinned to the bottom of its region. `value` in 0.0..=1.0.</p>
+  <p class="doc">Bottom log-progress bar (nvim-dialog style): a thin progress track pinned at the bottom of a filled layout region. `value` in 0.0..=1.0.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">log_progress</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">id</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">Into</span><span class="c-punc">&lt;</span><span class="c-type">Id</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">value</span><span class="c-punc">:</span> <span class="c-var">f32</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>id</code></td><td class="ptype"><code>impl Into&lt;Id&gt;</code></td><td>Stable element id.</td></tr><tr><td class="pname"><code>value</code></td><td class="ptype"><code>f32</code></td><td>Progress fraction 0.0..=1.0.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">log_progress</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;log_progress&quot;</span><span class="c-punc">,</span> <span class="c-num">0.42</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="panel" data-module="container" id="fn-panel">
+  <header>
+    <div class="fnline">
+      <code class="fname">panel</code>
+      <span class="module">container</span>
+      <span class="loc">container.rs:37</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-panel" style="min-width:200px"><span class="pv-h2" style="font-size:15px">Settings</span><span class="pv-body" style="font-size:12px">Configure your app.</span><button class="pv-btn" style="align-self:flex-start;padding:6px 14px;font-size:12px">Save</button></div></div></div>
+  <p class="summary">Main content card, fills its layout region. Configurable via assets/components/panel.toml.</p>
+  <p class="doc">Main content card / panel, filling its layout region.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">panel</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">inner</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">FnOnce</span><span class="c-punc">(</span><span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">)</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>inner</code></td><td class="ptype"><code>impl FnOnce(&amp;mut Ui&lt;'_, ()&gt;)</code></td><td>Closure that paints the panel contents.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">panel</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-punc">|</span><span class="c-var">ui</span><span class="c-punc">|</span> <span class="c-punc">{</span>
+    <span class="c-fn">headline</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Settings&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span>
+    <span class="c-fn">body</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Configure your app.&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span>
+<span class="c-punc">}</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="render" data-module="layout" id="fn-render">
+  <header>
+    <div class="fnline">
+      <code class="fname">render</code>
+      <span class="module">layout</span>
+      <span class="loc">layout.rs:118</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-app"><div class="pv-sidebar"><span class="pv-h2" style="font-size:14px;padding:4px 6px">App</span><button class="pv-btn text" style="padding:6px 10px;width:100%;font-size:12px">Launch</button><button class="pv-btn text" style="padding:6px 10px;width:100%;font-size:12px">Settings</button></div><div class="pv-app-main"><div class="pv-panel"><span class="pv-h2" style="font-size:15px">Settings</span><span class="pv-body" style="font-size:12px">Configure your app.</span></div><div class="pv-status"><span class="pv-label">Ready</span><span class="pv-label">v1.0.0</span></div></div></div><div class="pv-progressbar"><div class="pv-fill" style="width:42%"></div></div></div></div>
+  <p class="summary">Declarative app skeleton. Reads assets/app_layout.toml and AUTO-INFERS the flex composition; calls `content` once per region so you fill each region with real components.</p>
+  <p class="doc">Renders the inferred skeleton and calls `content` once per region, so the caller can fill each region with actual components. ```text +----------------------------+ | sidebar |      panel       |   &lt;- flex row (grows) | (240px) |      (grow)      | +----------------------------+ |        status_bar          |   &lt;- full width +----------------------------+ |       log_progress         |   &lt;- full width, height_percent 0.10 +----------------------------+ ```</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">render</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">content</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">Fn</span><span class="c-punc">(</span><span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-punc">&amp;</span><span class="c-type">Region</span><span class="c-punc">)</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context (from `ply.begin()`).</td></tr><tr><td class="pname"><code>content</code></td><td class="ptype"><code>impl Fn(&amp;mut Ui&lt;'_, ()&gt;, &amp;Region)</code></td><td>Closure called once per layout region with `(ui, &amp;Region)`.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">render</span><span class="c-punc">(</span><span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-punc">|</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-var">region</span><span class="c-punc">|</span> <span class="c-kw">match</span> <span class="c-var">region</span><span class="c-punc">.</span><span class="c-var">role</span> <span class="c-punc">{</span>
+    <span class="c-type">RegionRole</span><span class="c-punc">::</span><span class="c-type">Sidebar</span> <span class="c-punc">=&gt;</span> <span class="c-fn">sidebar</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-punc">|</span><span class="c-var">ui</span><span class="c-punc">|</span> <span class="c-punc">{</span>
+        <span class="c-fn">button_id</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Start&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span>
+    <span class="c-punc">}</span><span class="c-punc">)</span><span class="c-punc">,</span>
+    <span class="c-type">RegionRole</span><span class="c-punc">::</span><span class="c-type">Content</span> <span class="c-punc">=&gt;</span> <span class="c-fn">panel</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-punc">|</span><span class="c-var">ui</span><span class="c-punc">|</span> <span class="c-punc">{</span>
+        <span class="c-fn">headline</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;App&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span>
+    <span class="c-punc">}</span><span class="c-punc">)</span><span class="c-punc">,</span>
+    <span class="c-type">RegionRole</span><span class="c-punc">::</span><span class="c-type">Status</span> <span class="c-punc">=&gt;</span> <span class="c-fn">status_bar</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-punc">|</span><span class="c-var">ui</span><span class="c-punc">|</span> <span class="c-punc">{</span>
+        <span class="c-fn">label</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Ready&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span>
+    <span class="c-punc">}</span><span class="c-punc">)</span><span class="c-punc">,</span>
+    <span class="c-type">RegionRole</span><span class="c-punc">::</span><span class="c-type">Progress</span> <span class="c-punc">=&gt;</span> <span class="c-fn">log_progress</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;log&quot;</span><span class="c-punc">,</span> <span class="c-num">0.42</span><span class="c-punc">)</span><span class="c-punc">,</span>
+<span class="c-punc">}</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="sidebar" data-module="container" id="fn-sidebar">
+  <header>
+    <div class="fnline">
+      <code class="fname">sidebar</code>
+      <span class="module">container</span>
+      <span class="loc">container.rs:23</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-sidebar" style="width:150px"><span class="pv-h2" style="font-size:14px;padding:4px 6px">App</span><button class="pv-btn text" style="padding:6px 10px;font-size:12px">Launch</button><button class="pv-btn text" style="padding:6px 10px;font-size:12px">Settings</button><div class="pv-div"></div><span class="pv-label" style="padding:2px 6px">v1.0.0</span></div></div></div>
+  <p class="summary">Left navigation rail. Fills its layout region (e.g. the 240px sidebar region in app_layout.toml). Configurable via assets/components/sidebar.toml.</p>
+  <p class="doc">Left navigation rail. Renders `inner` as a vertical flex column, filling its layout region (e.g. the 240px-wide sidebar region in `app_layout.toml`).</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">sidebar</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">inner</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">FnOnce</span><span class="c-punc">(</span><span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">)</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>inner</code></td><td class="ptype"><code>impl FnOnce(&amp;mut Ui&lt;'_, ()&gt;)</code></td><td>Closure that paints the nav items (buttons, dividers, …).</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">sidebar</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-punc">|</span><span class="c-var">ui</span><span class="c-punc">|</span> <span class="c-punc">{</span>
+    <span class="c-fn">button_id</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Launch&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span>
+    <span class="c-fn">button_id</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Settings&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span>
+    <span class="c-fn">divider</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">)</span><span class="c-punc">;</span>
+<span class="c-punc">}</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="status_bar" data-module="container" id="fn-status_bar">
+  <header>
+    <div class="fnline">
+      <code class="fname">status_bar</code>
+      <span class="module">container</span>
+      <span class="loc">container.rs:51</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-status" style="min-width:260px"><span class="pv-label">Ready</span><button class="pv-btn text" style="padding:2px 8px;font-size:11px">Language</button></div></div></div>
+  <p class="summary">Bottom status bar (full width, slim). Configurable via assets/components/status_bar.toml.</p>
+  <p class="doc">Bottom status bar (full width, slim), filling its layout region.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">status_bar</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">inner</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">FnOnce</span><span class="c-punc">(</span><span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">)</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>inner</code></td><td class="ptype"><code>impl FnOnce(&amp;mut Ui&lt;'_, ()&gt;)</code></td><td>Closure that paints status content (labels, buttons).</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">status_bar</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-punc">|</span><span class="c-var">ui</span><span class="c-punc">|</span> <span class="c-punc">{</span>
+    <span class="c-fn">label</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Ready&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span>
+    <span class="c-fn">button_text</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Language&quot;</span><span class="c-punc">,</span> <span class="c-punc">||</span> <span class="c-punc">{</span><span class="c-punc">}</span><span class="c-punc">)</span><span class="c-punc">;</span>
+<span class="c-punc">}</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article></div>
+</section><section class="group" data-cat="Buttons">
+  <h2 class="cat">Buttons</h2>
+  <nav class="subnav"><a class="navlink" href="#fn-button" data-name="button">button</a><a class="navlink" href="#fn-button_id" data-name="button_id">button_id</a><a class="navlink" href="#fn-button_outlined" data-name="button_outlined">button_outlined</a><a class="navlink" href="#fn-button_text" data-name="button_text">button_text</a><a class="navlink" href="#fn-button_tonal" data-name="button_tonal">button_tonal</a></nav>
+  <div class="cards"><article class="card" data-name="button" data-module="button" id="fn-button">
+  <header>
+    <div class="fnline">
+      <code class="fname">button</code>
+      <span class="module">button</span>
+      <span class="loc">button.rs:55</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><button class="pv-btn">Save</button></div></div>
+  <p class="summary">High-emphasis filled button (M3 primary).</p>
+  <p class="doc">High-emphasis filled button. `button(ui, &quot;Save&quot;, || save())`</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">button</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">label</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">,</span> <span class="c-var">on_click</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">FnMut</span><span class="c-punc">(</span><span class="c-punc">)</span> <span class="c-punc">+</span> <span class="c-life">'static</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>label</code></td><td class="ptype"><code>&amp;str</code></td><td>Button text.</td></tr><tr><td class="pname"><code>on_click</code></td><td class="ptype"><code>impl FnMut() + 'static</code></td><td>Callback invoked on press.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">button</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Save&quot;</span><span class="c-punc">,</span> <span class="c-punc">||</span> <span class="c-fn">save</span><span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="button_id" data-module="button" id="fn-button_id">
+  <header>
+    <div class="fnline">
+      <code class="fname">button_id</code>
+      <span class="module">button</span>
+      <span class="loc">button.rs:123</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><button class="pv-btn text">hello</button></div></div>
+  <p class="summary">Label-only button — convention over configuration: no callback, auto-generated id derived from the label. Returns the Id; poll it with `ui.is_just_pressed(id)`.</p>
+  <p class="doc">Label-only button — convention over configuration: no callback, auto-generated id derived from the label. Returns the `Id`; poll it with `ui.is_just_pressed(id)` or `ui.is_just_pressed(&quot;label&quot;)` to detect activation. `button_id(ui, &quot;hello&quot;)` ≈ Compose `Button(onClick = null)`.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">button_id</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">label</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">)</span> <span class="c-punc">-&gt;</span> <span class="c-type">Id</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>label</code></td><td class="ptype"><code>&amp;str</code></td><td>Button text — also the source of the auto id.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>Id</code> <span class="retdoc">Id — poll with `ui.is_just_pressed(id)` to detect activation.</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-kw">let</span> <span class="c-var">id</span> <span class="c-punc">=</span> <span class="c-fn">button_id</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;hello&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span>
+<span class="c-kw">if</span> <span class="c-var">ui</span><span class="c-punc">.</span><span class="c-fn">is_just_pressed</span><span class="c-punc">(</span><span class="c-var">id</span><span class="c-punc">)</span> <span class="c-punc">{</span> <span class="c-punc">…</span> <span class="c-punc">}</span></code></pre></div>
+</article><article class="card" data-name="button_outlined" data-module="button" id="fn-button_outlined">
+  <header>
+    <div class="fnline">
+      <code class="fname">button_outlined</code>
+      <span class="module">button</span>
+      <span class="loc">button.rs:87</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><button class="pv-btn outlined">Cancel</button></div></div>
+  <p class="summary">Outlined button — transparent fill with a 1px outline.</p>
+  <p class="doc">Outlined button.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">button_outlined</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">label</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">,</span> <span class="c-var">on_click</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">FnMut</span><span class="c-punc">(</span><span class="c-punc">)</span> <span class="c-punc">+</span> <span class="c-life">'static</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>label</code></td><td class="ptype"><code>&amp;str</code></td><td>Button text.</td></tr><tr><td class="pname"><code>on_click</code></td><td class="ptype"><code>impl FnMut() + 'static</code></td><td>Callback invoked on press.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">button_outlined</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Cancel&quot;</span><span class="c-punc">,</span> <span class="c-punc">||</span> <span class="c-fn">close</span><span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="button_text" data-module="button" id="fn-button_text">
+  <header>
+    <div class="fnline">
+      <code class="fname">button_text</code>
+      <span class="module">button</span>
+      <span class="loc">button.rs:103</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><button class="pv-btn text">Learn more</button></div></div>
+  <p class="summary">Low-emphasis text button — no fill, primary text.</p>
+  <p class="doc">Low-emphasis text button.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">button_text</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">label</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">,</span> <span class="c-var">on_click</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">FnMut</span><span class="c-punc">(</span><span class="c-punc">)</span> <span class="c-punc">+</span> <span class="c-life">'static</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>label</code></td><td class="ptype"><code>&amp;str</code></td><td>Button text.</td></tr><tr><td class="pname"><code>on_click</code></td><td class="ptype"><code>impl FnMut() + 'static</code></td><td>Callback invoked on press.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">button_text</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Learn more&quot;</span><span class="c-punc">,</span> <span class="c-punc">||</span> <span class="c-fn">open_help</span><span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="button_tonal" data-module="button" id="fn-button_tonal">
+  <header>
+    <div class="fnline">
+      <code class="fname">button_tonal</code>
+      <span class="module">button</span>
+      <span class="loc">button.rs:71</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><button class="pv-btn tonal">Share</button></div></div>
+  <p class="summary">Medium-emphasis tonal button (M3 secondary container).</p>
+  <p class="doc">Medium-emphasis tonal button (secondary container).</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">button_tonal</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">label</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">,</span> <span class="c-var">on_click</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">FnMut</span><span class="c-punc">(</span><span class="c-punc">)</span> <span class="c-punc">+</span> <span class="c-life">'static</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>label</code></td><td class="ptype"><code>&amp;str</code></td><td>Button text.</td></tr><tr><td class="pname"><code>on_click</code></td><td class="ptype"><code>impl FnMut() + 'static</code></td><td>Callback invoked on press.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">button_tonal</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Share&quot;</span><span class="c-punc">,</span> <span class="c-punc">||</span> <span class="c-fn">share</span><span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article></div>
+</section><section class="group" data-cat="Selection">
+  <h2 class="cat">Selection</h2>
+  <nav class="subnav"><a class="navlink" href="#fn-checkbox" data-name="checkbox">checkbox</a><a class="navlink" href="#fn-combo" data-name="combo">combo</a><a class="navlink" href="#fn-listbox" data-name="listbox">listbox</a><a class="navlink" href="#fn-radio" data-name="radio">radio</a><a class="navlink" href="#fn-radio_group" data-name="radio_group">radio_group</a><a class="navlink" href="#fn-selectable" data-name="selectable">selectable</a><a class="navlink" href="#fn-switch" data-name="switch">switch</a><a class="navlink" href="#fn-tabs" data-name="tabs">tabs</a></nav>
+  <div class="cards"><article class="card" data-name="checkbox" data-module="checkbox" id="fn-checkbox">
+  <header>
+    <div class="fnline">
+      <code class="fname">checkbox</code>
+      <span class="module">checkbox</span>
+      <span class="loc">checkbox.rs:7</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-row"><span class="pv-check on"></span><span class="pv-itemlabel">Remember me</span></div></div></div>
+  <p class="summary">M3 checkbox. Returns the NEW checked state — store it back.</p>
+  
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">checkbox</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">id</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">Into</span><span class="c-punc">&lt;</span><span class="c-type">Id</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">checked</span><span class="c-punc">:</span> <span class="c-var">bool</span><span class="c-punc">,</span> <span class="c-var">label</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">)</span> <span class="c-punc">-&gt;</span> <span class="c-var">bool</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>id</code></td><td class="ptype"><code>impl Into&lt;Id&gt;</code></td><td>Stable element id (`impl Into&lt;Id&gt;`).</td></tr><tr><td class="pname"><code>checked</code></td><td class="ptype"><code>bool</code></td><td>Current checked state.</td></tr><tr><td class="pname"><code>label</code></td><td class="ptype"><code>&amp;str</code></td><td>Row label.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>bool</code> <span class="retdoc">bool — the new checked state.</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-kw">let</span> <span class="c-var">c</span> <span class="c-punc">=</span> <span class="c-fn">checkbox</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;remember&quot;</span><span class="c-punc">,</span> <span class="c-var">remember</span><span class="c-punc">,</span> <span class="c-str">&quot;Remember me&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span>
+<span class="c-var">remember</span> <span class="c-punc">=</span> <span class="c-var">c</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="combo" data-module="combo" id="fn-combo">
+  <header>
+    <div class="fnline">
+      <code class="fname">combo</code>
+      <span class="module">combo</span>
+      <span class="loc">combo.rs:13</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-combo"><span class="pv-sel">Light</span><span class="arr">▼</span><div class="pv-menu"><div class="pv-opt">Light</div><div class="pv-opt">Dark</div><div class="pv-opt">System</div></div></div></div></div>
+  <p class="summary">M3 dropdown (ComboBox). Returns the newly selected index. Open/close state is kept internally.</p>
+  
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">combo</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">id</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-life">'static</span> <span class="c-var">str</span><span class="c-punc">,</span> <span class="c-var">options</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-punc">[</span><span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">]</span><span class="c-punc">,</span> <span class="c-var">selected</span><span class="c-punc">:</span> <span class="c-var">usize</span><span class="c-punc">)</span> <span class="c-punc">-&gt;</span> <span class="c-var">usize</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>id</code></td><td class="ptype"><code>&amp;'static str</code></td><td>Combo id (stable `&amp;'static str`).</td></tr><tr><td class="pname"><code>options</code></td><td class="ptype"><code>&amp;[&amp;str]</code></td><td>Dropdown option labels.</td></tr><tr><td class="pname"><code>selected</code></td><td class="ptype"><code>usize</code></td><td>Currently selected index.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>usize</code> <span class="retdoc">usize — the newly selected index.</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-kw">let</span> <span class="c-var">sel</span> <span class="c-punc">=</span> <span class="c-fn">combo</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;theme&quot;</span><span class="c-punc">,</span> <span class="c-punc">&amp;</span><span class="c-punc">[</span><span class="c-str">&quot;Light&quot;</span><span class="c-punc">,</span> <span class="c-str">&quot;Dark&quot;</span><span class="c-punc">,</span> <span class="c-str">&quot;System&quot;</span><span class="c-punc">]</span><span class="c-punc">,</span> <span class="c-var">sel</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="listbox" data-module="listbox" id="fn-listbox">
+  <header>
+    <div class="fnline">
+      <code class="fname">listbox</code>
+      <span class="module">listbox</span>
+      <span class="loc">listbox.rs:8</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-list" style="width:150px"><div class="pv-item">a.txt</div><div class="pv-item sel">b.txt</div><div class="pv-item">c.txt</div></div></div></div>
+  <p class="summary">M3 scrollable list box. Returns the newly selected index.</p>
+  
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">listbox</span><span class="c-punc">(</span>     <span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span>     <span class="c-var">id</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-life">'static</span> <span class="c-var">str</span><span class="c-punc">,</span>     <span class="c-var">options</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-punc">[</span><span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">]</span><span class="c-punc">,</span>     <span class="c-var">selected</span><span class="c-punc">:</span> <span class="c-var">usize</span><span class="c-punc">,</span>     <span class="c-var">visible</span><span class="c-punc">:</span> <span class="c-var">usize</span><span class="c-punc">,</span> <span class="c-punc">)</span> <span class="c-punc">-&gt;</span> <span class="c-var">usize</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>id</code></td><td class="ptype"><code>&amp;'static str</code></td><td>Listbox id (stable `&amp;'static str`).</td></tr><tr><td class="pname"><code>options</code></td><td class="ptype"><code>&amp;[&amp;str]</code></td><td>Row labels.</td></tr><tr><td class="pname"><code>selected</code></td><td class="ptype"><code>usize</code></td><td>Currently selected index.</td></tr><tr><td class="pname"><code>visible</code></td><td class="ptype"><code>usize</code></td><td>Number of rows visible before scrolling.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>usize</code> <span class="retdoc">usize — the newly selected index.</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-kw">let</span> <span class="c-var">sel</span> <span class="c-punc">=</span> <span class="c-fn">listbox</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;files&quot;</span><span class="c-punc">,</span> <span class="c-punc">&amp;</span><span class="c-punc">[</span><span class="c-str">&quot;a.txt&quot;</span><span class="c-punc">,</span> <span class="c-str">&quot;b.txt&quot;</span><span class="c-punc">]</span><span class="c-punc">,</span> <span class="c-var">sel</span><span class="c-punc">,</span> <span class="c-num">4</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="radio" data-module="radio" id="fn-radio">
+  <header>
+    <div class="fnline">
+      <code class="fname">radio</code>
+      <span class="module">radio</span>
+      <span class="loc">radio.rs:8</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-row"><span class="pv-radio on"></span><span class="pv-itemlabel">Male</span></div></div></div>
+  <p class="summary">Single radio row. Returns true if it was activated this frame.</p>
+  <p class="doc">Single radio row. Returns true if it was selected this frame.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">radio</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">id</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">Into</span><span class="c-punc">&lt;</span><span class="c-type">Id</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">selected</span><span class="c-punc">:</span> <span class="c-var">bool</span><span class="c-punc">,</span> <span class="c-var">label</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">)</span> <span class="c-punc">-&gt;</span> <span class="c-var">bool</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>id</code></td><td class="ptype"><code>impl Into&lt;Id&gt;</code></td><td>Stable element id.</td></tr><tr><td class="pname"><code>selected</code></td><td class="ptype"><code>bool</code></td><td>Whether this option is selected.</td></tr><tr><td class="pname"><code>label</code></td><td class="ptype"><code>&amp;str</code></td><td>Option label.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>bool</code> <span class="retdoc">bool — true if activated this frame.</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-kw">let</span> <span class="c-var">sel</span> <span class="c-punc">=</span> <span class="c-fn">radio</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-str">&quot;gender&quot;</span><span class="c-punc">,</span> <span class="c-num">0</span><span class="c-punc">)</span><span class="c-punc">,</span> <span class="c-var">sel</span> <span class="c-punc">==</span> <span class="c-num">0</span><span class="c-punc">,</span> <span class="c-str">&quot;Male&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="radio_group" data-module="radio" id="fn-radio_group">
+  <header>
+    <div class="fnline">
+      <code class="fname">radio_group</code>
+      <span class="module">radio</span>
+      <span class="loc">radio.rs:47</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-radio-group"><div class="pv-rowradio"><span class="pv-radio on"></span><span class="pv-itemlabel">Male</span></div><div class="pv-rowradio"><span class="pv-radio"></span><span class="pv-itemlabel">Female</span></div><div class="pv-rowradio"><span class="pv-radio"></span><span class="pv-itemlabel">Other</span></div></div></div></div>
+  <p class="summary">Radio group. Returns the newly selected index.</p>
+  <p class="doc">Radio group. Returns the newly selected index.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">radio_group</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">id</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-life">'static</span> <span class="c-var">str</span><span class="c-punc">,</span> <span class="c-var">options</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-punc">[</span><span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">]</span><span class="c-punc">,</span> <span class="c-var">selected</span><span class="c-punc">:</span> <span class="c-var">usize</span><span class="c-punc">)</span> <span class="c-punc">-&gt;</span> <span class="c-var">usize</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>id</code></td><td class="ptype"><code>&amp;'static str</code></td><td>Group id (stable `&amp;'static str`).</td></tr><tr><td class="pname"><code>options</code></td><td class="ptype"><code>&amp;[&amp;str]</code></td><td>Option labels.</td></tr><tr><td class="pname"><code>selected</code></td><td class="ptype"><code>usize</code></td><td>Currently selected index.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>usize</code> <span class="retdoc">usize — the newly selected index.</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-kw">let</span> <span class="c-var">sel</span> <span class="c-punc">=</span> <span class="c-fn">radio_group</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;gender&quot;</span><span class="c-punc">,</span> <span class="c-punc">&amp;</span><span class="c-punc">[</span><span class="c-str">&quot;Male&quot;</span><span class="c-punc">,</span> <span class="c-str">&quot;Female&quot;</span><span class="c-punc">,</span> <span class="c-str">&quot;Other&quot;</span><span class="c-punc">]</span><span class="c-punc">,</span> <span class="c-var">sel</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="selectable" data-module="selectable" id="fn-selectable">
+  <header>
+    <div class="fnline">
+      <code class="fname">selectable</code>
+      <span class="module">selectable</span>
+      <span class="loc">selectable.rs:7</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-selectable on"><span class="pv-itemlabel">Item A</span></div></div></div>
+  <p class="summary">M3 selectable list row. Returns true if activated this frame.</p>
+  
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">selectable</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">id</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">Into</span><span class="c-punc">&lt;</span><span class="c-type">Id</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">selected</span><span class="c-punc">:</span> <span class="c-var">bool</span><span class="c-punc">,</span> <span class="c-var">label</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">)</span> <span class="c-punc">-&gt;</span> <span class="c-var">bool</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>id</code></td><td class="ptype"><code>impl Into&lt;Id&gt;</code></td><td>Stable element id.</td></tr><tr><td class="pname"><code>selected</code></td><td class="ptype"><code>bool</code></td><td>Whether the row is selected.</td></tr><tr><td class="pname"><code>label</code></td><td class="ptype"><code>&amp;str</code></td><td>Row label.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>bool</code> <span class="retdoc">bool — true if activated this frame.</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-kw">let</span> <span class="c-var">hit</span> <span class="c-punc">=</span> <span class="c-fn">selectable</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;row&quot;</span><span class="c-punc">,</span> <span class="c-var">row_sel</span><span class="c-punc">,</span> <span class="c-str">&quot;Item A&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="switch" data-module="switch" id="fn-switch">
+  <header>
+    <div class="fnline">
+      <code class="fname">switch</code>
+      <span class="module">switch</span>
+      <span class="loc">switch.rs:7</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-row"><span class="pv-switch on"></span><span class="pv-itemlabel">Notifications</span></div></div></div>
+  <p class="summary">M3 switch. Returns the NEW checked state — store it back.</p>
+  
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">switch</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">id</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">Into</span><span class="c-punc">&lt;</span><span class="c-type">Id</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">checked</span><span class="c-punc">:</span> <span class="c-var">bool</span><span class="c-punc">,</span> <span class="c-var">label</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">)</span> <span class="c-punc">-&gt;</span> <span class="c-var">bool</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>id</code></td><td class="ptype"><code>impl Into&lt;Id&gt;</code></td><td>Stable element id.</td></tr><tr><td class="pname"><code>checked</code></td><td class="ptype"><code>bool</code></td><td>Current checked state.</td></tr><tr><td class="pname"><code>label</code></td><td class="ptype"><code>&amp;str</code></td><td>Row label.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>bool</code> <span class="retdoc">bool — the new checked state.</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-kw">let</span> <span class="c-var">s</span> <span class="c-punc">=</span> <span class="c-fn">switch</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;notify&quot;</span><span class="c-punc">,</span> <span class="c-var">notify</span><span class="c-punc">,</span> <span class="c-str">&quot;Notifications&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span>
+<span class="c-var">notify</span> <span class="c-punc">=</span> <span class="c-var">s</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="tabs" data-module="tabs" id="fn-tabs">
+  <header>
+    <div class="fnline">
+      <code class="fname">tabs</code>
+      <span class="module">tabs</span>
+      <span class="loc">tabs.rs:7</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-tabs"><span class="pv-tab active">Home</span><span class="pv-tab">Discover</span><span class="pv-tab">Mine</span></div></div></div>
+  <p class="summary">M3 tabs. Returns the newly selected index.</p>
+  
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">tabs</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">id</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-life">'static</span> <span class="c-var">str</span><span class="c-punc">,</span> <span class="c-var">items</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-punc">[</span><span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">]</span><span class="c-punc">,</span> <span class="c-var">selected</span><span class="c-punc">:</span> <span class="c-var">usize</span><span class="c-punc">)</span> <span class="c-punc">-&gt;</span> <span class="c-var">usize</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>id</code></td><td class="ptype"><code>&amp;'static str</code></td><td>Tabs id (stable `&amp;'static str`).</td></tr><tr><td class="pname"><code>items</code></td><td class="ptype"><code>&amp;[&amp;str]</code></td><td>Tab labels.</td></tr><tr><td class="pname"><code>selected</code></td><td class="ptype"><code>usize</code></td><td>Currently selected index.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>usize</code> <span class="retdoc">usize — the newly selected index.</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-kw">let</span> <span class="c-var">tab</span> <span class="c-punc">=</span> <span class="c-fn">tabs</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;tab&quot;</span><span class="c-punc">,</span> <span class="c-punc">&amp;</span><span class="c-punc">[</span><span class="c-str">&quot;Home&quot;</span><span class="c-punc">,</span> <span class="c-str">&quot;Discover&quot;</span><span class="c-punc">,</span> <span class="c-str">&quot;Mine&quot;</span><span class="c-punc">]</span><span class="c-punc">,</span> <span class="c-var">tab</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article></div>
+</section><section class="group" data-cat="Input">
+  <h2 class="cat">Input</h2>
+  <nav class="subnav"><a class="navlink" href="#fn-slider" data-name="slider">slider</a><a class="navlink" href="#fn-text_field" data-name="text_field">text_field</a><a class="navlink" href="#fn-text_field_outlined" data-name="text_field_outlined">text_field_outlined</a></nav>
+  <div class="cards"><article class="card" data-name="slider" data-module="slider" id="fn-slider">
+  <header>
+    <div class="fnline">
+      <code class="fname">slider</code>
+      <span class="module">slider</span>
+      <span class="loc">slider.rs:7</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-slider"><span class="pv-label">Volume</span><input type="range" class="pv-range" min="0" max="100" value="60"><span class="pv-label pv-val">60</span></div></div></div>
+  <p class="summary">M3 slider. Returns the dragged value. Drag the handle or click anywhere on the track.</p>
+  
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">slider</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">id</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">Into</span><span class="c-punc">&lt;</span><span class="c-type">Id</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">label</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">,</span> <span class="c-var">value</span><span class="c-punc">:</span> <span class="c-var">f32</span><span class="c-punc">,</span> <span class="c-var">min</span><span class="c-punc">:</span> <span class="c-var">f32</span><span class="c-punc">,</span> <span class="c-var">max</span><span class="c-punc">:</span> <span class="c-var">f32</span><span class="c-punc">)</span> <span class="c-punc">-&gt;</span> <span class="c-var">f32</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>id</code></td><td class="ptype"><code>impl Into&lt;Id&gt;</code></td><td>Stable element id.</td></tr><tr><td class="pname"><code>label</code></td><td class="ptype"><code>&amp;str</code></td><td>Slider label shown above the track.</td></tr><tr><td class="pname"><code>value</code></td><td class="ptype"><code>f32</code></td><td>Current value.</td></tr><tr><td class="pname"><code>min</code></td><td class="ptype"><code>f32</code></td><td>Minimum value.</td></tr><tr><td class="pname"><code>max</code></td><td class="ptype"><code>f32</code></td><td>Maximum value.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>f32</code> <span class="retdoc">f32 — the new value.</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-kw">let</span> <span class="c-var">v</span> <span class="c-punc">=</span> <span class="c-fn">slider</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;volume&quot;</span><span class="c-punc">,</span> <span class="c-str">&quot;Volume&quot;</span><span class="c-punc">,</span> <span class="c-var">v</span><span class="c-punc">,</span> <span class="c-num">0.0</span><span class="c-punc">,</span> <span class="c-num">1.0</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="text_field" data-module="text_field" id="fn-text_field">
+  <header>
+    <div class="fnline">
+      <code class="fname">text_field</code>
+      <span class="module">text_field</span>
+      <span class="loc">text_field.rs:8</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><input class="pv-field" placeholder="Your name"></div></div>
+  <p class="summary">M3 filled text field. Value lives in Ply under `id`; read it with `ui.get_text_value(id)`.</p>
+  <p class="doc">Filled text field. Value lives in Ply under `id`.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">text_field</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">id</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-life">'static</span> <span class="c-var">str</span><span class="c-punc">,</span> <span class="c-var">placeholder</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>id</code></td><td class="ptype"><code>&amp;'static str</code></td><td>Stable element id (also the value key).</td></tr><tr><td class="pname"><code>placeholder</code></td><td class="ptype"><code>&amp;str</code></td><td>Placeholder text.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">() — read value with `ui.get_text_value(id)`.</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">text_field</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;name&quot;</span><span class="c-punc">,</span> <span class="c-str">&quot;Your name&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span>
+<span class="c-kw">let</span> <span class="c-var">name</span> <span class="c-punc">=</span> <span class="c-var">ui</span><span class="c-punc">.</span><span class="c-fn">get_text_value</span><span class="c-punc">(</span><span class="c-str">&quot;name&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="text_field_outlined" data-module="text_field" id="fn-text_field_outlined">
+  <header>
+    <div class="fnline">
+      <code class="fname">text_field_outlined</code>
+      <span class="module">text_field</span>
+      <span class="loc">text_field.rs:29</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><input class="pv-field out" placeholder="you@example.com"></div></div>
+  <p class="summary">M3 outlined text field. Same value API as `text_field`.</p>
+  <p class="doc">Outlined text field.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">text_field_outlined</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">id</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-life">'static</span> <span class="c-var">str</span><span class="c-punc">,</span> <span class="c-var">placeholder</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>id</code></td><td class="ptype"><code>&amp;'static str</code></td><td>Stable element id (also the value key).</td></tr><tr><td class="pname"><code>placeholder</code></td><td class="ptype"><code>&amp;str</code></td><td>Placeholder text.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">() — read value with `ui.get_text_value(id)`.</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">text_field_outlined</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;email&quot;</span><span class="c-punc">,</span> <span class="c-str">&quot;you@example.com&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article></div>
+</section><section class="group" data-cat="Feedback">
+  <h2 class="cat">Feedback</h2>
+  <nav class="subnav"><a class="navlink" href="#fn-progress" data-name="progress">progress</a><a class="navlink" href="#fn-tooltip" data-name="tooltip">tooltip</a></nav>
+  <div class="cards"><article class="card" data-name="progress" data-module="progress" id="fn-progress">
+  <header>
+    <div class="fnline">
+      <code class="fname">progress</code>
+      <span class="module">progress</span>
+      <span class="loc">progress.rs:7</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-progress"><div class="pv-fill" style="width:42%"></div></div></div></div>
+  <p class="summary">M3 linear progress indicator. `fraction` in 0.0..=1.0.</p>
+  
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">progress</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">fraction</span><span class="c-punc">:</span> <span class="c-var">f32</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>fraction</code></td><td class="ptype"><code>f32</code></td><td>Progress 0.0..=1.0.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">progress</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-var">progress_value</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="tooltip" data-module="tooltip" id="fn-tooltip">
+  <header>
+    <div class="fnline">
+      <code class="fname">tooltip</code>
+      <span class="module">tooltip</span>
+      <span class="loc">tooltip.rs:7</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><div class="pv-tipwrap"><span class="pv-tip">Save your work</span><button class="pv-btn outlined" style="font-size:12px">Hover me</button></div></div></div>
+  <p class="summary">M3 tooltip: wraps arbitrary content and shows a label bubble on hover.</p>
+  
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">tooltip</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">id</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-life">'static</span> <span class="c-var">str</span><span class="c-punc">,</span> <span class="c-var">text</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">,</span> <span class="c-var">inner</span><span class="c-punc">:</span> <span class="c-kw">impl</span> <span class="c-type">FnOnce</span><span class="c-punc">(</span><span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">)</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>id</code></td><td class="ptype"><code>&amp;'static str</code></td><td>Stable element id.</td></tr><tr><td class="pname"><code>text</code></td><td class="ptype"><code>&amp;str</code></td><td>Tooltip label.</td></tr><tr><td class="pname"><code>inner</code></td><td class="ptype"><code>impl FnOnce(&amp;mut Ui&lt;'_, ()&gt;)</code></td><td>Closure that paints the hovered content.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">tooltip</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;tt_hint&quot;</span><span class="c-punc">,</span> <span class="c-str">&quot;Save your work&quot;</span><span class="c-punc">,</span> <span class="c-punc">|</span><span class="c-var">ui</span><span class="c-punc">|</span> <span class="c-punc">{</span>
+    <span class="c-fn">button_outlined</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Hover me&quot;</span><span class="c-punc">,</span> <span class="c-punc">||</span> <span class="c-punc">{</span><span class="c-punc">}</span><span class="c-punc">)</span><span class="c-punc">;</span>
+<span class="c-punc">}</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article></div>
+</section><section class="group" data-cat="Typography">
+  <h2 class="cat">Typography</h2>
+  <nav class="subnav"><a class="navlink" href="#fn-body" data-name="body">body</a><a class="navlink" href="#fn-headline" data-name="headline">headline</a><a class="navlink" href="#fn-label" data-name="label">label</a><a class="navlink" href="#fn-title" data-name="title">title</a></nav>
+  <div class="cards"><article class="card" data-name="body" data-module="text" id="fn-body">
+  <header>
+    <div class="fnline">
+      <code class="fname">body</code>
+      <span class="module">text</span>
+      <span class="loc">text.rs:20</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><span class="pv-body">Welcome to the demo.</span></div></div>
+  <p class="summary">Body text (16px) — default content.</p>
+  <p class="doc">Body (16) — default content.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">body</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">text</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>text</code></td><td class="ptype"><code>&amp;str</code></td><td>Text to render.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">body</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Welcome to the demo.&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="headline" data-module="text" id="fn-headline">
+  <header>
+    <div class="fnline">
+      <code class="fname">headline</code>
+      <span class="module">text</span>
+      <span class="loc">text.rs:8</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><span class="pv-h1">Settings</span></div></div>
+  <p class="summary">Headline text (28px) — page titles.</p>
+  <p class="doc">Headline (28) — page titles.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">headline</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">text</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>text</code></td><td class="ptype"><code>&amp;str</code></td><td>Text to render.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">headline</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;Settings&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="label" data-module="text" id="fn-label">
+  <header>
+    <div class="fnline">
+      <code class="fname">label</code>
+      <span class="module">text</span>
+      <span class="loc">text.rs:26</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><span class="pv-label">v1.0.0</span></div></div>
+  <p class="summary">Label text (14px, muted) — captions and annotations.</p>
+  <p class="doc">Label (14, muted) — captions and annotations.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">label</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">text</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>text</code></td><td class="ptype"><code>&amp;str</code></td><td>Text to render.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">label</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;v1.0.0&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article><article class="card" data-name="title" data-module="text" id="fn-title">
+  <header>
+    <div class="fnline">
+      <code class="fname">title</code>
+      <span class="module">text</span>
+      <span class="loc">text.rs:14</span>
+    </div>
+  </header>
+  <div class="pv-preview"><div class="pv"><span class="pv-h2">General</span></div></div>
+  <p class="summary">Title text (22px) — section titles.</p>
+  <p class="doc">Title (22) — section titles.</p>
+  <pre><code><span class="c-kw">pub</span> <span class="c-kw">fn</span> <span class="c-fn">title</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-kw">mut</span> <span class="c-type">Ui</span><span class="c-punc">&lt;</span><span class="c-life">'_</span><span class="c-punc">,</span> <span class="c-punc">(</span><span class="c-punc">)</span><span class="c-punc">&gt;</span><span class="c-punc">,</span> <span class="c-var">text</span><span class="c-punc">:</span> <span class="c-punc">&amp;</span><span class="c-var">str</span><span class="c-punc">)</span></code></pre>
+  <table class="params"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td class="pname"><code>ui</code></td><td class="ptype"><code>&amp;mut Ui&lt;'_, ()&gt;</code></td><td>The current Ui context.</td></tr><tr><td class="pname"><code>text</code></td><td class="ptype"><code>&amp;str</code></td><td>Text to render.</td></tr></tbody></table>
+  <p class="ret"><span class="pill">→</span> <code>()</code> <span class="retdoc">()</span></p>
+  <div class="example"><div class="exhead"><span>Example</span><button class="copy" onclick="copyCode(this)">Copy</button></div><pre><code><span class="c-fn">title</span><span class="c-punc">(</span><span class="c-var">ui</span><span class="c-punc">,</span> <span class="c-str">&quot;General&quot;</span><span class="c-punc">)</span><span class="c-punc">;</span></code></pre></div>
+</article></div>
+</section></div>
+  </main>
+</div>
+<script>
+function copyCode(btn) {
+  var pre = btn.closest('.example').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(function() {
+    var old = btn.textContent; btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = old; }, 1200);
+  });
+}
+(function() {
+  var catnav = document.getElementById('catnav');
+  var groups = Array.prototype.slice.call(document.querySelectorAll('.group'));
+  groups.forEach(function(g, gi) {
+    var links = Array.prototype.slice.call(g.querySelectorAll('.subnav a'));
+    if (links.length === 0) return;
+    var h = document.createElement('h3'); h.textContent = g.getAttribute('data-cat');
+    catnav.appendChild(h);
+    links.forEach(function(a) {
+      var copy = a.cloneNode(true); copy.className = 'navlink-cat';
+      copy.addEventListener('click', function(e) { e.preventDefault();
+        var target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+      });
+      catnav.appendChild(copy);
+    });
+  });
+  // Search
+  var q = document.getElementById('search');
+  var empty = document.getElementById('empty');
+  q.addEventListener('input', function() {
+    var term = q.value.trim().toLowerCase();
+    var any = false;
+    document.querySelectorAll('.card').forEach(function(card) {
+      var hit = !term || card.getAttribute('data-name').toLowerCase().indexOf(term) !== -1
+              || card.getAttribute('data-module').toLowerCase().indexOf(term) !== -1
+              || card.innerText.toLowerCase().indexOf(term) !== -1;
+      card.style.display = hit ? '' : 'none';
+      if (hit) any = true;
+    });
+    empty.style.display = any ? 'none' : 'block';
+  });
+  // Intersection observer for active nav highlight
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(en) {
+      if (en.isIntersecting) {
+        var id = en.target.getAttribute('id').replace('fn-','');
+        document.querySelectorAll('.catnav a').forEach(function(a) {
+          a.classList.toggle('active', a.getAttribute('href') === '#fn-' + id);
+        });
+      }
+    });
+  }, { rootMargin:'-40% 0px -55% 0px' });
+  document.querySelectorAll('.card').forEach(function(c) { obs.observe(c); });
+})();
+// Interactive previews (plain DOM, no WASM)
+document.addEventListener('input', function(e) {
+  var r = e.target;
+  if (r.classList && r.classList.contains('pv-range')) {
+    var pct = (r.value - r.min) / (r.max - r.min) * 100;
+    r.style.setProperty('--v', pct + '%');
+    var s = r.closest('.pv-slider');
+    if (s) {
+      var v = s.querySelector('.pv-val');
+      if (v) v.textContent = r.value;
+    }
+  }
+});
+document.addEventListener('click', function(e) {
+  var t = e.target;
+  if (t.closest('.pv-radio-group')) {
+    var g = t.closest('.pv-radio-group');
+    var r = t.closest('.pv-rowradio');
+    if (r) {
+      g.querySelectorAll('.pv-radio').forEach(function(x) { x.classList.remove('on'); });
+      r.querySelector('.pv-radio').classList.add('on');
+    }
+    return;
+  }
+  if (t.closest('.pv-opt')) {
+    var c = t.closest('.pv-combo');
+    c.querySelector('.pv-sel').textContent = t.closest('.pv-opt').textContent;
+    c.classList.remove('open');
+    e.stopPropagation();
+    return;
+  }
+  if (t.closest('.pv-combo')) {
+    t.closest('.pv-combo').classList.toggle('open');
+    e.stopPropagation();
+    return;
+  }
+  if (t.closest('.pv-tab')) {
+    var tb = t.closest('.pv-tabs');
+    tb.querySelectorAll('.pv-tab').forEach(function(x) { x.classList.remove('active'); });
+    t.closest('.pv-tab').classList.add('active');
+    return;
+  }
+  if (t.closest('.pv-selectable')) {
+    t.closest('.pv-selectable').classList.toggle('on');
+    return;
+  }
+  if (t.closest('.pv-item') && t.closest('.pv-item').parentElement.classList.contains('pv-list')) {
+    var list = t.closest('.pv-item').parentElement;
+    list.querySelectorAll('.pv-item').forEach(function(x) { x.classList.remove('sel'); });
+    t.closest('.pv-item').classList.add('sel');
+    return;
+  }
+  if (t.closest('.pv-btn')) {
+    var b = t.closest('.pv-btn');
+    b.classList.add('pressed');
+    setTimeout(function() { b.classList.remove('pressed'); }, 150);
+    return;
+  }
+  if (t.closest('.pv-check, .pv-switch, .pv-radio')) {
+    t.closest('.pv-check, .pv-switch, .pv-radio').classList.toggle('on');
+    return;
+  }
+  var row = t.closest('.pv-row');
+  if (row) {
+    var ctl = row.querySelector('.pv-check, .pv-switch, .pv-radio');
+    if (ctl) ctl.classList.toggle('on');
+  }
+});
+</script>
+</body>
+</html>

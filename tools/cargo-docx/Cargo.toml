@@ -1,0 +1,10 @@
+[package]
+name = "cargo-docx"
+version = "0.1.0"
+edition = "2021"
+description = "cargo docx - FastAPI-style interactive HTML docs for your components module"
+license = "MIT"
+
+[[bin]]
+name = "cargo-docx"
+path = "src/main.rs"

@@ -87,7 +87,10 @@ async fn main() {
     // the perf trace) and CPU/GPU work on battery. Touch/key activity bumps the
     // frame budget back up for the next few frames.
     let mut idle_grace_frames: u32 = 0;
-    let mut last_frame_time = std::time::Instant::now();
+    // Wall-clock via macroquad's frame timer: `std::time::Instant` panics on
+    // wasm (`Instant::now` is unimplemented there), and the browser loop is
+    // already paced by `next_frame().await`, so native-only sleeps the idle.
+    let mut last_frame_time = macroquad::time::get_time();
 
     loop {
         let has_input = !touches().is_empty()
@@ -99,15 +102,16 @@ async fn main() {
 
         // Slow to ~15fps when idle, keep full speed near interaction.
         if idle_grace_frames == 0 {
-            let target = std::time::Duration::from_secs_f64(1.0 / 15.0);
-            let elapsed = last_frame_time.elapsed();
+            let target = 1.0 / 15.0;
+            let elapsed = macroquad::time::get_time() - last_frame_time;
             if elapsed < target {
-                std::thread::sleep(target - elapsed);
+                #[cfg(not(target_arch = "wasm32"))]
+                std::thread::sleep(std::time::Duration::from_secs_f64(target - elapsed));
             }
         } else {
             idle_grace_frames -= 1;
         }
-        last_frame_time = std::time::Instant::now();
+        last_frame_time = macroquad::time::get_time();
 
         // Process a pending language switch: swap the active locale and the
         // global default font (the CJK font is a glyph superset for Chinese).
