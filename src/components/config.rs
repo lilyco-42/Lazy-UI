@@ -318,6 +318,7 @@ component_config! {
         gap: Option<f32>,
         padding: Option<f32>,
         bubble_gap: Option<f32>,
+        bubble_font_size: Option<u16>, // 气泡文字字号(移动端需要放大)
         bubble_radius: Option<f32>,
         bubble_width: Option<f32>,
         bubble_pad_x: Option<f32>,
@@ -327,6 +328,7 @@ component_config! {
         pet_background: Option<u32>,
         pet_foreground: Option<u32>,
         quick_gap: Option<f32>,
+        quick_columns: Option<u32>, // 每行按钮数(>1 分行, 移动端大按钮用)
         input_gap: Option<f32>,
         max_bubbles: Option<u32>,
     },

@@ -118,21 +118,30 @@ pub fn chat_panel(ui: &mut Ui<'_, ()>, state: &ChatPanelState, events: &Rc<RefCe
                     }
                 });
 
-            // 2) Quick questions — one text button per question.
+            // 2) Quick questions — one button per question, quick_columns per row.
             ui.element()
                 .width(grow!())
                 .height(fit!())
-                .layout(|l| {
-                    l.direction(LeftToRight)
-                        .gap(c.quick_gap.unwrap_or(6.0) as u16)
-                        .align(Left, CenterY)
-                })
+                .layout(|l| l.direction(TopToBottom).gap(c.quick_gap.unwrap_or(6.0) as u16))
                 .children(|ui| {
-                    for q in state.quick_questions {
-                        let id = button_id(ui, q);
-                        if ui.is_just_pressed(id) {
-                            events.borrow_mut().submitted.push((*q).to_string());
-                        }
+                    let cols = c.quick_columns.unwrap_or(u32::MAX).max(1) as usize;
+                    for chunk in state.quick_questions.chunks(cols) {
+                        ui.element()
+                            .width(grow!())
+                            .height(fit!())
+                            .layout(|l| {
+                                l.direction(LeftToRight)
+                                    .gap(c.quick_gap.unwrap_or(6.0) as u16)
+                                    .align(Left, CenterY)
+                            })
+                            .children(|ui| {
+                                for q in chunk {
+                                    let id = button_id(ui, q);
+                                    if ui.is_just_pressed(id) {
+                                        events.borrow_mut().submitted.push((*q).to_string());
+                                    }
+                                }
+                            });
                     }
                 });
 
@@ -189,7 +198,10 @@ fn bubble(ui: &mut Ui<'_, ()>, msg: &ChatMessage, c: &ChatPanelConfig, theme: &T
                 .corner_radius(radius)
                 .layout(|l| l.padding((pad_y, pad_x, pad_y, pad_x)))
                 .children(|ui| {
-                    ui.text(&msg.text, |t| t.font_size(theme.text.body_size).color(fg));
+                    ui.text(&msg.text, |t| {
+                        t.font_size(c.bubble_font_size.unwrap_or(theme.text.body_size))
+                            .color(fg)
+                    });
                 });
         });
 }
