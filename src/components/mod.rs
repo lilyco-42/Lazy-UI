@@ -4,6 +4,7 @@
 //! all styling comes from the M3 `Theme` (see [`crate::theme`]).
 
 mod button;
+mod chat_panel;
 mod checkbox;
 mod combo;
 pub mod config;
@@ -22,6 +23,7 @@ mod text_field;
 mod tooltip;
 
 pub use button::*;
+pub use chat_panel::*;
 pub use checkbox::*;
 pub use combo::*;
 pub use container::*;

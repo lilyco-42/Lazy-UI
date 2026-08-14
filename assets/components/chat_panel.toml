@@ -1,0 +1,21 @@
+# chat_panel.toml — Chat panel (bubbles + quick questions + input).
+# Unset fields fall back to the M3 theme in chat_panel.rs.
+#
+# Defaults are tuned for a transparent overlay host (e.g. a desktop pet):
+# the panel itself paints nothing, user bubbles use the light M3 primary
+# container, pet bubbles use a dark card so both read on any wallpaper.
+
+gap = 8
+padding = 12
+bubble_gap = 6
+bubble_radius = 12.0
+bubble_width = 0.72          # fraction of the panel width (bubble max width)
+bubble_pad_x = 10
+bubble_pad_y = 6
+user_background = 0xEADDFF   # primary_container
+user_foreground = 0x21005D   # on_primary_container
+pet_background = 0x2B2B2B    # dark pet bubble
+pet_foreground = 0xE6E6E6
+quick_gap = 6
+input_gap = 8
+max_bubbles = 6

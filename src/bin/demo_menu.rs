@@ -9,6 +9,7 @@
 //!     关于()
 //! })
 //! 日志面板()
+//! 聊天面板()
 //! 日志进度条(默认 = nvim dialog 样式)
 //! ```
 
@@ -19,6 +20,8 @@
 use demo::components::*;
 use demo::{fonts, theme};
 use ply_engine::prelude::*;
+use std::cell::RefCell;
+use std::rc::Rc;
 
 /// A menu entry — a declarative "label + action". Zero-config: styling is the
 /// theme's, ids are auto-derived from the label (see `button_id`).
@@ -58,6 +61,12 @@ fn 日志面板(ui: &mut Ui<'_, ()>) {
     body(ui, "[12:00:02] 主题已加载 (Material 3)");
     body(ui, "[12:00:03] 布局自动推断完成");
     body(ui, "[12:00:04] 就绪");
+}
+
+/// Chat panel region — conversation bubbles + quick questions + input.
+/// State lives in the app; events are drained after each frame.
+fn 聊天面板(ui: &mut Ui<'_, ()>, state: &ChatPanelState, events: &Rc<RefCell<ChatPanelEvents>>) {
+    chat_panel(ui, state, events);
 }
 
 /// Progress-bar styles. The DSL default (`默认 = nvim dialog 样式`) maps here.
@@ -134,6 +143,7 @@ macro_rules! menu {
             $($item:ident())*
         })
         日志面板()
+        聊天面板()
         日志进度条(默认 = nvim dialog 样式)
     ) => {
         #[macroquad::main(menu_conf)]
@@ -141,6 +151,11 @@ macro_rules! menu {
             // The DSL renders CJK labels, so start with the CJK-capable font
             // (a glyph superset that also carries Latin).
             let mut ply = Ply::<()>::new(fonts::zh_font()).await;
+
+            // Chat panel state: history + the app-owned event sink.
+            let mut chat_state = ChatPanelState::default();
+            let chat_events: Rc<RefCell<ChatPanelEvents>> =
+                Rc::new(RefCell::new(ChatPanelEvents::default()));
 
             loop {
                 clear_background(Color::from(theme::theme().colors.surface).into());
@@ -159,6 +174,7 @@ macro_rules! menu {
                     RegionRole::Content => {
                         panel(ui, |ui| {
                             日志面板(ui);
+                            聊天面板(ui, &chat_state, &chat_events);
                         });
                     }
                     RegionRole::Progress => {
@@ -166,6 +182,15 @@ macro_rules! menu {
                     }
                     _ => {}
                 });
+
+                // Chat events collected this frame: user bubble + canned reply.
+                let submitted = std::mem::take(&mut chat_events.borrow_mut().submitted);
+                for q in submitted {
+                    chat_state.history.push(ChatMessage::user(q.clone()));
+                    chat_state.history.push(ChatMessage::pet(format!(
+                        "收到「{q}」～ 这是 lazy-ply 的 chat_panel 组件在应答。"
+                    )));
+                }
 
                 ui.show(|_| {}).await;
                 next_frame().await;
@@ -182,5 +207,6 @@ menu! {
         关于()
     })
     日志面板()
+    聊天面板()
     日志进度条(默认 = nvim dialog 样式)
 }

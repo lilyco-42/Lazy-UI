@@ -313,6 +313,27 @@ component_config! {
 }
 
 component_config! {
+    ChatPanelConfig {
+        background: Option<u32>,
+        gap: Option<f32>,
+        padding: Option<f32>,
+        bubble_gap: Option<f32>,
+        bubble_radius: Option<f32>,
+        bubble_width: Option<f32>,
+        bubble_pad_x: Option<f32>,
+        bubble_pad_y: Option<f32>,
+        user_background: Option<u32>,
+        user_foreground: Option<u32>,
+        pet_background: Option<u32>,
+        pet_foreground: Option<u32>,
+        quick_gap: Option<f32>,
+        input_gap: Option<f32>,
+        max_bubbles: Option<u32>,
+    },
+    "../../assets/components/chat_panel.toml"
+}
+
+component_config! {
     TooltipConfig {
         font_size: Option<u16>,
         background: Option<u32>,
@@ -359,6 +380,7 @@ pub struct Attrs {
     pub panel: Option<PanelConfig>,
     pub status_bar: Option<StatusBarConfig>,
     pub log_progress: Option<LogProgressConfig>,
+    pub chat_panel: Option<ChatPanelConfig>,
 }
 
 thread_local! {
@@ -432,6 +454,7 @@ mod tests {
         check!(DividerConfig, "../../assets/components/divider.toml");
         check!(TextConfig, "../../assets/components/text.toml");
         check!(TooltipConfig, "../../assets/components/tooltip.toml");
+        check!(ChatPanelConfig, "../../assets/components/chat_panel.toml");
     }
 
     /// The CSS cascade: per-call attrs win over the stylesheet.
