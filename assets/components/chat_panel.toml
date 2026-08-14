@@ -18,4 +18,4 @@ pet_background = 0x2B2B2B    # dark pet bubble
 pet_foreground = 0xE6E6E6
 quick_gap = 6
 input_gap = 8
-max_bubbles = 6
+max_bubbles = 3
