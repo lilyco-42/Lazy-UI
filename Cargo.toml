@@ -3,6 +3,11 @@ name = "demo"
 version = "0.1.0"
 edition = "2021"
 
+# Android APK 构建配置(plyx apk / cargo-quad-apk)
+[package.metadata.android]
+assets = "assets/"
+build_targets = ["aarch64-linux-android", "x86_64-linux-android"]
+
 [dependencies]
 serde = { version = "1", features = ["derive"] }
 toml = "0.8"

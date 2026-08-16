@@ -1,4 +1,4 @@
-name: Build CLI
+name: Build with plyx
 
 on:
   push:
@@ -11,56 +11,45 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            suffix: ""
-          - os: windows-latest
-            target: x86_64-pc-windows-msvc
-            suffix: ".exe"
-          - os: macos-latest
-            target: x86_64-apple-darwin
-            suffix: ""
-    runs-on: ${{ matrix.os }}
+  build-web:
+    name: plyx web (WASM)
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.target }}
+          targets: wasm32-unknown-unknown
 
-      - name: Cache cargo registry
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-
+      - name: Install plyx CLI
+        run: cargo install plyx
 
-      - name: Build (release)
-        run: cargo build --release
+      - name: Build with plyx web
+        run: plyx web
 
-      # 收集所有 bin 产物
-      - name: Collect binaries
-        shell: bash
-        run: |
-          mkdir -p dist
-          cp target/release/demo${{ matrix.suffix }} dist/ 2>/dev/null || true
-          cp target/release/demo_menu${{ matrix.suffix }} dist/ 2>/dev/null || true
-          cp target/release/demo_todo_list${{ matrix.suffix }} dist/ 2>/dev/null || true
-          ls -la dist/
-
-      - name: Upload artifacts
+      - name: Upload WASM bundle
         uses: actions/upload-artifact@v4
         with:
-          name: plxy-${{ matrix.target }}
-          path: dist/
-          if-no-files-found: error
+          name: plyx-web
+          path: build/web/
+          if-no-files-found: warn
+
+  build-apk:
+    name: plyx apk (Android)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install plyx CLI
+        run: cargo install plyx
+
+      - name: Build with plyx apk (Docker)
+        run: plyx apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: plyx-apk
+          path: target/android-artifacts/release/apk/
+          if-no-files-found: warn
