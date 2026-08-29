@@ -17,8 +17,8 @@
 // `nvim_dialog_样式`) to mirror the declarative block verbatim.
 #![allow(non_upper_case_globals)]
 
-use demo::components::*;
-use demo::{fonts, theme};
+use lazy_ply::components::*;
+use lazy_ply::{fonts, theme};
 use ply_engine::prelude::*;
 use std::cell::RefCell;
 use std::rc::Rc;

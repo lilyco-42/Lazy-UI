@@ -2,8 +2,8 @@
 // Missing keys fall back to English (`fallback`), then to the key itself.
 rust_i18n::i18n!("assets/i18n", fallback = "en");
 
-use demo::components::*;
-use demo::{fonts, theme};
+use lazy_ply::components::*;
+use lazy_ply::{fonts, theme};
 use ply_engine::prelude::*;
 use rust_i18n::t;
 use std::cell::Cell;

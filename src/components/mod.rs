@@ -21,6 +21,7 @@ mod tabs;
 mod text;
 mod text_field;
 mod tooltip;
+mod zh;
 
 pub use button::*;
 pub use chat_panel::*;
@@ -39,3 +40,4 @@ pub use tabs::*;
 pub use text::*;
 pub use text_field::*;
 pub use tooltip::*;
+pub use zh::*;

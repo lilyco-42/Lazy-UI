@@ -1,7 +1,7 @@
 #![allow(non_upper_case_globals)]
 
-use demo::components::*;
-use demo::{fonts, theme};
+use lazy_ply::components::*;
+use lazy_ply::{fonts, theme};
 use ply_engine::prelude::*;
 use std::sync::atomic::{AtomicBool, Ordering};
 
