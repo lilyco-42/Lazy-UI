@@ -1,0 +1,11 @@
+# im_window.toml — imgui_kit 浮动窗口样式(类 Dear ImGui 面板)。
+# 未设置字段回退到 M3 theme (im_window.rs)。
+
+background = 0x2A2A2E        # 窗口底
+header_background = 0x3C3C43 # 标题条
+title_color = 0xFFFFFF
+border = 0x1E1E22            # 外框
+radius = 6.0                 # 窗口圆角
+gap = 4.0                    # 内容间距
+padding = 10.0               # 内容内边距
+header_height = 28.0         # 标题条高度

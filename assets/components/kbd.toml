@@ -1,0 +1,10 @@
+# kbd.toml — gpui_kit 键盘按键样式。
+# 未设置字段回退到 M3 theme (kbd.rs)。
+
+height = 24.0
+pad_x = 8.0
+radius = 4.0
+font_size = 13
+background = 0xECE6F0   # surface_container_high
+text_color = 0x1D1B20
+border = 0xCAC4D0

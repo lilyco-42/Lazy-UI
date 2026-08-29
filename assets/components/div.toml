@@ -1,0 +1,9 @@
+# div.toml — gpui_kit 通用容器样式(tailwind 风格 div 的默认值)。
+# 未设置字段回退到 M3 theme (div.rs)。
+
+background = 0xF7F2FA   # 默认底(surface_container_low)
+radius = 12.0
+padding = 12.0
+border = 0xCAC4D0
+border_width = 1.0
+gap = 8.0

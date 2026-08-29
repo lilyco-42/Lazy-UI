@@ -1,0 +1,8 @@
+# im_progress_bar.toml — imgui_kit 带文字百分比进度条样式。
+# 未设置字段回退到 M3 theme (im_progress_bar.rs)。
+
+track_height = 18.0    # 整条高度(含文字)
+radius = 3.0           # 圆角
+track_color = 0x3C3C43 # 轨道底
+fill_color = 0x6750A4  # 填充色
+text_color = 0xFFFFFF  # 百分比文字

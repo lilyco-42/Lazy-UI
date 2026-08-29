@@ -1,0 +1,12 @@
+# chip.toml — gpui_kit 可选中过滤芯片样式。
+# 未设置字段回退到 M3 theme (chip.rs)。
+
+height = 32.0
+radius = 16.0
+pad_x = 14.0
+font_size = 14
+background = 0xF7F2FA        # 未选中底
+selected_bg = 0x6750A4       # 选中底
+text_color = 0x49454F
+selected_fg = 0xFFFFFF
+border = 0xCAC4D0

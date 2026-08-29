@@ -1,0 +1,12 @@
+# plot_lines.toml — imgui_kit 迷你折线图样式。
+# 未设置字段回退到 M3 theme (plot_lines.rs)。
+
+width = 240.0        # 默认图宽
+height = 60.0        # 默认图高
+background = 0x1E1E22
+line_color = 0xCDB9F0 # 折线色(主题主色浅化)
+fill_color = 0x6750A4 # 面积填充
+grid_color = 0x2E2E33 # 背景网格线
+border = 0x1E1E22
+radius = 4.0
+thickness = 2.0       # 折线粗细

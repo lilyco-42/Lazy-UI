@@ -1,0 +1,8 @@
+# card.toml — eui_neo_kit 卡片容器样式。
+# 未设置字段回退到 M3 theme (card.rs)。
+
+radius = 16.0
+padding = 16.0
+gap = 8.0
+background = 0xFFFFFF   # surface_container_lowest
+border = 0xCAC4D0

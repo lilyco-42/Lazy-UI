@@ -1,0 +1,12 @@
+# segmented.toml — eui_neo_kit 分段选择器样式。
+# 未设置字段回退到 M3 theme (segmented.rs)。
+
+height = 36.0
+radius = 8.0
+font_size = 14
+pad_x = 8.0
+background = 0xECE6F0        # 槽底(surface_container_high)
+selected_bg = 0x6750A4       # 选中段底
+selected_fg = 0xFFFFFF
+text_color = 0x49454F
+border = 0xCAC4D0

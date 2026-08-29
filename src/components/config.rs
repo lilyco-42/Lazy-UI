@@ -336,6 +336,28 @@ component_config! {
 }
 
 component_config! {
+    PetBackgroundConfig {
+        gradient_top: Option<u32>,
+        gradient_mid: Option<u32>,
+        gradient_bot: Option<u32>,
+        moon_color: Option<u32>,
+        moon_glow: Option<u32>,
+        moon_x_ratio: Option<f32>,
+        moon_y_ratio: Option<f32>,
+        moon_radius: Option<f32>,
+        moon_glow_radius: Option<f32>,
+        cloud_color: Option<u32>,
+        cloud_count: Option<u32>,
+        cloud_enabled: Option<bool>,
+        petal_color: Option<u32>,
+        petal_count: Option<u32>,
+        petal_enabled: Option<bool>,
+        gradient_bands: Option<u32>,
+    },
+    "../../assets/components/background.toml"
+}
+
+component_config! {
     TooltipConfig {
         font_size: Option<u16>,
         background: Option<u32>,
@@ -345,6 +367,249 @@ component_config! {
         offset: Option<f32>,
     },
     "../../assets/components/tooltip.toml"
+}
+
+// ---------------------------------------------------------------------------
+// imgui_kit — Dear ImGui 风格组件集
+// ---------------------------------------------------------------------------
+
+component_config! {
+    ImWindowConfig {
+        background: Option<u32>,
+        header_background: Option<u32>,
+        title_color: Option<u32>,
+        border: Option<u32>,
+        radius: Option<f32>,
+        gap: Option<f32>,
+        padding: Option<f32>,
+        header_height: Option<f32>,
+    },
+    "../../assets/components/im_window.toml"
+}
+
+component_config! {
+    CollapsingHeaderConfig {
+        height: Option<f32>,
+        font_size: Option<u16>,
+        gap: Option<f32>,
+        pad_x: Option<f32>,
+        color: Option<u32>,
+        hover: Option<u32>,
+        arrow_color: Option<u32>,
+        body_gap: Option<f32>,
+    },
+    "../../assets/components/collapsing_header.toml"
+}
+
+component_config! {
+    DragFloatConfig {
+        height: Option<f32>,
+        radius: Option<f32>,
+        pad_x: Option<f32>,
+        font_size: Option<u16>,
+        background: Option<u32>,
+        label_color: Option<u32>,
+        value_color: Option<u32>,
+        border: Option<u32>,
+        speed: Option<f32>,
+    },
+    "../../assets/components/drag_float.toml"
+}
+
+component_config! {
+    PlotLinesConfig {
+        width: Option<f32>,
+        height: Option<f32>,
+        background: Option<u32>,
+        line_color: Option<u32>,
+        fill_color: Option<u32>,
+        grid_color: Option<u32>,
+        border: Option<u32>,
+        radius: Option<f32>,
+        thickness: Option<f32>,
+    },
+    "../../assets/components/plot_lines.toml"
+}
+
+component_config! {
+    ImProgressBarConfig {
+        track_height: Option<f32>,
+        radius: Option<f32>,
+        font_size: Option<u16>,
+        track_color: Option<u32>,
+        fill_color: Option<u32>,
+        text_color: Option<u32>,
+    },
+    "../../assets/components/im_progress_bar.toml"
+}
+
+// ---------------------------------------------------------------------------
+// gpui_kit — GPUI/Zed tailwind 风格组件集
+// ---------------------------------------------------------------------------
+
+component_config! {
+    DivConfig {
+        background: Option<u32>,
+        radius: Option<f32>,
+        padding: Option<f32>,
+        border: Option<u32>,
+        border_width: Option<f32>,
+        gap: Option<f32>,
+    },
+    "../../assets/components/div.toml"
+}
+
+component_config! {
+    KbdConfig {
+        height: Option<f32>,
+        pad_x: Option<f32>,
+        radius: Option<f32>,
+        font_size: Option<u16>,
+        background: Option<u32>,
+        text_color: Option<u32>,
+        border: Option<u32>,
+    },
+    "../../assets/components/kbd.toml"
+}
+
+component_config! {
+    ChipConfig {
+        height: Option<f32>,
+        radius: Option<f32>,
+        pad_x: Option<f32>,
+        font_size: Option<u16>,
+        background: Option<u32>,
+        selected_bg: Option<u32>,
+        text_color: Option<u32>,
+        selected_fg: Option<u32>,
+        border: Option<u32>,
+    },
+    "../../assets/components/chip.toml"
+}
+
+component_config! {
+    BadgeConfig {
+        radius: Option<f32>,
+        pad_x: Option<f32>,
+        font_size: Option<u16>,
+        background: Option<u32>,
+        text_color: Option<u32>,
+        dot: Option<bool>,
+    },
+    "../../assets/components/badge.toml"
+}
+
+component_config! {
+    AvatarConfig {
+        size: Option<f32>,
+        radius: Option<f32>,
+        font_size: Option<u16>,
+        background: Option<u32>,
+        text_color: Option<u32>,
+    },
+    "../../assets/components/avatar.toml"
+}
+
+component_config! {
+    CodeConfig {
+        pad_x: Option<f32>,
+        pad_y: Option<f32>,
+        radius: Option<f32>,
+        font_size: Option<u16>,
+        background: Option<u32>,
+        text_color: Option<u32>,
+        border: Option<u32>,
+    },
+    "../../assets/components/code.toml"
+}
+
+// ---------------------------------------------------------------------------
+// eui_neo_kit — EUI-NEO 声明式 DSL 风格组件集
+// ---------------------------------------------------------------------------
+
+component_config! {
+    SegmentedConfig {
+        height: Option<f32>,
+        radius: Option<f32>,
+        font_size: Option<u16>,
+        pad_x: Option<f32>,
+        background: Option<u32>,
+        selected_bg: Option<u32>,
+        selected_fg: Option<u32>,
+        text_color: Option<u32>,
+        border: Option<u32>,
+    },
+    "../../assets/components/segmented.toml"
+}
+
+component_config! {
+    StepperConfig {
+        height: Option<f32>,
+        radius: Option<f32>,
+        font_size: Option<u16>,
+        background: Option<u32>,
+        text_color: Option<u32>,
+        button_bg: Option<u32>,
+        button_fg: Option<u32>,
+        border: Option<u32>,
+        step: Option<i32>,
+    },
+    "../../assets/components/stepper.toml"
+}
+
+component_config! {
+    CardConfig {
+        radius: Option<f32>,
+        padding: Option<f32>,
+        gap: Option<f32>,
+        background: Option<u32>,
+        border: Option<u32>,
+    },
+    "../../assets/components/card.toml"
+}
+
+component_config! {
+    DialogConfig {
+        width: Option<f32>,
+        radius: Option<f32>,
+        padding: Option<f32>,
+        gap: Option<f32>,
+        background: Option<u32>,
+        title_color: Option<u32>,
+        scrim: Option<u32>,
+        border: Option<u32>,
+    },
+    "../../assets/components/dialog.toml"
+}
+
+component_config! {
+    DataTableConfig {
+        row_height: Option<f32>,
+        header_height: Option<f32>,
+        radius: Option<f32>,
+        font_size: Option<u16>,
+        background: Option<u32>,
+        header_bg: Option<u32>,
+        header_color: Option<u32>,
+        row_color: Option<u32>,
+        selected_bg: Option<u32>,
+        selected_fg: Option<u32>,
+        border: Option<u32>,
+    },
+    "../../assets/components/data_table.toml"
+}
+
+component_config! {
+    ToastConfig {
+        radius: Option<f32>,
+        pad_x: Option<f32>,
+        pad_y: Option<f32>,
+        font_size: Option<u16>,
+        background: Option<u32>,
+        text_color: Option<u32>,
+        offset_y: Option<f32>,
+    },
+    "../../assets/components/toast.toml"
 }
 
 // ---------------------------------------------------------------------------
@@ -383,6 +648,23 @@ pub struct Attrs {
     pub status_bar: Option<StatusBarConfig>,
     pub log_progress: Option<LogProgressConfig>,
     pub chat_panel: Option<ChatPanelConfig>,
+    pub im_window: Option<ImWindowConfig>,
+    pub collapsing_header: Option<CollapsingHeaderConfig>,
+    pub drag_float: Option<DragFloatConfig>,
+    pub plot_lines: Option<PlotLinesConfig>,
+    pub im_progress_bar: Option<ImProgressBarConfig>,
+    pub div: Option<DivConfig>,
+    pub kbd: Option<KbdConfig>,
+    pub chip: Option<ChipConfig>,
+    pub badge: Option<BadgeConfig>,
+    pub avatar: Option<AvatarConfig>,
+    pub code: Option<CodeConfig>,
+    pub segmented: Option<SegmentedConfig>,
+    pub stepper: Option<StepperConfig>,
+    pub card: Option<CardConfig>,
+    pub dialog: Option<DialogConfig>,
+    pub data_table: Option<DataTableConfig>,
+    pub toast: Option<ToastConfig>,
 }
 
 thread_local! {
@@ -457,6 +739,24 @@ mod tests {
         check!(TextConfig, "../../assets/components/text.toml");
         check!(TooltipConfig, "../../assets/components/tooltip.toml");
         check!(ChatPanelConfig, "../../assets/components/chat_panel.toml");
+        check!(PetBackgroundConfig, "../../assets/components/background.toml");
+        check!(ImWindowConfig, "../../assets/components/im_window.toml");
+        check!(CollapsingHeaderConfig, "../../assets/components/collapsing_header.toml");
+        check!(DragFloatConfig, "../../assets/components/drag_float.toml");
+        check!(PlotLinesConfig, "../../assets/components/plot_lines.toml");
+        check!(ImProgressBarConfig, "../../assets/components/im_progress_bar.toml");
+        check!(DivConfig, "../../assets/components/div.toml");
+        check!(KbdConfig, "../../assets/components/kbd.toml");
+        check!(ChipConfig, "../../assets/components/chip.toml");
+        check!(BadgeConfig, "../../assets/components/badge.toml");
+        check!(AvatarConfig, "../../assets/components/avatar.toml");
+        check!(CodeConfig, "../../assets/components/code.toml");
+        check!(SegmentedConfig, "../../assets/components/segmented.toml");
+        check!(StepperConfig, "../../assets/components/stepper.toml");
+        check!(CardConfig, "../../assets/components/card.toml");
+        check!(DialogConfig, "../../assets/components/dialog.toml");
+        check!(DataTableConfig, "../../assets/components/data_table.toml");
+        check!(ToastConfig, "../../assets/components/toast.toml");
     }
 
     /// The CSS cascade: per-call attrs win over the stylesheet.

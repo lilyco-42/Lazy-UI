@@ -3,6 +3,7 @@
 //! Convention over configuration: components take only data (labels, values, ids);
 //! all styling comes from the M3 `Theme` (see [`crate::theme`]).
 
+mod background;
 mod button;
 mod chat_panel;
 mod checkbox;
@@ -23,6 +24,12 @@ mod text_field;
 mod tooltip;
 mod zh;
 
+// 外部框架风格移植组件集(均遵循 lazy-ply 约定)
+mod imgui_kit;
+mod gpui_kit;
+mod eui_neo_kit;
+
+pub use background::*;
 pub use button::*;
 pub use chat_panel::*;
 pub use checkbox::*;
@@ -41,3 +48,6 @@ pub use text::*;
 pub use text_field::*;
 pub use tooltip::*;
 pub use zh::*;
+pub use imgui_kit::*;
+pub use gpui_kit::*;
+pub use eui_neo_kit::*;

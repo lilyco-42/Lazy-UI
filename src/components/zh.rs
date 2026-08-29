@@ -27,6 +27,11 @@ use crate::components::{
 use crate::components::container::{log_progress, panel, sidebar, status_bar};
 use crate::components::text::{body, headline, label, title};
 use crate::components::chat_panel::{ChatPanelEvents, ChatPanelState};
+use crate::components::{
+    avatar, badge, bullet_text, card, chip, code, collapsing_header, data_table, dialog,
+    div, drag_float, im_progress_bar, im_window, kbd, pet_background, plot_lines,
+    segmented, stepper, toast,
+};
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -152,6 +157,118 @@ pub fn 聊天面板(state: &ChatPanelState, events: &Rc<RefCell<ChatPanelEvents>
     chat_panel(&mut *current_ui(), state, events);
 }
 
+// ---------------------------------------------------------------------------
+// imgui_kit 汉化
+// ---------------------------------------------------------------------------
+
+/// `浮动窗口`(imgui 风格,带标题条)— `inner` 在内容区渲染,自动铺满。
+pub fn 浮动窗口(title: &str, inner: impl FnOnce(&mut Ui<'_, ()>)) {
+    im_window(&mut *current_ui(), title, inner);
+}
+
+/// `折叠标题` — 返回 `true` 表示本次展开, `false` 表示收起。状态由调用方持有。
+pub fn 折叠标题(id: &'static str, label: &str, open: bool, inner: impl FnOnce(&mut Ui<'_, ()>)) -> bool {
+    collapsing_header(&mut *current_ui(), id, label, open, inner)
+}
+
+/// `拖拽数值`(drag float)— 点击数值槽左右拖拽修改值,返回新值。
+pub fn 拖拽数值(id: &'static str, label: &str, value: f32, min: f32, max: f32) -> f32 {
+    drag_float(&mut *current_ui(), id, label, value, min, max)
+}
+
+/// `迷你折线图`(plot lines)— 把 `values` 归一化描线, `w`/`h` 为画布尺寸。
+pub fn 迷你折线图(values: &[f32], w: f32, h: f32) {
+    plot_lines(&mut *current_ui(), values, w, h);
+}
+
+/// `复古进度条`(imgui 风格,轨道内嵌百分比文字)。
+pub fn 复古进度条(fraction: f32) {
+    im_progress_bar(&mut *current_ui(), fraction);
+}
+
+/// `项目符号`(bullet text)。
+pub fn 项目符号(text: &str) {
+    bullet_text(&mut *current_ui(), text);
+}
+
+// ---------------------------------------------------------------------------
+// gpui_kit 汉化
+// ---------------------------------------------------------------------------
+
+/// `容器`(div,tailwind 风格)— 通用带背景/边框/圆角的块级容器。
+pub fn 容器(inner: impl FnOnce(&mut Ui<'_, ()>)) {
+    div(&mut *current_ui(), inner);
+}
+
+/// `键盘键`(kbd)— 例如 `键盘键("Ctrl")` → `[ Ctrl ]`。
+pub fn 键盘键(key: &str) {
+    kbd(&mut *current_ui(), key);
+}
+
+/// `过滤芯片`(chip)— 返回 `true` 表示本次被点击(切换选中态由调用方做)。
+pub fn 过滤芯片(id: &'static str, label: &str, selected: bool) -> bool {
+    chip(&mut *current_ui(), id, label, selected)
+}
+
+/// `徽标`(badge)— `tone` 0=中性 1=主题色 2=错误色。
+pub fn 徽标(text: &str, tone: u8) {
+    badge(&mut *current_ui(), text, tone);
+}
+
+/// `头像`(avatar)— 圆形,显示文本首字符。
+pub fn 头像(name: &str) {
+    avatar(&mut *current_ui(), name);
+}
+
+/// `行内代码`(code)。
+pub fn 行内代码(text: &str) {
+    code(&mut *current_ui(), text);
+}
+
+// ---------------------------------------------------------------------------
+// eui_neo_kit 汉化
+// ---------------------------------------------------------------------------
+
+/// `分段选择`(segmented)— 返回新选中下标。
+pub fn 分段选择(id: &'static str, options: &[&str], selected: usize) -> usize {
+    segmented(&mut *current_ui(), id, options, selected)
+}
+
+/// `步进器`(stepper)— 返回新值。
+pub fn 步进器(id: &'static str, value: i32, min: i32, max: i32) -> i32 {
+    stepper(&mut *current_ui(), id, value, min, max)
+}
+
+/// `卡片`(card)— 带背景、边框、圆角与内容内边距的容器。
+pub fn 卡片(inner: impl FnOnce(&mut Ui<'_, ()>)) {
+    card(&mut *current_ui(), inner);
+}
+
+/// `对话框`(dialog)— 受控 `open`, 点遮罩或按钮请求关闭时返回 `false`。
+pub fn 对话框(id: &'static str, open: bool, title: &str, body: &str, confirm: &str, cancel: &str) -> bool {
+    dialog(&mut *current_ui(), id, open, title, body, confirm, cancel)
+}
+
+/// `数据表格`(data_table)— 返回新选中行下标(点击行切换)。
+pub fn 数据表格(id: &'static str, headers: &[&str], rows: &[Vec<&str>], selected: usize) -> usize {
+    data_table(&mut *current_ui(), id, headers, rows, selected)
+}
+
+/// `通知`(toast)— 受控 `show` 计时自动消失, 返回 `false` 表示该隐藏了。`dt` 为上一帧耗时(秒)。
+pub fn 通知(id: &'static str, show: bool, text: &str, dt: f32) -> bool {
+    toast(&mut *current_ui(), id, show, text, dt)
+}
+
+// ---------------------------------------------------------------------------
+// 和风背景(直绘,不占 UI 流)
+// ---------------------------------------------------------------------------
+
+/// `和风背景`(渐变 + 圆月 + 云 + 飘落花瓣)。调用方在主循环底层调用,
+/// 例如 clear_background 之后、普通 UI 之前。`now` 为时间戳(秒), `w`/`h` 为视口尺寸。
+pub fn 和风背景(now: f32, w: f32, h: f32) {
+    pet_background(now, w, h);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -196,6 +313,31 @@ mod tests {
             侧边栏(|_| {});
             状态栏(|_| {});
             日志进度条("lp", 0.3);
+            // 移植组件集(直绘/鼠标类组件 headless 下会触发 macroquad 断言, 跳过)
+            浮动窗口("窗口", |ui| {
+                ui.text("内容", |t| t.font_size(16));
+            });
+            折叠标题("ch", "详情", true, |ui| {
+                ui.text("更多", |t| t.font_size(16));
+            });
+            复古进度条(0.4);
+            项目符号("要点一");
+            容器(|ui| {
+                ui.text("块", |t| t.font_size(16));
+            });
+            键盘键("Ctrl");
+            _ = 过滤芯片("c1", "全部", true);
+            徽标("NEW", 1);
+            头像("丛");
+            行内代码("fn main()");
+            _ = 分段选择("sg", &["近", "中", "远"], 1);
+            _ = 步进器("st", 2, 0, 10);
+            卡片(|ui| {
+                ui.text("卡片内容", |t| t.font_size(16));
+            });
+            _ = 对话框("dg", true, "提示", "确定? ", "确定", "取消");
+            _ = 数据表格("dt", &["列1", "列2"], &[vec!["a", "b"], vec!["c", "d"]], 0);
+            _ = 通知("ts", false, "保存成功", 0.016);
         });
     }
 

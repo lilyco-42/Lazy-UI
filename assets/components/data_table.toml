@@ -1,0 +1,14 @@
+# data_table.toml — eui_neo_kit 数据表格样式。
+# 未设置字段回退到 M3 theme (data_table.rs)。
+
+row_height = 36.0
+header_height = 32.0
+radius = 8.0
+font_size = 14
+background = 0xFFFFFF
+header_bg = 0xF3EDF7
+header_color = 0x49454F
+row_color = 0x1D1B20
+selected_bg = 0xE8DEF8
+selected_fg = 0x1D192B
+border = 0xCAC4D0

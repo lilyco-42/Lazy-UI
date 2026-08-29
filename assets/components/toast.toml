@@ -1,0 +1,10 @@
+# toast.toml — eui_neo_kit 右上角提示样式。
+# 未设置字段回退到 M3 theme (toast.rs)。
+
+radius = 8.0
+pad_x = 16.0
+pad_y = 10.0
+font_size = 14
+background = 0x322F35   # inverse_surface
+text_color = 0xF5EFF7
+offset_y = 24.0         # 距窗口顶部距离

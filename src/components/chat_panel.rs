@@ -48,6 +48,9 @@ pub struct ChatPanelState {
     pub send_label: &'static str,
     /// Quick-question buttons shown above the input (click = ask).
     pub quick_questions: &'static [&'static str],
+    /// Optional hint line below the input (e.g. "AI 对话: 免费模型渠道").
+    /// `None` hides it. Clicking pushes it into `submitted` events.
+    pub llm_hint: Option<&'static str>,
 }
 
 impl Default for ChatPanelState {
@@ -64,7 +67,12 @@ impl Default for ChatPanelState {
                 "心情不好",
                 "晚安",
                 "你会一直陪我吗？",
+                // 语言切换(桌宠 main.rs 拦截处理, 不当作聊天问题)
+                "🌐 切换语言",
+                // 视觉(W2): 截屏让丛雨"看着你玩游戏"(桌宠 main.rs 拦截处理)
+                "🔍 看看我在干嘛",
             ],
+            llm_hint: None,
         }
     }
 }
@@ -162,6 +170,20 @@ pub fn chat_panel(ui: &mut Ui<'_, ()>, state: &ChatPanelState, events: &Rc<RefCe
                         }
                     }
                 });
+
+            // 4) LLM hint — small clickable line below input (only when set).
+            if let Some(hint) = state.llm_hint {
+                ui.element()
+                    .width(grow!())
+                    .height(fit!())
+                    .layout(|l| l.direction(LeftToRight).align(CenterX, CenterY))
+                    .children(|ui| {
+                        let id = button_id(ui, hint);
+                        if ui.is_just_pressed(id) {
+                            events.borrow_mut().submitted.push(hint.to_string());
+                        }
+                    });
+            }
         });
 }
 
@@ -201,6 +223,7 @@ fn bubble(ui: &mut Ui<'_, ()>, msg: &ChatMessage, c: &ChatPanelConfig, theme: &T
                     ui.text(&msg.text, |t| {
                         t.font_size(c.bubble_font_size.unwrap_or(theme.text.body_size))
                             .color(fg)
+                            .wrap_mode(ply_engine::text::WrapMode::Words)
                     });
                 });
         });

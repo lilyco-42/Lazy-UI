@@ -1,0 +1,9 @@
+# badge.toml — gpui_kit 状态徽标样式。
+# 未设置字段回退到 M3 theme (badge.rs)。
+
+radius = 10.0
+pad_x = 10.0
+font_size = 12
+background = 0xE8DEF8   # secondary_container
+text_color = 0x1D192B
+dot = false            # 是否只显示圆点

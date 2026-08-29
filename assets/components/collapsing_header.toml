@@ -1,0 +1,11 @@
+# collapsing_header.toml — imgui_kit 折叠标题样式。
+# 未设置字段回退到 M3 theme (collapsing_header.rs)。
+
+height = 32.0         # 标题行高
+font_size = 14        # 标题字号
+gap = 6.0             # 标题与正文间距
+pad_x = 8.0           # 横向内边距
+color = 0xE6E0E9      # 折叠时的文本色
+hover = 0xFFFFFF      # 悬停时文本色
+arrow_color = 0x9A92A0
+body_gap = 4.0        # 展开后子项间距

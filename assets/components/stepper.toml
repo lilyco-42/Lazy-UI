@@ -1,0 +1,12 @@
+# stepper.toml — eui_neo_kit 数字步进器样式。
+# 未设置字段回退到 M3 theme (stepper.rs)。
+
+height = 36.0
+radius = 6.0
+font_size = 16
+background = 0xF3EDF7   # surface_container
+text_color = 0x1D1B20
+button_bg = 0x6750A4
+button_fg = 0xFFFFFF
+border = 0xCAC4D0
+step = 1               # 每次加减的步长

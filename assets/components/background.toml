@@ -1,0 +1,17 @@
+# 和风背景组件默认配色(仿 web 版)。字段可选, 未设置用内置默认。
+gradient_top = 0xFDF0F6   # 顶部浅粉
+gradient_mid = 0xF7E3EE   # 中部粉
+gradient_bot = 0xDCD0EC   # 底部淡紫
+moon_color = 0xFCF0D2     # 圆月
+moon_glow = 0xFFF3D8      # 月晕
+moon_x_ratio = 0.78
+moon_y_ratio = 0.12
+moon_radius = 56.0
+moon_glow_radius = 90.0
+cloud_color = 0xFFFFFF    # 云
+cloud_count = 3
+cloud_enabled = true      # 椭圆验证通过后保持
+petal_color = 0xE896BE    # 花瓣
+petal_count = 14
+petal_enabled = true      # 旋转椭圆验证通过后保持
+gradient_bands = 64

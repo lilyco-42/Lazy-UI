@@ -1,0 +1,12 @@
+# drag_float.toml — imgui_kit 拖拽数值组件样式。
+# 未设置字段回退到 M3 theme (drag_float.rs)。
+
+height = 28.0          # 整行高度
+radius = 4.0           # 数值槽圆角
+pad_x = 8.0            # 横向内边距
+font_size = 14         # 字号
+background = 0x3C3C43  # 数值槽底
+label_color = 0xB4B4BC
+value_color = 0xFFFFFF
+border = 0x55555C      # 数值槽边框
+speed = 0.01           # 每像素增量(拖 1px 改 0.01)

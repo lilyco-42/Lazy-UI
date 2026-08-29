@@ -11,7 +11,8 @@ build_targets = ["aarch64-linux-android", "x86_64-linux-android"]
 [dependencies]
 serde = { version = "1", features = ["derive"] }
 toml = "0.8"
-fontdb = "0.16"
+# 禁用 fontconfig: 兼容 HarmonyOS(ohos) 下无 -lX11/pango 系统库的交叉链接
+fontdb = { version = "0.16", default-features = false, features = ["fs", "memmap", "std"] }
 log = "0.4"
 rust-i18n = { version = "4.2", features = ["log-miss-tr"] }
 ply-engine = { version = "1.1", default-features = false, features = ["a11y", "built-in-shaders", "text-styling"] }

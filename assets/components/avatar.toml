@@ -1,0 +1,8 @@
+# avatar.toml — gpui_kit 圆形头像组件样式。
+# 未设置字段回退到 M3 theme (avatar.rs)。
+
+size = 40.0
+radius = 20.0          # 圆形
+font_size = 16
+background = 0x6750A4
+text_color = 0xFFFFFF

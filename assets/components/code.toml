@@ -1,0 +1,10 @@
+# code.toml — gpui_kit 行内代码样式。
+# 未设置字段回退到 M3 theme (code.rs)。
+
+pad_x = 8.0
+pad_y = 2.0
+radius = 4.0
+font_size = 14
+background = 0xECE6F0   # surface_container_high
+text_color = 0x21005D
+border = 0xCAC4D0

@@ -52,3 +52,33 @@ with_ui(&mut ui, || {
 | `slider` | `滑块` | 拖动后值 | `tooltip` | `提示` | — |
 | `sidebar / panel / status_bar` | `侧边栏 / 面板 / 状态栏` | — | `log_progress` | `日志进度条` | — |
 | `chat_panel` | `聊天面板` | 事件 | | | |
+
+## 移植组件集 — 中文即时模式
+
+从桌宠项目(`cute_box/lazy-ply`)移植的三种外部框架风格组件集,外加一个直绘背景;
+同样提供中文即时模式包装(原版英文名保留):
+
+| 集合 | 中文名 | 原版 | 返回 |
+|---|---|---|---|
+| imgui_kit | `浮动窗口` | `im_window` | — |
+| imgui_kit | `折叠标题` | `collapsing_header` | 是否展开 |
+| imgui_kit | `拖拽数值` | `drag_float` | 新值 |
+| imgui_kit | `迷你折线图` | `plot_lines` | — |
+| imgui_kit | `复古进度条` | `im_progress_bar` | — |
+| imgui_kit | `项目符号` | `bullet_text` | — |
+| gpui_kit | `容器` | `div` | — |
+| gpui_kit | `键盘键` | `kbd` | — |
+| gpui_kit | `过滤芯片` | `chip` | 是否点击 |
+| gpui_kit | `徽标` | `badge` | — |
+| gpui_kit | `头像` | `avatar` | — |
+| gpui_kit | `行内代码` | `code` | — |
+| eui_neo_kit | `分段选择` | `segmented` | 新选中下标 |
+| eui_neo_kit | `步进器` | `stepper` | 新值 |
+| eui_neo_kit | `卡片` | `card` | — |
+| eui_neo_kit | `对话框` | `dialog` | 是否仍打开 |
+| eui_neo_kit | `数据表格` | `data_table` | 新选中行 |
+| eui_neo_kit | `通知` | `toast` | 是否仍显示 |
+| background | `和风背景` | `pet_background` | —(直绘,不占 UI 流) |
+
+`chat_panel` 从桌宠版同步了 `llm_hint`(输入框下方提示行)、气泡 `wrap_mode` 与
+默认快捷问题列表;`Cargo.toml` 同步禁用了 fontconfig(兼容 HarmonyOS 交叉链接)。
