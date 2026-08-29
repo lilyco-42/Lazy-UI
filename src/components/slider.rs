@@ -1,5 +1,14 @@
 //! M3 Slider. Returns the dragged value.
 //! Styling from `assets/components/slider.toml`; unset fields use the theme.
+//!
+//! Drag model (from the plyx_demo rewrite):
+//! - Label shows the live value ("音量: 60") instead of a static caption.
+//! - Fill + handle are floats anchored to the track's LEFT and offset by
+//!   `frac × measured track width`, so they grow from the left and stay
+//!   exactly under the pointer (Percent fill inside `align(CenterX)` grew
+//!   from the center — felt backwards).
+//! - Only drag while the pointer is over THIS slider's row (x AND y).
+//!   Checking x alone made every slider move when clicking anywhere.
 
 use ply_engine::prelude::*;
 
@@ -14,8 +23,9 @@ pub fn slider(ui: &mut Ui<'_, ()>, id: impl Into<Id>, label: &str, value: f32, m
     let c = cfg();
     let theme = theme::theme();
     let id: Id = id.into();
-    let frac = if max > min {
-        ((value - min) / (max - min)).clamp(0.0, 1.0)
+    let span = max - min;
+    let frac = if span > 0.0 {
+        ((value - min) / span).clamp(0.0, 1.0)
     } else {
         0.0
     };
@@ -34,6 +44,14 @@ pub fn slider(ui: &mut Ui<'_, ()>, id: impl Into<Id>, label: &str, value: f32, m
     let handle_border = c.handle_border.map(Color::from).unwrap_or(theme.colors.on_primary.into());
     let label_color = c.label_color.map(Color::from).unwrap_or(theme.colors.on_surface_variant.into());
 
+    // Track width = row bbox minus the container's horizontal padding. Measured
+    // from the previous frame's box, so fill and knob line up with the drag.
+    let track_w = ui
+        .bounding_box(id.clone())
+        .map(|b| (b.width - 2.0 * f32::from(pad_x)).max(0.0))
+        .unwrap_or(0.0);
+    let ox = frac * track_w;
+
     ui.element()
         .id(id.clone())
         .width(grow!())
@@ -47,47 +65,70 @@ pub fn slider(ui: &mut Ui<'_, ()>, id: impl Into<Id>, label: &str, value: f32, m
                     l.direction(TopToBottom).gap(gap).padding((0, pad_x, 0, pad_x)).align(Left, CenterY)
                 })
                 .children(|ui| {
-                    ui.text(label, |t| t.font_size(font_size).color(label_color));
+                    // Label shows the current value, updated live while dragging.
+                    let shown = if (result.fract()).abs() < 0.05 {
+                        format!("{label}: {:.0}", result)
+                    } else {
+                        format!("{label}: {:.1}", result)
+                    };
+                    ui.text(&shown, |t| t.font_size(font_size).color(label_color));
                     ui.element()
                         .width(grow!())
                         .height(fixed!(track_height))
-                        .layout(|l| l.align(CenterX, CenterY))
                         .children(|ui| {
+                            // Track base: drawn in-flow first (under everything).
                             ui.element()
                                 .width(grow!())
                                 .height(fixed!(track_height))
                                 .background_color(track_color)
                                 .corner_radius(radius)
                                 .empty();
+                            // Fill + handle are floats anchored to the track's
+                            // LEFT, both offset by `frac × track_w` (fixed px).
                             ui.element()
-                                .width(ply_engine::layout::Sizing::Percent(frac))
+                                .width(fixed!(frac * track_w))
                                 .height(fixed!(track_height))
                                 .background_color(fill_color)
                                 .corner_radius(radius)
-                                .children(|ui| {
-                                    ui.element()
-                                        .width(fixed!(handle_size))
-                                        .height(fixed!(handle_size))
-                                        .corner_radius(handle_size * 0.5)
-                                        .background_color(handle_color)
-                                        .border(|b| b.all(3).color(handle_border))
-                                        .floating(|f| {
-                                            f.attach_parent()
-                                                .anchor((CenterX, CenterY), (Right, CenterY))
-                                                .offset((handle_size * 0.5, 0.0))
-                                        })
-                                        .empty();
-                                });
+                                .floating(|f| {
+                                    f.attach_parent()
+                                        .passthrough()
+                                        .anchor((Left, CenterY), (Left, CenterY))
+                                })
+                                .empty();
+                            ui.element()
+                                .width(fixed!(handle_size))
+                                .height(fixed!(handle_size))
+                                .corner_radius(handle_size * 0.5)
+                                .background_color(handle_color)
+                                .border(|b| b.all(3).color(handle_border))
+                                .floating(|f| {
+                                    f.attach_parent()
+                                        .passthrough()
+                                        .anchor((CenterX, CenterY), (Left, CenterY))
+                                        .offset((ox, 0.0))
+                                })
+                                .empty();
                         });
                 });
         });
 
     if let Some(b) = ui.bounding_box(id.clone()) {
         if is_mouse_button_down(MouseButton::Left) {
-            let (mx, _) = mouse_position();
-            if mx >= b.x - 8.0 && mx <= b.x + b.width + 8.0 {
-                let x = (mx - b.x).clamp(0.0, b.width);
-                result = min + (x / b.width) * (max - min);
+            let (mx, my) = mouse_position();
+            // Respond only while the pointer is over THIS slider's box (x AND y).
+            // Checking x alone made every slider move when clicking anywhere.
+            let near_x = mx >= b.x - 4.0 && mx <= b.x + b.width + 4.0;
+            let near_y = my >= b.y - 8.0 && my <= b.y + b.height + 8.0;
+            if near_x && near_y && span > 0.0 {
+                // Map across the TRACK region (bbox minus horizontal padding),
+                // so the handle sits exactly under the pointer.
+                let track_left = b.x + f32::from(pad_x);
+                let track_right = b.x + b.width - f32::from(pad_x);
+                if track_right > track_left {
+                    let x = (mx - track_left).clamp(0.0, track_right - track_left);
+                    result = min + (x / (track_right - track_left)) * span;
+                }
             }
         }
     }

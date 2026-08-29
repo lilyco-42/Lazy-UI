@@ -5,6 +5,8 @@
 
 mod background;
 mod button;
+mod component;
+mod page_layout;
 mod chat_panel;
 mod checkbox;
 mod combo;
@@ -31,6 +33,8 @@ mod eui_neo_kit;
 
 pub use background::*;
 pub use button::*;
+pub use component::*;
+pub use page_layout::*;
 pub use chat_panel::*;
 pub use checkbox::*;
 pub use combo::*;
