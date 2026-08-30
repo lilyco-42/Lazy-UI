@@ -1,0 +1,33 @@
+# m3_dark — Material Design 3 baseline (dark).
+[colors]
+primary = 0xD0BCFF
+on_primary = 0x381E72
+primary_container = 0x4F378B
+on_primary_container = 0xEADDFF
+secondary = 0xCCC2DC
+on_secondary = 0x332D41
+secondary_container = 0x4A4458
+on_secondary_container = 0xE8DEF8
+tertiary = 0xEFB8C8
+on_tertiary = 0x492532
+tertiary_container = 0x633B48
+on_tertiary_container = 0xFFD8E4
+error = 0xF2B8B5
+on_error = 0x601410
+error_container = 0x8C1D18
+on_error_container = 0xF9DEDC
+surface = 0x141218
+on_surface = 0xE6E0E9
+surface_variant = 0x49454F
+on_surface_variant = 0xCAC4D0
+outline = 0x938F99
+outline_variant = 0x49454F
+surface_container_lowest = 0x0F0D13
+surface_container_low = 0x1C1B20
+surface_container = 0x211F26
+surface_container_high = 0x2B2930
+surface_container_highest = 0x36343B
+inverse_surface = 0xE6E0E9
+inverse_on_surface = 0x322F35
+inverse_primary = 0x6750A4
+scrim = 0x000000

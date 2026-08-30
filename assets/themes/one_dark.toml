@@ -1,0 +1,33 @@
+# one_dark — Atom One Dark.
+[colors]
+primary = 0x61AFEF
+on_primary = 0x282C34
+primary_container = 0x3E4451
+on_primary_container = 0x61AFEF
+secondary = 0xE5C07B
+on_secondary = 0x282C34
+secondary_container = 0x3E4451
+on_secondary_container = 0xE5C07B
+tertiary = 0xC678DD
+on_tertiary = 0x282C34
+tertiary_container = 0x3E4451
+on_tertiary_container = 0xC678DD
+error = 0xE06C75
+on_error = 0x282C34
+error_container = 0x3E4451
+on_error_container = 0xE06C75
+surface = 0x282C34
+on_surface = 0xABB2BF
+surface_variant = 0x3E4451
+on_surface_variant = 0x7F848E
+outline = 0x5C6370
+outline_variant = 0x3E4451
+surface_container_lowest = 0x23272E
+surface_container_low = 0x2E333B
+surface_container = 0x333942
+surface_container_high = 0x39404A
+surface_container_highest = 0x3E4451
+inverse_surface = 0xABB2BF
+inverse_on_surface = 0x282C34
+inverse_primary = 0x61AFEF
+scrim = 0x000000

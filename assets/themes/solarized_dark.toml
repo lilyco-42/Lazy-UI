@@ -1,0 +1,33 @@
+# solarized_dark — Ethan Schoonover's Solarized (dark).
+[colors]
+primary = 0x268BD2
+on_primary = 0x002B36
+primary_container = 0x073642
+on_primary_container = 0x268BD2
+secondary = 0x2AA198
+on_secondary = 0x002B36
+secondary_container = 0x073642
+on_secondary_container = 0x2AA198
+tertiary = 0xD33682
+on_tertiary = 0x002B36
+tertiary_container = 0x073642
+on_tertiary_container = 0xD33682
+error = 0xDC322F
+on_error = 0x002B36
+error_container = 0x073642
+on_error_container = 0xDC322F
+surface = 0x002B36
+on_surface = 0x839496
+surface_variant = 0x073642
+on_surface_variant = 0x93A1A1
+outline = 0x586E75
+outline_variant = 0x073642
+surface_container_lowest = 0x00212C
+surface_container_low = 0x06343F
+surface_container = 0x073642
+surface_container_high = 0x0A3B48
+surface_container_highest = 0x0B4351
+inverse_surface = 0x839496
+inverse_on_surface = 0x002B36
+inverse_primary = 0x268BD2
+scrim = 0x000000

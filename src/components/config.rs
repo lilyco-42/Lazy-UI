@@ -613,6 +613,41 @@ component_config! {
 }
 
 // ---------------------------------------------------------------------------
+// Collected components (from plyx_demo / oh-my-meme prototypes)
+// ---------------------------------------------------------------------------
+
+component_config! {
+    CopyButtonConfig {
+        gap: Option<f32>,
+    },
+    "../../assets/components/copy_button.toml"
+}
+
+component_config! {
+    卡片容器Config {
+        background: Option<u32>,
+        foreground: Option<u32>,
+        radius: Option<f32>,
+        pad_x: Option<f32>,
+        font_size: Option<u16>,
+    },
+    "../../assets/components/卡片容器.toml"
+}
+
+component_config! {
+    蓝色按钮Config {
+        background: Option<u32>,
+        foreground: Option<u32>,
+        radius: Option<f32>,
+        pad_x: Option<f32>,
+        font_size: Option<u16>,
+        center_x: Option<bool>,
+        center_x_shift: Option<f32>,
+    },
+    "../../assets/components/蓝色按钮.toml"
+}
+
+// ---------------------------------------------------------------------------
 // Per-call UI attributes — Compose-style, CSS-cascade semantics.
 //
 // ```rust
@@ -665,6 +700,9 @@ pub struct Attrs {
     pub dialog: Option<DialogConfig>,
     pub data_table: Option<DataTableConfig>,
     pub toast: Option<ToastConfig>,
+    pub copy_button: Option<CopyButtonConfig>,
+    pub 卡片容器: Option<卡片容器Config>,
+    pub 蓝色按钮: Option<蓝色按钮Config>,
 }
 
 thread_local! {
@@ -757,6 +795,9 @@ mod tests {
         check!(DialogConfig, "../../assets/components/dialog.toml");
         check!(DataTableConfig, "../../assets/components/data_table.toml");
         check!(ToastConfig, "../../assets/components/toast.toml");
+        check!(CopyButtonConfig, "../../assets/components/copy_button.toml");
+        check!(卡片容器Config, "../../assets/components/卡片容器.toml");
+        check!(蓝色按钮Config, "../../assets/components/蓝色按钮.toml");
     }
 
     /// The CSS cascade: per-call attrs win over the stylesheet.

@@ -66,6 +66,7 @@ fn rounded_btn(
     mut on_click: impl FnMut() + 'static,
     cfg: &ButtonConfig,
     p: Palette,
+    width: ply_engine::layout::Sizing,
 ) {
     let theme = theme::theme();
     let height = cfg.height.unwrap_or(theme.shapes.button_height);
@@ -75,7 +76,7 @@ fn rounded_btn(
     if let Some(id) = id {
         el = el.id(id);
     }
-    el.width(fit!())
+    el.width(width)
         .height(fixed!(height))
         .corner_radius(radius)
         .on_press(move |_, _| on_click())
@@ -127,7 +128,7 @@ pub fn button(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + 'static
     let theme = theme::theme();
     let state = variant_state(&cfg, ButtonKind::Filled);
     let p = variant_palette(&theme, ButtonKind::Filled, &state);
-    rounded_btn(ui, None, label, on_click, &cfg, p);
+    rounded_btn(ui, None, label, on_click, &cfg, p, fit!());
 }
 
 /// Medium-emphasis tonal button (secondary container).
@@ -136,7 +137,7 @@ pub fn button_tonal(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + '
     let theme = theme::theme();
     let state = variant_state(&cfg, ButtonKind::Tonal);
     let p = variant_palette(&theme, ButtonKind::Tonal, &state);
-    rounded_btn(ui, None, label, on_click, &cfg, p);
+    rounded_btn(ui, None, label, on_click, &cfg, p, fit!());
 }
 
 /// Outlined button.
@@ -145,7 +146,7 @@ pub fn button_outlined(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() 
     let theme = theme::theme();
     let state = variant_state(&cfg, ButtonKind::Outlined);
     let p = variant_palette(&theme, ButtonKind::Outlined, &state);
-    rounded_btn(ui, None, label, on_click, &cfg, p);
+    rounded_btn(ui, None, label, on_click, &cfg, p, fit!());
 }
 
 /// Low-emphasis text button.
@@ -154,7 +155,7 @@ pub fn button_text(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + 's
     let theme = theme::theme();
     let state = variant_state(&cfg, ButtonKind::Text);
     let p = variant_palette(&theme, ButtonKind::Text, &state);
-    rounded_btn(ui, None, label, on_click, &cfg, p);
+    rounded_btn(ui, None, label, on_click, &cfg, p, fit!());
 }
 
 /// The M3 button emphasis used by a label-only (id) button.
@@ -227,6 +228,17 @@ pub fn button_id_kind(ui: &mut Ui<'_, ()>, label: &str, kind: ButtonKind) -> Id 
     let id: Id = Id::from((label, 0u32));
     let state = variant_state(&cfg, kind);
     let p = variant_palette(&theme, kind, &state);
-    rounded_btn(ui, Some(id.clone()), label, || {}, &cfg, p);
+    rounded_btn(ui, Some(id.clone()), label, || {}, &cfg, p, fit!());
     id
+}
+
+/// High-emphasis filled button with a FIXED pixel width. Use when the label can
+/// change length (e.g. a copy button flipping between "copy" and "✓ copied")
+/// and the button must not jump around.
+pub fn button_fixed(ui: &mut Ui<'_, ()>, label: &str, width: f32, on_click: impl FnMut() + 'static) {
+    let cfg = button_cfg();
+    let theme = theme::theme();
+    let state = variant_state(&cfg, ButtonKind::Filled);
+    let p = variant_palette(&theme, ButtonKind::Filled, &state);
+    rounded_btn(ui, None, label, on_click, &cfg, p, fixed!(width));
 }

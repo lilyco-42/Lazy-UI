@@ -1,0 +1,33 @@
+# tokyo_night — Tokyo Night (deep blue night palette).
+[colors]
+primary = 0x7AA2F7
+on_primary = 0x16161E
+primary_container = 0x292E42
+on_primary_container = 0x7AA2F7
+secondary = 0xBB9AF7
+on_secondary = 0x16161E
+secondary_container = 0x292E42
+on_secondary_container = 0xBB9AF7
+tertiary = 0x7DCFFF
+on_tertiary = 0x16161E
+tertiary_container = 0x292E42
+on_tertiary_container = 0x7DCFFF
+error = 0xF7768E
+on_error = 0x16161E
+error_container = 0x292E42
+on_error_container = 0xF7768E
+surface = 0x1A1B26
+on_surface = 0xC0CAF5
+surface_variant = 0x292E42
+on_surface_variant = 0xA9B1D6
+outline = 0x565F89
+outline_variant = 0x292E42
+surface_container_lowest = 0x16161E
+surface_container_low = 0x1E2031
+surface_container = 0x24283B
+surface_container_high = 0x2A2E44
+surface_container_highest = 0x2F3450
+inverse_surface = 0xC0CAF5
+inverse_on_surface = 0x1A1B26
+inverse_primary = 0x7AA2F7
+scrim = 0x000000

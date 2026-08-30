@@ -23,6 +23,12 @@
 | test\lazy-ply 本地改动 | `按钮()` 改走 `ButtonKind::Filled`（实心强调） | `src/components/zh.rs` |
 | cute_box\lazy-ply | 全组件 showcase `demo_components.rs`（523 行、19 个交互状态） | `src/bin/demo_components.rs` |
 | cute_box\lazy-ply | 主题组件 toml 批量（avatar/badge/card/chat_panel/chip/kbd…） | `assets/components/`（cute_box 与 GitHub 仅行尾差异，已天然一致） |
+| plyx_demo\demo | **copy_button**（剪贴板按钮，固定宽度防跳变） | `src/components/copy_button.rs` + `copy_button.toml` |
+| plyx_demo\demo | **log_panel**（有状态日志面板，Component trait 演示） | `src/components/log_panel.rs`（依赖新增 `panel_opt`） |
+| plyx_demo\demo | **蓝色按钮**（M3 蓝实心按钮，center_x_shift 校准） | `src/components/蓝色按钮.rs` + `蓝色按钮.toml` |
+| plyx_demo\demo | **卡片容器**（M3 卡片容器） | `src/components/卡片容器.rs` + `卡片容器.toml` |
+| plyx_demo\demo | **主页面 / 关于页**（page_layout 页面组件 + 布局关系 toml） | `src/components/主页面.rs` `关于页.rs` + 布局 toml；bin `demo_pages` |
+| plyx_demo\demo | **11 套主题**（catppuccin/dracula/fluent/gruvbox/nord/one_dark/solarized×2/tokyo/m3_dark/m3_light） | `assets/themes/*.toml`（新增目录；当前激活主题仍为 `theme.toml`） |
 
 ## 3. 待处理清单（需要决策）
 

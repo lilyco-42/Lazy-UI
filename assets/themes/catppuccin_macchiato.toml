@@ -1,0 +1,33 @@
+# catppuccin_macchiato — Catppuccin (macchiato, pastel).
+[colors]
+primary = 0x8AADF4
+on_primary = 0x24273A
+primary_container = 0x363A4F
+on_primary_container = 0x8AADF4
+secondary = 0xC6A0F6
+on_secondary = 0x24273A
+secondary_container = 0x363A4F
+on_secondary_container = 0xC6A0F6
+tertiary = 0xF5A97F
+on_tertiary = 0x24273A
+tertiary_container = 0x363A4F
+on_tertiary_container = 0xF5A97F
+error = 0xED8796
+on_error = 0x24273A
+error_container = 0x363A4F
+on_error_container = 0xED8796
+surface = 0x24273A
+on_surface = 0xC6CADF
+surface_variant = 0x363A4F
+on_surface_variant = 0xA5ADCB
+outline = 0x5B6078
+outline_variant = 0x363A4F
+surface_container_lowest = 0x1E2030
+surface_container_low = 0x292C3F
+surface_container = 0x2E3245
+surface_container_high = 0x33374B
+surface_container_highest = 0x383D52
+inverse_surface = 0xC6CADF
+inverse_on_surface = 0x24273A
+inverse_primary = 0x8AADF4
+scrim = 0x000000

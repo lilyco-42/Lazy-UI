@@ -1,0 +1,33 @@
+# solarized_light — Ethan Schoonover's Solarized (light).
+[colors]
+primary = 0x268BD2
+on_primary = 0xFDF6E3
+primary_container = 0xDDE3E0
+on_primary_container = 0x073642
+secondary = 0x2AA198
+on_secondary = 0xFDF6E3
+secondary_container = 0xDDE3E0
+on_secondary_container = 0x073642
+tertiary = 0xD33682
+on_tertiary = 0xFDF6E3
+tertiary_container = 0xEADFDD
+on_tertiary_container = 0x073642
+error = 0xDC322F
+on_error = 0xFDF6E3
+error_container = 0xF2D8D5
+on_error_container = 0x073642
+surface = 0xFDF6E3
+on_surface = 0x586E75
+surface_variant = 0xEEE8D5
+on_surface_variant = 0x839496
+outline = 0x93A1A1
+outline_variant = 0xE4DCCC
+surface_container_lowest = 0xFFFFFF
+surface_container_low = 0xF5EEDA
+surface_container = 0xEEE8D5
+surface_container_high = 0xE8E2CE
+surface_container_highest = 0xE0DAC6
+inverse_surface = 0x073642
+inverse_on_surface = 0xEEE8D5
+inverse_primary = 0x268BD2
+scrim = 0x000000

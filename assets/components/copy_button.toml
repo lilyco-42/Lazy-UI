@@ -1,0 +1,5 @@
+# copy_button.toml — copy button spacing.
+# `gap` = extra left margin before the button (px), so a preceding label never
+# overlaps it even when the label's measured box is wider than its ink.
+
+gap = 8

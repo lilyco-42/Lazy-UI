@@ -1,0 +1,33 @@
+# gruvbox_dark — gruvbox retro groove (dark, warm).
+[colors]
+primary = 0xFE8019
+on_primary = 0x1D2021
+primary_container = 0x504945
+on_primary_container = 0xFE8019
+secondary = 0xB8BB26
+on_secondary = 0x1D2021
+secondary_container = 0x504945
+on_secondary_container = 0xB8BB26
+tertiary = 0xD3869B
+on_tertiary = 0x1D2021
+tertiary_container = 0x504945
+on_tertiary_container = 0xD3869B
+error = 0xFB4934
+on_error = 0x1D2021
+error_container = 0x504945
+on_error_container = 0xFB4934
+surface = 0x1D2021
+on_surface = 0xEBDBB2
+surface_variant = 0x504945
+on_surface_variant = 0xBDAE93
+outline = 0x7C6F64
+outline_variant = 0x504945
+surface_container_lowest = 0x1A1C1D
+surface_container_low = 0x242627
+surface_container = 0x282828
+surface_container_high = 0x2E2E2E
+surface_container_highest = 0x3C3836
+inverse_surface = 0xEBDBB2
+inverse_on_surface = 0x1D2021
+inverse_primary = 0xFE8019
+scrim = 0x000000

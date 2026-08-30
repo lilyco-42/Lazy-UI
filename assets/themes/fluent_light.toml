@@ -1,0 +1,33 @@
+# fluent_light — Microsoft Fluent 2 (light).
+[colors]
+primary = 0x0F6CBD
+on_primary = 0xFFFFFF
+primary_container = 0xDEEBFC
+on_primary_container = 0x0B3E68
+secondary = 0x5C6B7A
+on_secondary = 0xFFFFFF
+secondary_container = 0xE5E9ED
+on_secondary_container = 0x38434E
+tertiary = 0x0B6E61
+on_tertiary = 0xFFFFFF
+tertiary_container = 0xCEEDE6
+on_tertiary_container = 0x094E45
+error = 0xC42B1C
+on_error = 0xFFFFFF
+error_container = 0xFBDBD6
+on_error_container = 0x7C1B12
+surface = 0xFFFFFF
+on_surface = 0x242424
+surface_variant = 0xEFEFF1
+on_surface_variant = 0x494949
+outline = 0x79747A
+outline_variant = 0xD7D7DB
+surface_container_lowest = 0xFAFAFA
+surface_container_low = 0xF3F3F5
+surface_container = 0xEFEFF1
+surface_container_high = 0xEAEAED
+surface_container_highest = 0xE5E5E9
+inverse_surface = 0x333333
+inverse_on_surface = 0xF3F3F5
+inverse_primary = 0x87B9F7
+scrim = 0x000000

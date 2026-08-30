@@ -1,0 +1,33 @@
+# nord — the Nordic color palette (polar night + frost/aurora).
+[colors]
+primary = 0x88C0D0
+on_primary = 0x2E3440
+primary_container = 0x3B4252
+on_primary_container = 0x88C0D0
+secondary = 0x81A1C1
+on_secondary = 0x2E3440
+secondary_container = 0x434C5E
+on_secondary_container = 0x81A1C1
+tertiary = 0xB48EAD
+on_tertiary = 0x2E3440
+tertiary_container = 0x4C566A
+on_tertiary_container = 0xB48EAD
+error = 0xBF616A
+on_error = 0x2E3440
+error_container = 0x4C566A
+on_error_container = 0xBF616A
+surface = 0x2E3440
+on_surface = 0xD8DEE9
+surface_variant = 0x434C5E
+on_surface_variant = 0x81A1C1
+outline = 0x4C566A
+outline_variant = 0x434C5E
+surface_container_lowest = 0x242933
+surface_container_low = 0x333A47
+surface_container = 0x3B4252
+surface_container_high = 0x434C5E
+surface_container_highest = 0x4C566A
+inverse_surface = 0xD8DEE9
+inverse_on_surface = 0x2E3440
+inverse_primary = 0x88C0D0
+scrim = 0x000000

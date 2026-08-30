@@ -51,10 +51,19 @@ pub fn sidebar(ui: &mut Ui<'_, ()>, inner: impl FnOnce(&mut Ui<'_, ()>)) {
 
 /// Main content card / panel, filling its layout region.
 pub fn panel(ui: &mut Ui<'_, ()>, inner: impl FnOnce(&mut Ui<'_, ()>)) {
+    panel_opt(ui, None, inner);
+}
+
+/// [`panel`] with an explicit optional `Id` (usually `Some`), so callers can poll
+/// `ui.is_just_pressed(id)` on the whole panel (e.g. a click-to-collapse card).
+pub fn panel_opt(ui: &mut Ui<'_, ()>, id: Option<Id>, inner: impl FnOnce(&mut Ui<'_, ()>)) {
     let cfg = config::effective(config::Style::current().panel, PanelConfig::get(), PanelConfig::merged);
     let theme = theme::theme();
-    ui.element()
-        .width(grow!())
+    let mut el = ui.element();
+    if let Some(id) = id {
+        el = el.id(id);
+    }
+    el.width(grow!())
         .height(grow!())
         .background_color(cfg.background.map(Color::from).unwrap_or(theme.colors.surface_container_lowest.into()))
         .corner_radius(cfg.radius.unwrap_or(theme.shapes.radius_lg))

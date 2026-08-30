@@ -172,3 +172,15 @@ pub fn theme() -> &'static Theme {
         toml::from_str(include_str!("../assets/theme.toml")).unwrap_or_default()
     })
 }
+
+/// UI-scale-aware px helper (identity until canvas scale lands). Components that
+/// ship their own stylesheets should route sizes through here so an app can later
+/// adopt a global scale factor without touching every component.
+pub fn px(v: f32) -> f32 {
+    v
+}
+
+/// `px` cast to `u16` (layout padding units).
+pub fn pxu(v: f32) -> u16 {
+    v as u16
+}

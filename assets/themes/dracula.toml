@@ -1,0 +1,33 @@
+# dracula — Dracula color scheme.
+[colors]
+primary = 0xBD93F9
+on_primary = 0x282A36
+primary_container = 0x44475A
+on_primary_container = 0xBD93F9
+secondary = 0x6272A4
+on_secondary = 0x282A36
+secondary_container = 0x44475A
+on_secondary_container = 0x6272A4
+tertiary = 0xFF79C6
+on_tertiary = 0x282A36
+tertiary_container = 0x44475A
+on_tertiary_container = 0xFF79C6
+error = 0xFF5555
+on_error = 0x282A36
+error_container = 0x44475A
+on_error_container = 0xFF5555
+surface = 0x282A36
+on_surface = 0xF8F8F2
+surface_variant = 0x44475A
+on_surface_variant = 0xBFBFBF
+outline = 0x6272A4
+outline_variant = 0x44475A
+surface_container_lowest = 0x21222C
+surface_container_low = 0x2F313E
+surface_container = 0x343746
+surface_container_high = 0x3A3D4C
+surface_container_highest = 0x414450
+inverse_surface = 0xF8F8F2
+inverse_on_surface = 0x282A36
+inverse_primary = 0xBD93F9
+scrim = 0x000000
