@@ -17,6 +17,8 @@ mod divider;
 mod layout;
 mod listbox;
 mod log_panel;
+#[cfg(feature = "image-grid")]
+mod meme_grid;
 mod progress;
 mod radio;
 mod selectable;
@@ -50,6 +52,8 @@ pub use divider::*;
 pub use layout::*;
 pub use listbox::*;
 pub use log_panel::*;
+#[cfg(feature = "image-grid")]
+pub use meme_grid::*;
 pub use progress::*;
 pub use radio::*;
 pub use selectable::*;

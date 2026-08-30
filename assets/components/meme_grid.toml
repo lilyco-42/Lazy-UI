@@ -1,0 +1,14 @@
+# meme_grid.toml — MemeGrid stylesheet (like CSS, per component).
+# Unset fields fall back to the M3 theme inside meme_grid.rs.
+
+cell_size = 96.0        # square cell edge px
+gap = 8.0               # spacing between cells
+padding = 12.0          # container padding
+radius = 12.0           # cell corner radius
+buffer_rows = 1         # extra rows built above/below the window (prefetch)
+thumb_px = 192          # decode-time downsample target (2x DPI headroom)
+cache_capacity = 512    # LRU texture cache entries
+
+background = 0xF3EDF7       # grid container background
+placeholder = 0xE6E0E9      # shown while a thumbnail decodes
+selected_border = 0x6750A4  # outline around the playing GIF

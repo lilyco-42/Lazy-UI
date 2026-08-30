@@ -17,3 +17,11 @@ log = "0.4"
 rust-i18n = { version = "4.2", features = ["log-miss-tr"] }
 ply-engine = { version = "1.1", default-features = false, features = ["a11y", "built-in-shaders", "text-styling"] }
 
+# meme_grid (虚拟化图片/表情网格) 可选依赖；`cargo build --features image-grid` 启用
+image = { version = "0.25", default-features = false, features = ["gif", "jpeg", "png", "webp"], optional = true }
+indexmap = { version = "2", optional = true }
+
+[features]
+default = []
+image-grid = ["dep:image", "dep:indexmap"]
+

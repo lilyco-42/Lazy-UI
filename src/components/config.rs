@@ -624,6 +624,22 @@ component_config! {
 }
 
 component_config! {
+    MemeGridConfig {
+        cell_size: Option<f32>,
+        gap: Option<f32>,
+        padding: Option<f32>,
+        radius: Option<f32>,
+        buffer_rows: Option<usize>,
+        thumb_px: Option<u32>,
+        cache_capacity: Option<usize>,
+        background: Option<u32>,
+        placeholder: Option<u32>,
+        selected_border: Option<u32>,
+    },
+    "../../assets/components/meme_grid.toml"
+}
+
+component_config! {
     卡片容器Config {
         background: Option<u32>,
         foreground: Option<u32>,
@@ -701,6 +717,7 @@ pub struct Attrs {
     pub data_table: Option<DataTableConfig>,
     pub toast: Option<ToastConfig>,
     pub copy_button: Option<CopyButtonConfig>,
+    pub meme_grid: Option<MemeGridConfig>,
     pub 卡片容器: Option<卡片容器Config>,
     pub 蓝色按钮: Option<蓝色按钮Config>,
 }
@@ -796,6 +813,7 @@ mod tests {
         check!(DataTableConfig, "../../assets/components/data_table.toml");
         check!(ToastConfig, "../../assets/components/toast.toml");
         check!(CopyButtonConfig, "../../assets/components/copy_button.toml");
+        check!(MemeGridConfig, "../../assets/components/meme_grid.toml");
         check!(卡片容器Config, "../../assets/components/卡片容器.toml");
         check!(蓝色按钮Config, "../../assets/components/蓝色按钮.toml");
     }

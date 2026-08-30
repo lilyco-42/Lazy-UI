@@ -29,6 +29,7 @@
 | plyx_demo\demo | **卡片容器**（M3 卡片容器） | `src/components/卡片容器.rs` + `卡片容器.toml` |
 | plyx_demo\demo | **主页面 / 关于页**（page_layout 页面组件 + 布局关系 toml） | `src/components/主页面.rs` `关于页.rs` + 布局 toml；bin `demo_pages` |
 | plyx_demo\demo | **11 套主题**（catppuccin/dracula/fluent/gruvbox/nord/one_dark/solarized×2/tokyo/m3_dark/m3_light） | `assets/themes/*.toml`（新增目录；当前激活主题仍为 `theme.toml`） |
+| oh-my-meme-rs | **meme_grid**（虚拟化表情网格，image 解码 + LRU 纹理缓存） | `src/components/meme_grid.rs` + `meme_grid.toml`（feature `image-grid` 启用） |
 
 ## 3. 待处理清单（需要决策）
 
