@@ -8,6 +8,31 @@ use ply_engine::prelude::*;
 
 use crate::components::config::{self, ButtonConfig, ButtonStateConfig};
 use crate::theme::{self, TRANSPARENT};
+use std::cell::RefCell;
+use std::collections::HashMap;
+
+// Per-button cross-frame highlight factor. Immediate mode rebuilds the tree
+// every frame, so hover/pressed color transitions need to remember where each
+// button's intensity was last frame. Keyed by id string (explicit id, else
+// label — fine for a purely-visual micro-interaction).
+thread_local! {
+    static BTN_HL: RefCell<HashMap<String, f32>> = RefCell::new(HashMap::new());
+}
+
+/// The highlight factor transitions toward `target` on each frame. A fixed
+/// per-frame gain (not frame-time) keeps this headless-safe: `macroquad`
+/// frame-time/clock reads panic when called off the main `#[macroquad::main]`
+/// thread, which the headless test harness runs on. The visual cost of a fixed
+/// gain is negligible for a 150ms micro-interaction.
+fn highlight(key: &str, target: f32) -> f32 {
+    BTN_HL.with(|m| {
+        let mut m = m.borrow_mut();
+        let v = m.entry(key.to_string()).or_insert(0.0);
+        // Exponential approach: closes ~12% of the remaining gap each frame.
+        *v += (target - *v) * 0.12;
+        *v
+    })
+}
 
 /// The resolved palette for one button render (colors already merged).
 #[derive(Clone, Copy)]
@@ -54,14 +79,25 @@ fn rounded_btn(
         .height(fixed!(height))
         .corner_radius(radius)
         .on_press(move |_, _| on_click())
-        .accessibility(|a| a.button(label))
+        .accessibility(|a| {
+            a.button(label)
+                .ring_color(theme.colors.primary)
+                .ring_width(2)
+        })
         .children(|ui| {
-            let state: Color = if ui.pressed() {
-                p.pressed
-            } else if ui.hovered() {
-                p.hover
+            let target = if ui.pressed() {
+                1.0
+            } else if ui.hovered() || ui.focused() {
+                0.5
             } else {
-                p.bg
+                0.0
+            };
+            let hl = highlight(label, target);
+            // Two-segment crossfade: bg -> hover (hl 0..0.5), hover -> pressed (hl 0.5..1).
+            let state = if hl <= 0.5 {
+                p.bg.lerp_srgb(p.hover, hl * 2.0)
+            } else {
+                p.hover.lerp_srgb(p.pressed, (hl - 0.5) * 2.0)
             };
             let mut el = ui
                 .element()
@@ -89,16 +125,8 @@ fn rounded_btn(
 pub fn button(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + 'static) {
     let cfg = button_cfg();
     let theme = theme::theme();
-    let state = cfg.filled.unwrap_or_default();
-    let p = resolve_palette(&state,
-        Palette {
-            bg: theme.colors.primary.into(),
-            hover: theme::HOVER_PRIMARY.into(),
-            pressed: theme::PRESSED_PRIMARY.into(),
-            fg: theme.colors.on_primary.into(),
-            border: None,
-        },
-    );
+    let state = variant_state(&cfg, ButtonKind::Filled);
+    let p = variant_palette(&theme, ButtonKind::Filled, &state);
     rounded_btn(ui, None, label, on_click, &cfg, p);
 }
 
@@ -106,16 +134,8 @@ pub fn button(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + 'static
 pub fn button_tonal(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + 'static) {
     let cfg = button_cfg();
     let theme = theme::theme();
-    let state = cfg.tonal.unwrap_or_default();
-    let p = resolve_palette(&state,
-        Palette {
-            bg: theme.colors.secondary_container.into(),
-            hover: theme::HOVER_TONAL.into(),
-            pressed: theme::PRESSED_TONAL.into(),
-            fg: theme.colors.on_secondary_container.into(),
-            border: None,
-        },
-    );
+    let state = variant_state(&cfg, ButtonKind::Tonal);
+    let p = variant_palette(&theme, ButtonKind::Tonal, &state);
     rounded_btn(ui, None, label, on_click, &cfg, p);
 }
 
@@ -123,16 +143,8 @@ pub fn button_tonal(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + '
 pub fn button_outlined(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + 'static) {
     let cfg = button_cfg();
     let theme = theme::theme();
-    let state = cfg.outlined.unwrap_or_default();
-    let p = resolve_palette(&state,
-        Palette {
-            bg: TRANSPARENT.into(),
-            hover: theme::HOVER_OUTLINED.into(),
-            pressed: theme::PRESSED_OUTLINED.into(),
-            fg: theme.colors.primary.into(),
-            border: Some(theme.colors.outline.into()),
-        },
-    );
+    let state = variant_state(&cfg, ButtonKind::Outlined);
+    let p = variant_palette(&theme, ButtonKind::Outlined, &state);
     rounded_btn(ui, None, label, on_click, &cfg, p);
 }
 
@@ -140,17 +152,62 @@ pub fn button_outlined(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() 
 pub fn button_text(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + 'static) {
     let cfg = button_cfg();
     let theme = theme::theme();
-    let state = cfg.text.unwrap_or_default();
-    let p = resolve_palette(&state,
-        Palette {
+    let state = variant_state(&cfg, ButtonKind::Text);
+    let p = variant_palette(&theme, ButtonKind::Text, &state);
+    rounded_btn(ui, None, label, on_click, &cfg, p);
+}
+
+/// The M3 button emphasis used by a label-only (id) button.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ButtonKind {
+    Filled,
+    Tonal,
+    Outlined,
+    Text,
+}
+
+/// The palette fallback for a variant, matched up with its `cfg.<variant>`.
+fn variant_palette(theme: &theme::Theme, kind: ButtonKind, state: &ButtonStateConfig) -> Palette {
+    match kind {
+        ButtonKind::Filled => resolve_palette(state, Palette {
+            bg: theme.colors.primary.into(),
+            hover: theme::HOVER_PRIMARY.into(),
+            pressed: theme::PRESSED_PRIMARY.into(),
+            fg: theme.colors.on_primary.into(),
+            border: None,
+        }),
+        ButtonKind::Tonal => resolve_palette(state, Palette {
+            bg: theme.colors.secondary_container.into(),
+            hover: theme::HOVER_TONAL.into(),
+            pressed: theme::PRESSED_TONAL.into(),
+            fg: theme.colors.on_secondary_container.into(),
+            border: None,
+        }),
+        ButtonKind::Outlined => resolve_palette(state, Palette {
+            bg: TRANSPARENT.into(),
+            hover: theme::HOVER_OUTLINED.into(),
+            pressed: theme::PRESSED_OUTLINED.into(),
+            fg: theme.colors.primary.into(),
+            border: Some(theme.colors.outline.into()),
+        }),
+        ButtonKind::Text => resolve_palette(state, Palette {
             bg: TRANSPARENT.into(),
             hover: theme::HOVER_TEXT.into(),
             pressed: theme::PRESSED_TEXT.into(),
             fg: theme.colors.primary.into(),
             border: None,
-        },
-    );
-    rounded_btn(ui, None, label, on_click, &cfg, p);
+        }),
+    }
+}
+
+/// The `cfg` palette subfield for a variant.
+fn variant_state(cfg: &ButtonConfig, kind: ButtonKind) -> ButtonStateConfig {
+    match kind {
+        ButtonKind::Filled => cfg.filled.unwrap_or_default(),
+        ButtonKind::Tonal => cfg.tonal.unwrap_or_default(),
+        ButtonKind::Outlined => cfg.outlined.unwrap_or_default(),
+        ButtonKind::Text => cfg.text.unwrap_or_default(),
+    }
 }
 
 /// Label-only button — convention over configuration: no callback, auto-generated
@@ -159,19 +216,17 @@ pub fn button_text(ui: &mut Ui<'_, ()>, label: &str, on_click: impl FnMut() + 's
 ///
 /// `button_id(ui, "hello")` ≈ Compose `Button(onClick = null)`.
 pub fn button_id(ui: &mut Ui<'_, ()>, label: &str) -> Id {
+    button_id_kind(ui, label, ButtonKind::Text)
+}
+
+/// Label-only button in an explicit M3 emphasis. `按钮()` uses [`ButtonKind::Filled`]
+/// so a plain call reads as the primary action while still returning its `Id`.
+pub fn button_id_kind(ui: &mut Ui<'_, ()>, label: &str, kind: ButtonKind) -> Id {
     let cfg = button_cfg();
     let theme = theme::theme();
     let id: Id = Id::from((label, 0u32));
-    let state = cfg.text.unwrap_or_default();
-    let p = resolve_palette(&state,
-        Palette {
-            bg: TRANSPARENT.into(),
-            hover: theme::HOVER_TEXT.into(),
-            pressed: theme::PRESSED_TEXT.into(),
-            fg: theme.colors.primary.into(),
-            border: None,
-        },
-    );
+    let state = variant_state(&cfg, kind);
+    let p = variant_palette(&theme, kind, &state);
     rounded_btn(ui, Some(id.clone()), label, || {}, &cfg, p);
     id
 }

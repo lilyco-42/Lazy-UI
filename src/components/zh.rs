@@ -20,10 +20,11 @@ use ply_engine::prelude::*;
 
 use crate::immediate::current_ui;
 use crate::components::{
-    button_id, chat_panel, checkbox, combo, divider, listbox, progress, radio,
+    button_id_kind, chat_panel, checkbox, combo, divider, listbox, progress, radio,
     radio_group, selectable, slider, switch, tabs, text_field, text_field_outlined,
     tooltip,
 };
+use crate::components::button::ButtonKind;
 use crate::components::container::{log_progress, panel, sidebar, status_bar};
 use crate::components::text::{body, headline, label, title};
 use crate::components::chat_panel::{ChatPanelEvents, ChatPanelState};
@@ -35,10 +36,10 @@ use crate::components::{
 use std::cell::RefCell;
 use std::rc::Rc;
 
-/// `按钮`(实心) — 渲染按钮并在「刚好按下」的那一帧返回 `true`。
+/// `按钮`(实心)— 渲染高强调填实按钮并在「刚好按下」的那一帧返回 `true`。
 pub fn 按钮(label: &str) -> bool {
     let ui = current_ui();
-    let id = button_id(&mut *ui, label);
+    let id = button_id_kind(&mut *ui, label, ButtonKind::Filled);
     ui.is_just_pressed(id)
 }
 

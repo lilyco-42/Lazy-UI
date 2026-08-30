@@ -6,3 +6,6 @@
 /tools/*/target/
 /docs/live/
 /index.html
+/node_modules
+*.log
+Cargo.lock.bak
