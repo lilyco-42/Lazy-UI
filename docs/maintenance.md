@@ -51,11 +51,6 @@
 - 方案 B：先在其本地 repo 里 commit 成分支保留，再逐步归并。
 - 方案 C：丢弃。
 
-### 3.3 `rust/oh-my-meme-rs` —— meme_grid 网格组件
-GIF/图片虚拟化网格，依赖 `image` + `indexmap`。
-- 方案 A：抽成本仓库组件（放 `examples/` 或可选 feature），保留 demo。
-- 方案 B：作为独立仓库应用继续存在，需要时复制回来。
-
 ## 4. 消费者依赖关系（改公共 API 前先看这里）
 
 | 消费者 | 依赖写法 | 连接方式 |
