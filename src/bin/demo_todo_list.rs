@@ -134,6 +134,7 @@ macro_rules! menu {
     ) => {
         #[macroquad::main(menu_conf)]
         async fn main() {
+            theme::init_scale();
             let mut ply = Ply::<()>::new(fonts::zh_font()).await;
 
             loop {

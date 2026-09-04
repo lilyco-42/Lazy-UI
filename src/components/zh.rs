@@ -43,6 +43,13 @@ pub fn 按钮(label: &str) -> bool {
     ui.is_just_pressed(id)
 }
 
+/// `按钮铺满`(实心,铺满父容器宽)— 移动端 CTA,窄屏上主操作拉满整行。
+pub fn 按钮铺满(label: &str) -> bool {
+    let ui = current_ui();
+    let id = crate::components::button::button_grow(&mut *ui, label);
+    ui.is_just_pressed(id)
+}
+
 /// `大标题`(headline)。
 pub fn 大标题(text: &str) {
     headline(&mut *current_ui(), text);

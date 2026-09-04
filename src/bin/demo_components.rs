@@ -410,6 +410,7 @@ fn window_conf() -> macroquad::conf::Conf {
 
 #[macroquad::main(window_conf)]
 async fn main() {
+    theme::init_scale();
     let mut ply = Ply::<()>::new(fonts::zh_font()).await;
 
     let s = ShowcaseState::default();

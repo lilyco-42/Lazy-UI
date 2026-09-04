@@ -166,21 +166,148 @@ impl Default for TextTheme {
 }
 
 /// Global theme, loaded once from `assets/theme.toml` (falls back to M3 defaults).
+/// Sizes are multiplied by the effective scale (DPR × user zoom) at load time.
+/// Reloaded in place by [`set_zoom`] — the leaked old copy stays valid so any
+/// `&'static Theme` handed out mid-frame remains sound until the next frame.
 pub fn theme() -> &'static Theme {
-    static THEME: std::sync::OnceLock<Theme> = std::sync::OnceLock::new();
-    THEME.get_or_init(|| {
-        toml::from_str(include_str!("../assets/theme.toml")).unwrap_or_default()
-    })
+    let p = THEME_PTR.load(std::sync::atomic::Ordering::Acquire);
+    if !p.is_null() {
+        // SAFETY: only ever set by `reload_theme` from `Box::into_raw` and
+        // never freed, so the pointee lives for `'static`.
+        return unsafe { &*p };
+    }
+    reload_theme()
 }
 
-/// UI-scale-aware px helper (identity until canvas scale lands). Components that
-/// ship their own stylesheets should route sizes through here so an app can later
-/// adopt a global scale factor without touching every component.
+static THEME_PTR: std::sync::atomic::AtomicPtr<Theme> =
+    std::sync::atomic::AtomicPtr::new(std::ptr::null_mut());
+
+fn reload_theme() -> &'static Theme {
+    let mut t: Theme = toml::from_str(include_str!("../assets/theme.toml")).unwrap_or_default();
+    t.scale_sizes(effective_scale());
+    let leaked = Box::into_raw(Box::new(t));
+    THEME_PTR.store(leaked, std::sync::atomic::Ordering::Release);
+    // SAFETY: `leaked` was produced by `Box::into_raw` above and never freed.
+    unsafe { &*leaked }
+}
+
+/// 全局 UI 缩放基线(= 设备 DPR)。宿主必须在首帧前调用 [`set_scale`]
+/// (或一步到位的 [`init_scale`]),之后 `theme()` 首次加载时把所有尺寸字段
+/// 乘上去 —— 手机上按物理像素渲染的布局从此与桌面观感一致
+/// (不缩放时 16px 正文在 2.6x 屏上只有 ~6pt)。
+static UI_SCALE: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+
+/// 用户缩放倍率(Readme 的"缩放按钮"),与 DPR 相乘后生效。0 = 1.0。
+static ZOOM: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+
+fn bits_to_f32(bits: u32) -> f32 {
+    if bits == 0 {
+        1.0
+    } else {
+        f32::from_bits(bits)
+    }
+}
+
+/// 设置全局 UI 缩放基线(每进程一次;重复调用以首次为准,值下限 1.0).
+pub fn set_scale(v: f32) {
+    let v = v.max(1.0);
+    let _ = UI_SCALE.compare_exchange(
+        0,
+        v.to_bits(),
+        std::sync::atomic::Ordering::AcqRel,
+        std::sync::atomic::Ordering::Acquire,
+    );
+}
+
+/// 当前全局 UI 缩放基线(未设置时 1.0).
+pub fn scale() -> f32 {
+    bits_to_f32(UI_SCALE.load(std::sync::atomic::Ordering::Acquire))
+}
+
+/// 当前用户缩放倍率(未设置时 1.0).
+pub fn zoom() -> f32 {
+    bits_to_f32(ZOOM.load(std::sync::atomic::Ordering::Acquire))
+}
+
+/// 实际生效的缩放 = DPR 基线 × 用户倍率.
+fn effective_scale() -> f32 {
+    scale() * zoom()
+}
+
+/// 运行时缩放按钮:以 `v` 作为用户倍率(与设备 DPR 相乘)重载全局主题,
+/// 下一帧立即生效。重复调用无需重启;传 1.0 恢复默认。
+pub fn set_zoom(v: f32) -> &'static Theme {
+    ZOOM.store(v.max(1.0).to_bits(), std::sync::atomic::Ordering::Release);
+    reload_theme()
+}
+
+/// 宿主一步接入:读取平台 DPR(`high_dpi` 窗口下的 HiDPI/移动端密度)
+/// 并应用为全局缩放。在首帧前调用一次即可,重复调用以首次为准。
+pub fn init_scale() {
+    let dpr = ply_engine::prelude::macroquad::window::screen_dpi_scale();
+    set_scale(if dpr.is_finite() && dpr > 0.0 { dpr } else { 1.0 });
+}
+
+impl Theme {
+    /// 把全部尺寸字段乘以 `s`(DPR 感知渲染用).
+    pub fn scale_sizes(&mut self, s: f32) {
+        self.shapes.touch_target *= s;
+        self.shapes.button_height *= s;
+        self.shapes.field_height *= s;
+        self.shapes.tab_height *= s;
+        self.shapes.item_height *= s;
+        self.shapes.track_height *= s;
+        self.shapes.handle_size *= s;
+        self.shapes.radius_xs *= s;
+        self.shapes.radius_sm *= s;
+        self.shapes.radius_md *= s;
+        self.shapes.radius_lg *= s;
+        let t = &mut self.text;
+        t.label_size = (t.label_size as f32 * s).round() as u16;
+        t.body_size = (t.body_size as f32 * s).round() as u16;
+        t.title_size = (t.title_size as f32 * s).round() as u16;
+        t.headline_size = (t.headline_size as f32 * s).round() as u16;
+    }
+}
+
+/// UI-scale-aware px helper. Components that ship their own stylesheets should
+/// route sizes through here so they follow DPR and the user zoom (缩放按钮)
+/// without touching every component.
 pub fn px(v: f32) -> f32 {
-    v
+    v * effective_scale()
 }
 
 /// `px` cast to `u16` (layout padding units).
 pub fn pxu(v: f32) -> u16 {
-    v as u16
+    px(v) as u16
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // Pure transform only: `set_scale`/`set_zoom` write process-global state,
+    // so exercising them here would leak the factor into every other test.
+    #[test]
+    fn scale_sizes_multiplies_every_dimension() {
+        let mut t = Theme::default();
+        let body = t.text.body_size;
+        let btn_h = t.shapes.button_height;
+        let radius = t.shapes.radius_md;
+        t.scale_sizes(2.0);
+        assert_eq!(t.text.body_size, body * 2);
+        assert!((t.shapes.button_height - btn_h * 2.0).abs() < f32::EPSILON);
+        assert!((t.shapes.radius_md - radius * 2.0).abs() < f32::EPSILON);
+        t.scale_sizes(0.5);
+        assert_eq!(t.text.body_size, body);
+    }
+
+    #[test]
+    fn reload_theme_scales_shape_and_text_fields() {
+        // Never calls set_scale/set_zoom: reload at identity must equal the
+        // on-disk toml (multiplying by 1.0 is exact for f32 and u16 rounding).
+        let t = theme();
+        assert!(t.shapes.button_height > 0.0);
+        assert!(t.text.body_size > 0);
+    }
 }

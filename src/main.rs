@@ -66,6 +66,7 @@ fn window_conf() -> macroquad::conf::Conf {
 #[macroquad::main(window_conf)]
 async fn main() {
     init_logger();
+    theme::init_scale();
 
     // English default: small Latin font (system first, embedded fallback).
     let mut ply = Ply::<()>::new(fonts::en_font()).await;
@@ -309,6 +310,16 @@ async fn main() {
             RegionRole::Status => {
                 status_bar(ui, |ui| {
                     label(ui, t!("status_ready").as_ref());
+                    // Readme 的"缩放按钮":循环 1.0 → 1.25 → 1.5 → 1.0,
+                    // set_zoom 热重载主题,下一帧全部 theme() 尺寸生效。
+                    let next = next_zoom(theme::zoom());
+                    button_text(
+                        ui,
+                        t!("zoom_next", scale = format!("{:.0}%", next * 100.0)).as_ref(),
+                        || {
+                            theme::set_zoom(next_zoom(theme::zoom()));
+                        },
+                    );
                     button_text(ui, t!("lang_toggle").as_ref(), || {
                         let next = if &*rust_i18n::locale() == locale::ZH {
                             locale::EN
@@ -327,6 +338,16 @@ async fn main() {
         ui.show(|_| {}).await;
         next_frame().await;
     }
+}
+
+/// 缩放按钮的档位循环:1.0 → 1.25 → 1.5 → 回到 1.0(Readme:必须要有缩放按钮).
+fn next_zoom(current: f32) -> f32 {
+    const STEPS: [f32; 3] = [1.0, 1.25, 1.5];
+    let idx = STEPS
+        .iter()
+        .position(|s| (*s - current).abs() <= f32::EPSILON)
+        .map_or(0, |i| (i + 1) % STEPS.len());
+    STEPS[idx]
 }
 
 fn section(ui: &mut Ui<'_, ()>, name: &str, inner: impl FnOnce(&mut Ui<'_, ()>)) {

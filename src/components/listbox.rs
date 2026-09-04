@@ -31,6 +31,9 @@ pub fn listbox(
         .height(fixed!(height))
         .border(|b| b.all(1).color(c.border.map(Color::from).unwrap_or(theme.colors.outline_variant.into())))
         .corner_radius(c.radius.unwrap_or(theme.shapes.radius_sm))
+        .layout(|l| {
+            l.direction(TopToBottom).gap(4)
+        })
         .overflow(|o| o.scroll_y())
         .children(|ui| {
             for (i, option) in options.iter().enumerate() {

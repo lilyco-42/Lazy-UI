@@ -61,3 +61,5 @@ hover_me = "悬停我"
 
 status_ready = "状态: 就绪"
 lang_toggle = "English"
+
+zoom_next = "缩放 %{scale}"

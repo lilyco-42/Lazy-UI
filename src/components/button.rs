@@ -242,3 +242,15 @@ pub fn button_fixed(ui: &mut Ui<'_, ()>, label: &str, width: f32, on_click: impl
     let p = variant_palette(&theme, ButtonKind::Filled, &state);
     rounded_btn(ui, None, label, on_click, &cfg, p, fixed!(width));
 }
+
+/// High-emphasis filled button that STRETCHES to fill the parent width.
+/// Mobile CTA: full-width primary action (returns its `Id`, see [`button_id_kind`]).
+pub fn button_grow(ui: &mut Ui<'_, ()>, label: &str) -> Id {
+    let cfg = button_cfg();
+    let theme = theme::theme();
+    let id: Id = Id::from((label, 0u32));
+    let state = variant_state(&cfg, ButtonKind::Filled);
+    let p = variant_palette(&theme, ButtonKind::Filled, &state);
+    rounded_btn(ui, Some(id.clone()), label, || {}, &cfg, p, grow!());
+    id
+}

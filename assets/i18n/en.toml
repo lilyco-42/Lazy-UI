@@ -62,3 +62,5 @@ hover_me = "Hover me"
 
 status_ready = "Status: Ready"
 lang_toggle = "Chinese"
+
+zoom_next = "Zoom %{scale}"

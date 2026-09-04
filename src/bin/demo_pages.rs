@@ -29,6 +29,7 @@ fn pages_conf() -> macroquad::conf::Conf {
 
 #[macroquad::main(pages_conf)]
 async fn main() {
+    theme::init_scale();
     let mut ply = Ply::<()>::new(fonts::zh_font()).await;
     let mut page: u32 = 1;
 

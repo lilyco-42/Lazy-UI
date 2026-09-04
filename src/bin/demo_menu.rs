@@ -148,6 +148,7 @@ macro_rules! menu {
     ) => {
         #[macroquad::main(menu_conf)]
         async fn main() {
+            theme::init_scale();
             // The DSL renders CJK labels, so start with the CJK-capable font
             // (a glyph superset that also carries Latin).
             let mut ply = Ply::<()>::new(fonts::zh_font()).await;
