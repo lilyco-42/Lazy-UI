@@ -200,7 +200,7 @@ fn sec_value(ui: &mut Ui<'_, ()>, s: &ShowcaseState) {
     let cur = format!("当前: {:.2}", s.slider_val.get());
     label(ui, &cur);
     let p = s.progress_val.get();
-    progress(ui, p);
+    progress(ui, "showcase_progress_bar", p);
     let ptext = format!("进度: {:.0}%", p * 100.0);
     label(ui, &ptext);
 }
@@ -395,7 +395,7 @@ fn window_conf() -> macroquad::conf::Conf {
             window_width: 860,
             window_height: 640,
             high_dpi: true,
-            sample_count: 4,
+            sample_count: 0,
             platform: miniquad::conf::Platform {
                 webgl_version: miniquad::conf::WebGLVersion::WebGL2,
                 ..Default::default()

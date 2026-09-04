@@ -122,7 +122,7 @@ fn menu_conf() -> macroquad::conf::Conf {
             window_width: 640,
             window_height: 480,
             high_dpi: true,
-            sample_count: 4,
+            sample_count: 0,
             platform: miniquad::conf::Platform {
                 webgl_version: miniquad::conf::WebGLVersion::WebGL2,
                 ..Default::default()

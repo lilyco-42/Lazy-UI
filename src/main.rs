@@ -50,7 +50,7 @@ fn window_conf() -> macroquad::conf::Conf {
             window_width: 800,
             window_height: 600,
             high_dpi: true,
-            sample_count: 1,
+            sample_count: 0,
             platform: miniquad::conf::Platform {
                 webgl_version: miniquad::conf::WebGLVersion::WebGL2,
                 ..Default::default()
@@ -249,7 +249,7 @@ async fn main() {
                     });
 
                     section(ui, t!("sec_progress").as_ref(), |ui| {
-                        progress(ui, progress_val.get());
+                        progress(ui, "main_progress", progress_val.get());
                     });
 
                     section(ui, t!("sec_tabs").as_ref(), |ui| {

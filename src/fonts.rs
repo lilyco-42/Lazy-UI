@@ -15,16 +15,7 @@ use std::sync::OnceLock;
 /// Preferred Latin family names for the English UI, in order of preference.
 const EN_FAMILIES: &[&str] = &["Segoe UI", "Arial", "Helvetica", "DejaVu Sans"];
 
-/// Preferred CJK family names for the Chinese UI, in order of preference.
-const ZH_FAMILIES: &[&str] = &[
-    "Microsoft YaHei",
-    "PingFang SC",
-    "Noto Sans CJK SC",
-    "WenQuanYi Micro Hei",
-    "SimHei",
-];
-
-/// Embedded fallback assets (keep the demo runnable without system fonts).
+/// Embedded assets (CJK 用子集,见 tools/subset_font.py).
 static EN_EMBEDDED: FontAsset = FontAsset::Bytes {
     file_name: "lexend.ttf",
     data: include_bytes!("../assets/fonts/lexend.ttf"),
@@ -44,11 +35,11 @@ pub fn en_font() -> &'static FontAsset {
     *EN_FONT.get_or_init(|| find_system_font(EN_FAMILIES).unwrap_or(&EN_EMBEDDED))
 }
 
-/// CJK font used when the UI is switched to Chinese. Looks up a system family,
-/// falls back to the embedded LXGWWenKai asset. Only resolves once; the caller
-/// decides *when* to actually load it (on demand, not at startup).
+/// CJK font: embedded subset FIRST (25MB full font costs ~140MB parse heap;
+/// subset is 1.7MB; system CJK fonts are equally huge). Consistent look on all
+/// platforms + half the memory. See `tools/subset_font.py`.
 pub fn zh_font() -> &'static FontAsset {
-    *ZH_FONT.get_or_init(|| find_system_font(ZH_FAMILIES).unwrap_or(&ZH_EMBEDDED))
+    *ZH_FONT.get_or_init(|| &ZH_EMBEDDED)
 }
 
 /// Scans the system font database once and returns the first matching face as a

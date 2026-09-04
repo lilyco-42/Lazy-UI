@@ -103,9 +103,9 @@ pub fn 选项卡(id: &'static str, items: &[&str], selected: usize) -> usize {
     tabs(&mut *current_ui(), id, items, selected)
 }
 
-/// `进度条`(线性)— `fraction` 为 0.0..=1.0。
-pub fn 进度条(fraction: f32) {
-    progress(&mut *current_ui(), fraction);
+/// `进度条`(线性)— `fraction` 为 0.0..=1.0。`id` 每个实例唯一(测上帧轨道宽用)。
+pub fn 进度条(id: impl Into<Id>, fraction: f32) {
+    progress(&mut *current_ui(), id, fraction);
 }
 
 /// `分割线`(水平)。
@@ -293,7 +293,7 @@ mod tests {
             列表框("lb", &["一", "二"], 0, 4);
             _ = 下拉框("co", &["苹果", "橘子"], 0);
             _ = 选项卡("tab", &["标签一", "标签二"], 0);
-            进度条(0.5);
+            进度条("zh_test_progress", 0.5);
             分割线();
             大标题("基准");
             标题("分区");
