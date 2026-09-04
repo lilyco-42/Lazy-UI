@@ -29,15 +29,15 @@ pub fn 蓝色按钮(ui: &mut Ui<'_, ()>, label: &str) {
                 .width(grow!())
                 .height(grow!())
                 .background_color(c.background.map(Color::from).unwrap_or(theme.colors.primary.into()))
-                .corner_radius(c.radius.map(theme::px).unwrap_or(theme.shapes.radius_sm))
+                .corner_radius(c.radius.unwrap_or(theme.shapes.radius_sm))
                 .layout(|l| {
                     // Symmetric padding + CenterX. `center_x_shift` only exists
                     // for fonts whose ink is genuinely asymmetric; it defaults to
-                    // 0 and should stay 0 on most setups (px tweaks don't scale
-                    // across resolutions).
-                    let pad = theme::px(c.pad_x.unwrap_or(16.0));
+                    // 0 and should stay 0 on most setups. 字号随生效缩放,墨迹
+                    // 不对称量同理 —— 覆盖值已在 effective() 缩放过,勿再乘 px.
+                    let pad = c.pad_x.unwrap_or(theme::px(16.0));
                     let (lp, rp) = if c.center_x.unwrap_or(true) {
-                        let shift = theme::px(c.center_x_shift.unwrap_or(0.0));
+                        let shift = c.center_x_shift.unwrap_or(0.0);
                         (pad - shift, pad + shift)
                     } else {
                         (pad, pad)

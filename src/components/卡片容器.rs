@@ -22,7 +22,7 @@ pub fn 卡片容器(ui: &mut Ui<'_, ()>, inner: impl FnOnce(&mut Ui<'_, ()>)) {
         .width(fit!())
         .height(fit!())
         .background_color(c.background.map(Color::from).unwrap_or(theme.colors.surface_container.into()))
-        .corner_radius(c.radius.map(theme::px).unwrap_or(theme.shapes.radius_md))
-        .layout(|l| l.padding(theme::px(c.pad_x.unwrap_or(16.0)) as u16))
+        .corner_radius(c.radius.unwrap_or(theme.shapes.radius_md))
+        .layout(|l| l.padding(c.pad_x.unwrap_or(theme::px(16.0)) as u16))
         .children(inner);
 }

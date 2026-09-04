@@ -12,7 +12,11 @@ use crate::components::config::{self, CardConfig, DataTableConfig, DialogConfig,
 use crate::components::button_id;
 use crate::theme;
 
-fn cfg<T: Copy>(attrs: Option<T>, base: &T, merge: impl FnOnce(T, T) -> T) -> T {
+fn cfg<T: Copy + config::ScaleSizes>(
+    attrs: Option<T>,
+    base: &T,
+    merge: impl FnOnce(T, T) -> T,
+) -> T {
     config::effective(attrs, base, merge)
 }
 

@@ -229,8 +229,9 @@ pub fn zoom() -> f32 {
     bits_to_f32(ZOOM.load(std::sync::atomic::Ordering::Acquire))
 }
 
-/// 实际生效的缩放 = DPR 基线 × 用户倍率.
-fn effective_scale() -> f32 {
+/// 实际生效的缩放 = DPR 基线 × 用户倍率。组件样式表(`*.toml`)的尺寸字段
+/// 在每帧读取时乘上它,所以 [`set_zoom`] 重载后下一帧即生效。
+pub fn effective_scale() -> f32 {
     scale() * zoom()
 }
 

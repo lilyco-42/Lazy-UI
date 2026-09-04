@@ -9,7 +9,11 @@ use ply_engine::prelude::*;
 use crate::components::config::{self, AvatarConfig, BadgeConfig, ChipConfig, CodeConfig, DivConfig, KbdConfig};
 use crate::theme;
 
-fn cfg<T: Copy>(attrs: Option<T>, base: &T, merge: impl FnOnce(T, T) -> T) -> T {
+fn cfg<T: Copy + config::ScaleSizes>(
+    attrs: Option<T>,
+    base: &T,
+    merge: impl FnOnce(T, T) -> T,
+) -> T {
     config::effective(attrs, base, merge)
 }
 

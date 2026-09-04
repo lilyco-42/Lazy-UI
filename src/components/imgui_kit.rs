@@ -10,7 +10,11 @@ use crate::components::config::{self, CollapsingHeaderConfig, DragFloatConfig, I
 use crate::theme;
 use std::cell::RefCell;
 
-fn cfg<T: Copy>(attrs: Option<T>, base: &T, merge: impl FnOnce(T, T) -> T) -> T {
+fn cfg<T: Copy + config::ScaleSizes>(
+    attrs: Option<T>,
+    base: &T,
+    merge: impl FnOnce(T, T) -> T,
+) -> T {
     config::effective(attrs, base, merge)
 }
 
