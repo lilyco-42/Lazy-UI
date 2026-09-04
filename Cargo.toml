@@ -1,7 +1,12 @@
 [package]
 name = "lazy-ply"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
+description = "Lazy-UI — 基于 Rust 与 Ply Engine 的跨平台原生即时模式 UI 框架。丰富组件、TOML 主题样式、国际化与无障碍,支持桌面 / Web / Android,兼顾 HarmonyOS 交叉构建。"
+repository = "https://github.com/lilyco-42/Lazy-UI"
+readme = "Readme.md"
+keywords = ["gui", "ui", "immediate-mode", "material-design", "cross-platform"]
+categories = ["gui", "internationalization"]
 
 # Android APK 构建配置(plyx apk / cargo-quad-apk)
 [package.metadata.android]

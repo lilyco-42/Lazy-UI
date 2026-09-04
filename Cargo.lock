@@ -984,7 +984,7 @@ dependencies = [
 
 [[package]]
 name = "lazy-ply"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "fontdb",
  "image 0.25.10",

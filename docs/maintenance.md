@@ -68,6 +68,12 @@
 3. 发布前核对 §3 待处理清单，决定哪些在这个版本收编。
 4. 打 tag：`git tag v0.2.0 && git push origin v0.2.0`。
 
+> **2026-09-05 状态**：v0.2.0 已完成——版本推进、Cargo 发布元数据（description/repository/readme/keywords）、
+> `cargo build --release` + `cargo test --release` + `cargo package` 全部通过，tag `v0.2.0` 已推送。
+> **crates.io 实际发布待办**：① 仓库尚无 LICENSE 文件，需先定许可证（法律决策，Cargo.toml 的 `license` 字段一并补）；
+> ② `cargo login` + `cargo publish`；③ crates.io 名称 `lazy-ply` 已确认可用。
+> CI（build.yml）只监听 main/PR，tag 不触发构建——发布二进制需手动跑 workflow_dispatch。
+
 ## 6. 例行维护节奏（OODA）
 
 - **Observe**：有心提交就 `git log origin/main..HEAD`；看 §3 有没有新实验可收编。
