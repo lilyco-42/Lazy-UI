@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/lilyco-42/Lazy-UI/main/docs/logo.png" alt="Lazy-UI" width="200">
+</p>
+
 <div align="center">
   <img src="docs/banner.svg" width="720" alt="banner">
 </div>
