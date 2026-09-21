@@ -1,0 +1,55 @@
+# modern_dark.toml — Lazy-UI modern dark theme
+# Deep charcoal #1a1a2e + indigo #6366f1, matches product logo family.
+# Usage: set this as the active theme in your config.toml.
+
+[colors]
+primary = 0x6366F1
+on_primary = 0xFFFFFF
+primary_container = 0x312E81
+on_primary_container = 0xC7D2FE
+secondary = 0x818CF8
+on_secondary = 0x1E1B4B
+secondary_container = 0x312E81
+on_secondary_container = 0xC7D2FE
+tertiary = 0x22D3EE
+on_tertiary = 0x083344
+tertiary_container = 0x164E63
+on_tertiary_container = 0xA5F3FC
+error = 0xEF4444
+on_error = 0xFFFFFF
+error_container = 0x7F1D1D
+on_error_container = 0xFECACA
+surface = 0x0F0F1E
+on_surface = 0xE4E4E7
+surface_variant = 0x27273A
+on_surface_variant = 0xA1A1AA
+outline = 0x3F3F5A
+outline_variant = 0x27273A
+surface_container_lowest = 0x0F0F1E
+surface_container_low = 0x16162A
+surface_container = 0x1A1A2E
+surface_container_high = 0x27273A
+surface_container_highest = 0x3F3F5A
+inverse_surface = 0xE4E4E7
+inverse_on_surface = 0x1A1A2E
+inverse_primary = 0x818CF8
+scrim = 0x000000
+
+[shapes]
+touch_target = 48
+button_height = 40
+field_height = 44
+tab_height = 40
+item_height = 44
+track_height = 4
+handle_size = 18
+radius_xs = 4
+radius_sm = 8
+radius_md = 12
+radius_lg = 16
+
+[text]
+label_size = 14
+body_size = 15
+title_size = 20
+headline_size = 26
