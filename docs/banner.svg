@@ -12,7 +12,7 @@
   <text x="552" y="164" font-size="44" font-weight="700" fill="#f59e0b" opacity="0.30" text-anchor="end" font-family="Consolas,monospace">{ }</text>
   <rect x="0" y="0" width="6" height="200" fill="url(#ac)"/>
   <rect x="36" y="46" height="34" rx="17" width="130" fill="#f59e0b" opacity="0.14" stroke="#f59e0b"/>
-  <text x="101" y="69" font-size="15" fill="#fbbf24" text-anchor="middle">Rust · ★4</text>
+  <text x="101" y="69" font-size="15" fill="#fbbf24" text-anchor="middle">Rust · ★3</text>
   <text x="36" y="126" font-size="42" font-weight="700" fill="#f8fafc">Lazy-UI</text>
   <text x="36" y="158" font-size="17" fill="#fbbf24">Rust TUI 控件框架 · Button / Tabs / Slider 开箱即用 · 约定大于配置</text>
 </svg>
